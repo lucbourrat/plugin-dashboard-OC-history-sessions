@@ -13,6 +13,17 @@ function addToolBar() {
 	let toolBarSection = document.createElement("div");
 	toolBarSection.classList.add("toolBarSection");
 	
+	// Create button 0
+	let toolBarSectionButton0 = document.createElement("button");
+	toolBarSectionButton0.classList.add("dom-services-3-MuiButton-containedPrimary", "dom-services-3-dom-services80", "dom-services-3-MuiButton-root", "dom-services-3-MuiButtonBase-root", "toolBarSectionButton");
+	
+	let toolBarSectionButtonSpan0 = document.createElement("span");
+	toolBarSectionButtonSpan0.classList.add("dom-services-3-MuiButton-label");
+	
+	let toolBarSectionButtonSpanSpan0 = document.createElement("span");
+	toolBarSectionButtonSpanSpan0.textContent = "set AF";
+	toolBarSectionButtonSpanSpan0.style.textTransform = "none";
+	
 	// Create button 1
 	let toolBarSectionButton1 = document.createElement("button");
 	toolBarSectionButton1.classList.add("dom-services-3-MuiButton-containedPrimary", "dom-services-3-dom-services80", "dom-services-3-MuiButton-root", "dom-services-3-MuiButtonBase-root", "toolBarSectionButton");
@@ -48,6 +59,10 @@ function addToolBar() {
 	
 	
 	
+	// Insert button 0
+	toolBarSectionButtonSpan0.appendChild(toolBarSectionButtonSpanSpan0);
+	toolBarSectionButton0.appendChild(toolBarSectionButtonSpan0);
+	toolBarSection.appendChild(toolBarSectionButton0);
 	// Insert button 1
 	toolBarSectionButtonSpan1.appendChild(toolBarSectionButtonSpanSpan1);
 	toolBarSectionButton1.appendChild(toolBarSectionButtonSpan1);
@@ -61,6 +76,7 @@ function addToolBar() {
 	toolBarSectionButton3.appendChild(toolBarSectionButtonSpan3);
 	toolBarSection.appendChild(toolBarSectionButton3);
 	// AddEventListener
+	toolBarSectionButton0.addEventListener("click", setAF);
 	toolBarSectionButton1.addEventListener("click", getDisplayedSessions);
 	toolBarSectionButton2.addEventListener("click", deleteRecapTab);
 	toolBarSectionButton3.addEventListener("click", displayRecapTab);
@@ -207,6 +223,57 @@ function displayRecapTab() {
 	
 	// On pousse le tableau (front end) dans le DOM
 	
+}
+
+function setAF() {
+	console.log("setAF clicked");
+	
+	// Get displayed sessions Elements TR
+	let sessionsHistory = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
+	
+	// Insert TD
+	for (session of sessionsHistory) {
+		// Create TD
+		let tDforAF = document.createElement("td");
+		// Set TD
+		tDforAF.classList.add("dom-services-3-dom-services123", "isItAnAF");
+		tDforAF.style.width = "100%";
+		tDforAF.style.minWidth = "140px";
+		tDforAF.setAttribute("onclick", "event.stopPropagation();");
+		
+		
+		// Create LabelSB (switch button)
+		let LabelSB = document.createElement("label");
+		// Set LabelSB
+		LabelSB.classList.add("switch");
+		
+		// Create inputSB
+		let inputSB = document.createElement("input");
+		// Set inputSB
+		inputSB.classList.add("switch-input");
+		inputSB.setAttribute("type", "checkbox");
+		
+		// Create spanSB1
+		let spanSB1 = document.createElement("span");
+		// Set spanSB1
+		spanSB1.classList.add("switch-label");
+		spanSB1.setAttribute("data-on", "AutoFinancé");
+		spanSB1.setAttribute("data-off", "Financé");
+		
+		// Create spanSB2
+		let spanSB2 = document.createElement("span");
+		// Set spanSB2
+		spanSB2.classList.add("switch-handle");
+		
+		
+		
+		// Insert TD
+		LabelSB.appendChild(spanSB2);
+		LabelSB.appendChild(spanSB1);
+		LabelSB.appendChild(inputSB);
+		tDforAF.appendChild(LabelSB);
+		session.appendChild(tDforAF);
+	}
 }
 
 miseEnAttente();
