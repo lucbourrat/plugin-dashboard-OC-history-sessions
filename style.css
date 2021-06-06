@@ -1,0 +1,8 @@
+.toolBarSection {
+	display: flex;
+	justify-content: center;
+}
+
+.toolBarSectionButton {
+	margin: 0 16px !important;
+}
