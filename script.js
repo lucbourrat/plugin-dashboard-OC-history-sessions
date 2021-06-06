@@ -257,7 +257,7 @@ function setAF() {
 		let spanSB1 = document.createElement("span");
 		// Set spanSB1
 		spanSB1.classList.add("switch-label");
-		spanSB1.setAttribute("data-on", "AutoFinancé");
+		spanSB1.setAttribute("data-on", "AutoFi...");
 		spanSB1.setAttribute("data-off", "Financé");
 		
 		// Create spanSB2
@@ -268,9 +268,9 @@ function setAF() {
 		
 		
 		// Insert TD
-		LabelSB.appendChild(spanSB2);
-		LabelSB.appendChild(spanSB1);
 		LabelSB.appendChild(inputSB);
+		LabelSB.appendChild(spanSB1);
+		LabelSB.appendChild(spanSB2);
 		tDforAF.appendChild(LabelSB);
 		session.appendChild(tDforAF);
 	}
