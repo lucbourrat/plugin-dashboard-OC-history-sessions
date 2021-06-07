@@ -197,7 +197,7 @@ function setAF() {
 	}
 }
 
-function displayTab(tabName, studentFaOrF, mountSelected, mainArea) {
+function displayTab(tabName, studentFaOrF, mountSelected, mainArea, sessionType) {
 	// Create TABLE
 	let sessionsTable = document.createElement("table");
 	sessionsTable.classList.add("recaptTab");
@@ -226,40 +226,52 @@ function displayTab(tabName, studentFaOrF, mountSelected, mainArea) {
 	// Create TD
 	let sessionsTr2Td1 = document.createElement("td");
 	sessionsTr2Td1.textContent = "Réalisées";
+	
 	let sessionsTr2Td2 = document.createElement("td");
-	sessionsTr2Td2.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "1", "Réalisée").length;
+	sessionsTr2Td2.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "1", "Réalisée", sessionType).length;
+	if (sessionType == "Soutenance")
+		sessionsTr2Td2.textContent =  getSessionsWithParams("af", mountSelected, "1", "Réalisée", sessionType).length + getSessionsWithParams("f", mountSelected, "1", "Réalisée", sessionType).length;
+	
 	let sessionsTr2Td3 = document.createElement("td");
-	sessionsTr2Td3.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "2", "Réalisée").length;
+	sessionsTr2Td3.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "2", "Réalisée", sessionType).length;
+	if (sessionType == "Soutenance")
+		sessionsTr2Td3.textContent =  getSessionsWithParams("af", mountSelected, "2", "Réalisée", sessionType).length + getSessionsWithParams("f", mountSelected, "2", "Réalisée", sessionType).length;
+	
 	let sessionsTr2Td4 = document.createElement("td");
-	sessionsTr2Td4.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "3", "Réalisée").length;
+	sessionsTr2Td4.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "3", "Réalisée", sessionType).length;
+	if (sessionType == "Soutenance")
+		sessionsTr2Td4.textContent =  getSessionsWithParams("af", mountSelected, "3", "Réalisée", sessionType).length + getSessionsWithParams("f", mountSelected, "3", "Réalisée", sessionType).length;
 	// Add TD inside Tr2
 	sessionsTr2.appendChild(sessionsTr2Td1);
 	sessionsTr2.appendChild(sessionsTr2Td2);
 	sessionsTr2.appendChild(sessionsTr2Td3);
 	sessionsTr2.appendChild(sessionsTr2Td4);
-	console.log(studentFaOrF + " " + mountSelected + " 1 présent" + getSessionsWithParams(studentFaOrF, mountSelected, "1", "Réalisée").length);
-	console.log(studentFaOrF + " " + mountSelected + " 2 présent" + getSessionsWithParams(studentFaOrF, mountSelected, "2", "Réalisée").length);
-	console.log(studentFaOrF + " " + mountSelected + " 3 présent" + getSessionsWithParams(studentFaOrF, mountSelected, "3", "Réalisée").length);
 	
 	// Create TR3 (NO-SHOW)
 	let sessionsTr3 = document.createElement("tr");
 	// Create TD
 	let sessionsTr3Td1 = document.createElement("td");
 	sessionsTr3Td1.textContent = "No-Show";
+	
 	let sessionsTr3Td2 = document.createElement("td");
-	sessionsTr3Td2.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "1", "Étudiant absent").length;
+	sessionsTr3Td2.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "1", "Étudiant absent", sessionType).length;
+	if (sessionType == "Soutenance")
+		sessionsTr3Td2.textContent =  getSessionsWithParams("af", mountSelected, "1", "Étudiant absent", sessionType).length; + getSessionsWithParams("f", mountSelected, "1", "Étudiant absent", sessionType).length;
+		
 	let sessionsTr3Td3 = document.createElement("td");
-	sessionsTr3Td3.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "2", "Étudiant absent").length;
+	sessionsTr3Td3.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "2", "Étudiant absent", sessionType).length;
+	if (sessionType == "Soutenance")
+		sessionsTr3Td2.textContent =  getSessionsWithParams("af", mountSelected, "2", "Étudiant absent", sessionType).length; + getSessionsWithParams("f", mountSelected, "2", "Étudiant absent", sessionType).length;
+	
 	let sessionsTr3Td4 = document.createElement("td");
-	sessionsTr3Td4.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "3", "Étudiant absent").length;
+	sessionsTr3Td4.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "3", "Étudiant absent", sessionType).length;
+	if (sessionType == "Soutenance")
+		sessionsTr3Td2.textContent =  getSessionsWithParams("af", mountSelected, "3", "Étudiant absent", sessionType).length; + getSessionsWithParams("f", mountSelected, "3", "Étudiant absent", sessionType).length;
 	// Add TD af inside Tr3
 	sessionsTr3.appendChild(sessionsTr3Td1);
 	sessionsTr3.appendChild(sessionsTr3Td2);
 	sessionsTr3.appendChild(sessionsTr3Td3);
 	sessionsTr3.appendChild(sessionsTr3Td4);
-	console.log(studentFaOrF + " " + mountSelected + " 1 absent" + getSessionsWithParams(studentFaOrF, mountSelected, "1", "Étudiant absent").length);
-	console.log(studentFaOrF + " " + mountSelected + " 2 absent" + getSessionsWithParams(studentFaOrF, mountSelected, "2", "Étudiant absent").length);
-	console.log(studentFaOrF + " " + mountSelected + " 3 absent" + getSessionsWithParams(studentFaOrF, mountSelected, "3", "Étudiant absent").length);
 
 	// Add TR inside TBODY
 	sessionsTbody.appendChild(sessionsTr1);
@@ -288,93 +300,10 @@ function displayRecapTabs() {
 	mainArea.removeChild(mainAreaNavTab);
 	mainArea.removeChild(mainAreaTab);
 	
-	displayTab("AutoFinancé", "af", mountSelected, mainArea);
-	displayTab("Financé------", "f", mountSelected, mainArea);
-	
-	///////////////////////
-	///////////////////////
-	///////////////////////
-	// Create TABLE s
-	let SsessionsTable = document.createElement("table");
-	// Create TBODY s
-	let SsessionsTbody = document.createElement("tbody");
-	
-	// Create TR1 s (EN TETE)
-	let SsessionsTr1 = document.createElement("tr");
-	// Create TD s
-	let SsessionsTr1Td1 = document.createElement("td");
-	SsessionsTr1Td1.textContent = "OLD Soutenances";
-	let SsessionsTr1Td2 = document.createElement("td");
-	SsessionsTr1Td2.textContent = "Lvl 1";
-	let SsessionsTr1Td3 = document.createElement("td");
-	SsessionsTr1Td3.textContent = "Lvl 2";
-	let SsessionsTr1Td4 = document.createElement("td");
-	SsessionsTr1Td4.textContent = "Lvl 3";
-	// Add TD inside Tr1
-	SsessionsTr1.appendChild(SsessionsTr1Td1);
-	SsessionsTr1.appendChild(SsessionsTr1Td2);
-	SsessionsTr1.appendChild(SsessionsTr1Td3);
-	SsessionsTr1.appendChild(SsessionsTr1Td4);
-	
-	// Create TR2 s (s REALISEES)
-	let SsessionsTr2 = document.createElement("tr");
-	// Create TD s
-	let SsessionsTr2Td1 = document.createElement("td");
-	SsessionsTr2Td1.textContent = "Réalisées";
-	let SsessionsTr2Td2 = document.createElement("td");
-	SsessionsTr2Td2.textContent = getSessionsWithParams("s", "juin", "1", "CompletedIcon").length;
-	let SsessionsTr2Td3 = document.createElement("td");
-	SsessionsTr2Td3.textContent = getSessionsWithParams("s", "juin", "2", "CompletedIcon").length;
-	let SsessionsTr2Td4 = document.createElement("td");
-	SsessionsTr2Td4.textContent = getSessionsWithParams("s", "juin", "3", "CompletedIcon").length;
-	// Add TD S inside Tr2
-	SsessionsTr2.appendChild(SsessionsTr2Td1);
-	SsessionsTr2.appendChild(SsessionsTr2Td2);
-	SsessionsTr2.appendChild(SsessionsTr2Td3);
-	SsessionsTr2.appendChild(SsessionsTr2Td4);
-	console.log("s " + mountSelected + " 1 présent" + getSessionsWithParams("s", mountSelected, "1", "CompletedIcon").length);
-	console.log("s " + mountSelected + " 2 présent" + getSessionsWithParams("s", mountSelected, "2", "CompletedIcon").length);
-	console.log("s " + mountSelected + " 3 présent" + getSessionsWithParams("s", mountSelected, "3", "CompletedIcon").length);
-	
-	// Create TR3 s (S NO-SHOW)
-	let SsessionsTr3 = document.createElement("tr");
-	// Create TD s
-	let SsessionsTr3Td1 = document.createElement("td");
-	SsessionsTr3Td1.textContent = "No-Show";
-	let SsessionsTr3Td2 = document.createElement("td");
-	SsessionsTr3Td2.textContent = getSessionsWithParams("s", mountSelected, "1", "StudentAbsentIcon").length;
-	let SsessionsTr3Td3 = document.createElement("td");
-	SsessionsTr3Td3.textContent = getSessionsWithParams("s", mountSelected, "2", "StudentAbsentIcon").length;
-	let SsessionsTr3Td4 = document.createElement("td");
-	SsessionsTr3Td4.textContent = getSessionsWithParams("s", mountSelected, "3", "StudentAbsentIcon").length;
-	// Add TD s inside Tr3
-	SsessionsTr3.appendChild(SsessionsTr3Td1);
-	SsessionsTr3.appendChild(SsessionsTr3Td2);
-	SsessionsTr3.appendChild(SsessionsTr3Td3);
-	SsessionsTr3.appendChild(SsessionsTr3Td4);
-	console.log("s " + mountSelected + " 1 absent" + getSessionsWithParams("s", mountSelected, "1", "StudentAbsentIcon").length);
-	console.log("s " + mountSelected + " 2 absent" + getSessionsWithParams("s", mountSelected, "2", "StudentAbsentIcon").length);
-	console.log("s " + mountSelected + " 3 absent" + getSessionsWithParams("s", mountSelected, "3", "StudentAbsentIcon").length);
-	
-	// Add TR s inside TBODY
-	SsessionsTbody.appendChild(SsessionsTr1);
-	SsessionsTbody.appendChild(SsessionsTr2);
-	SsessionsTbody.appendChild(SsessionsTr3);
-	
-	// Add TBODY s inside TABLE
-	SsessionsTable.appendChild(SsessionsTbody);
-	
-	// Add TABLE s inside FRONTEND
-	mainArea.appendChild(SsessionsTable);
-	
-	
-	
-	
-	
-	let sessionsHistoryTab = JSON.parse(localStorage.getItem('sessionsHistoryTab'));
-	
-	// On pousse le tableau (front end) dans le DOM
-	
+	// Affichage des différents gros tableaux
+	displayTab("AutoFinancé", "af", mountSelected, mainArea, "Mentorat");
+	displayTab("Financé------", "f", mountSelected, mainArea, "Mentorat");
+	displayTab("Soutenance---", "f", mountSelected, mainArea, "Soutenance");
 }
 
 function getSessionsWithParams(studentFaOrF, sessionDateMonth, sessionLvl, sessionStatus, sessionType) {
@@ -388,7 +317,8 @@ function getSessionsWithParams(studentFaOrF, sessionDateMonth, sessionLvl, sessi
 		if (session.studentFaOrF == studentFaOrF && 
 		session.sessionDateMonth == sessionDateMonth && 
 		session.sessionLvl == sessionLvl && 
-		session.sessionStatus == sessionStatus) {
+		session.sessionStatus == sessionStatus&& 
+		session.sessionType == sessionType) {
 			sessionsSelected.push(session);
 		}
 	}
@@ -402,4 +332,4 @@ miseEnAttente();
 
 
 // TODO
-// - gestion des soutenance. Attention, delta visible entre les sessions Réalisées (en vrai) et les sessions réalisées affichées, cela correspond à la non gestion des soutenances ?
+// - delta session financé, réalisé, lvl 3 ? 29 VS 31, Why ?
