@@ -187,7 +187,6 @@ function setAF() {
 		spanSB2.classList.add("switch-handle");
 		
 		
-		
 		// Insert TD
 		LabelSB.appendChild(inputSB);
 		LabelSB.appendChild(spanSB1);
@@ -285,6 +284,30 @@ function displayTab(tabName, studentFaOrF, mountSelected, mainArea, sessionType)
 	mainArea.appendChild(sessionsTable);
 }
 
+function displayDetails(tabName, studentFaOrF, mountSelected, mainArea, sessionType) {
+	// Create Div
+	let sessionsDetailsDiv = document.createElement("div");
+	// Create H3
+	let sessionsDetailsH3 = document.createElement("h3");
+	sessionsDetailsH3.textContent = tabName;
+	// Add H3 inside Div
+	sessionsDetailsDiv.appendChild(sessionsDetailsH3);
+	
+	// Get sessions
+	let sessions = getSessionsWithParams(studentFaOrF, mountSelected, "3", "Réalisée", sessionType)
+	let c = 1;
+	for (session of sessions) {
+		let sessionsDetailsP = document.createElement("p");
+		sessionsDetailsP.textContent = c + " => " + session.sessionStatus + " " + session.sessionType + " " + session.sessionDate + " " + session.studentName + " " + session.sessionLvl;
+		// Add P inside Div
+		sessionsDetailsDiv.appendChild(sessionsDetailsP);
+		c++;
+	}
+	
+	// Add Div inside FRONTEND
+	mainArea.appendChild(sessionsDetailsDiv);	
+}
+
 function displayRecapTabs() {
 	console.log("displayRecapTabs clicked");
 	
@@ -304,6 +327,9 @@ function displayRecapTabs() {
 	displayTab("AutoFinancé", "af", mountSelected, mainArea, "Mentorat");
 	displayTab("Financé------", "f", mountSelected, mainArea, "Mentorat");
 	displayTab("Soutenance---", "f", mountSelected, mainArea, "Soutenance");
+	
+	// Affichage le détail des sessions réalisées, financées, lvl 3, mentorat
+	displayDetails("Détails Financé", "f", mountSelected, mainArea, "Mentorat");
 }
 
 function getSessionsWithParams(studentFaOrF, sessionDateMonth, sessionLvl, sessionStatus, sessionType) {
@@ -326,10 +352,8 @@ function getSessionsWithParams(studentFaOrF, sessionDateMonth, sessionLvl, sessi
 	return(sessionsSelected);
 }
 
-
-
 miseEnAttente();
 
 
 // TODO
-// - delta session financé, réalisé, lvl 3 ? 29 VS 31, Why ?
+// - bosser le front
