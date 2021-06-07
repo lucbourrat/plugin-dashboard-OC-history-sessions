@@ -108,7 +108,7 @@ function getDisplayedSessions() {
 		newItem.sessionId = newItem.sessionDate + " - " + newItem.studentName;
 		newItem.sessionType = session.getElementsByTagName("td")[0].getElementsByTagName("p")[0].textContent;
 		// Set newItem.sessionLvl
-		if (newItem.sessionStatus == "Annulée")
+		if (newItem.sessionStatus == "Annulée" || newItem.sessionStatus == "Annulée tardivement")
 			newItem.sessionLvl = "0";
 		else
 			newItem.sessionLvl = session.getElementsByTagName("td")[3].getElementsByTagName("span")[0].textContent;
