@@ -211,16 +211,21 @@ function displayRecapTabs() {
 	mainArea.removeChild(mainAreaNavTab);
 	mainArea.removeChild(mainAreaTab);
 	
+	// Création de l'élément dans lequel je vais ajouter les éléments html
+	let myMainArea = document.createElement("div");
+	myMainArea.id = "myMainArea";
+	mainArea.appendChild(myMainArea);
+	
 	// Affichage des différents gros tableaux
-	displayTab("AutoFinancé", ["af"], [mountSelected], mainArea, ["Mentorat"]);
-	displayTab("Financé------", ["f"], [mountSelected], mainArea, ["Mentorat"]);
-	displayTab("Soutenance---", ["af", "f"], [mountSelected], mainArea, ["Soutenance"]);
+	displayTab("AutoFinancé", ["af"], [mountSelected], myMainArea, ["Mentorat"]);
+	displayTab("Financé------", ["f"], [mountSelected], myMainArea, ["Mentorat"]);
+	displayTab("Soutenance---", ["af", "f"], [mountSelected], myMainArea, ["Soutenance"]);
 	
 	// Affichage le détail des sessions réalisées, financées, lvl 3, mentorat
-	displayDetails("Détails Financé", "f", mountSelected, mainArea, "Mentorat");
+	displayDetails("Détails Financé", "f", mountSelected, myMainArea, "Mentorat");
 }
 
-function displayTab(tabName, studentFaOrF, mountSelected, mainArea, sessionType) {
+function displayTab(tabName, studentFaOrF, mountSelected, myMainArea, sessionType) {
 	// Create TABLE
 	let sessionsTable = document.createElement("table");
 	sessionsTable.classList.add("recaptTab");
@@ -314,10 +319,10 @@ function displayTab(tabName, studentFaOrF, mountSelected, mainArea, sessionType)
 	sessionsTable.appendChild(sessionsTbody);
 	
 	// Add TABLE inside FRONTEND
-	mainArea.appendChild(sessionsTable);
+	myMainArea.appendChild(sessionsTable);
 }
 
-function displayDetails(tabName, studentFaOrF, mountSelected, mainArea, sessionType) {
+function displayDetails(tabName, studentFaOrF, mountSelected, myMainArea, sessionType) {
 	// Create Div
 	let sessionsDetailsDiv = document.createElement("div");
 	// Create H3
@@ -338,7 +343,7 @@ function displayDetails(tabName, studentFaOrF, mountSelected, mainArea, sessionT
 	}
 	
 	// Add Div inside FRONTEND
-	mainArea.appendChild(sessionsDetailsDiv);	
+	myMainArea.appendChild(sessionsDetailsDiv);	
 }
 
 function getSessionsWithParams(studentFaOrFArray, sessionDateMonthArray, sessionLvlArray, sessionStatusArray, sessionTypeArray) {
@@ -383,4 +388,5 @@ miseEnAttente();
 
 
 // TODO
+// - Clean code, rename var, factoriser 
 // - bosser le front
