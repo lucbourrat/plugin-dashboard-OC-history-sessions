@@ -87,6 +87,56 @@ function addToolBar() {
 	console.log("addToolBar added");
 }
 
+function setAF() {
+	console.log("setAF clicked");
+	
+	// Get displayed sessions Elements TR
+	let sessionsHistory = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
+	
+	// Insert TD
+	for (session of sessionsHistory) {
+		// Create TD
+		let tDforAF = document.createElement("td");
+		// Set TD
+		tDforAF.classList.add("dom-services-3-dom-services123", "isItAnAF");
+		tDforAF.style.width = "100%";
+		tDforAF.style.minWidth = "140px";
+		tDforAF.setAttribute("onclick", "event.stopPropagation();");
+		
+		
+		// Create LabelSB (switch button)
+		let LabelSB = document.createElement("label");
+		// Set LabelSB
+		LabelSB.classList.add("switch");
+		
+		// Create inputSB
+		let inputSB = document.createElement("input");
+		// Set inputSB
+		inputSB.classList.add("switch-input");
+		inputSB.setAttribute("type", "checkbox");
+		
+		// Create spanSB1
+		let spanSB1 = document.createElement("span");
+		// Set spanSB1
+		spanSB1.classList.add("switch-label");
+		spanSB1.setAttribute("data-on", "AutoFi...");
+		spanSB1.setAttribute("data-off", "Financé");
+		
+		// Create spanSB2
+		let spanSB2 = document.createElement("span");
+		// Set spanSB2
+		spanSB2.classList.add("switch-handle");
+		
+		
+		// Insert TD
+		LabelSB.appendChild(inputSB);
+		LabelSB.appendChild(spanSB1);
+		LabelSB.appendChild(spanSB2);
+		tDforAF.appendChild(LabelSB);
+		session.appendChild(tDforAF);
+	}
+}
+
 function getDisplayedSessions() {
 	
 	// Get displayed sessions Elements
@@ -146,54 +196,28 @@ function deleteRecapTab() {
 	localStorage.removeItem('sessionsHistoryTab');
 }
 
-function setAF() {
-	console.log("setAF clicked");
+function displayRecapTabs() {
+	console.log("displayRecapTabs clicked");
 	
-	// Get displayed sessions Elements TR
-	let sessionsHistory = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
+	// TODO, à ce moment, demander au user le mois à afficher. Pour le moment, set d'une valeur de test 
+	let mountSelected = "mai";
 	
-	// Insert TD
-	for (session of sessionsHistory) {
-		// Create TD
-		let tDforAF = document.createElement("td");
-		// Set TD
-		tDforAF.classList.add("dom-services-3-dom-services123", "isItAnAF");
-		tDforAF.style.width = "100%";
-		tDforAF.style.minWidth = "140px";
-		tDforAF.setAttribute("onclick", "event.stopPropagation();");
-		
-		
-		// Create LabelSB (switch button)
-		let LabelSB = document.createElement("label");
-		// Set LabelSB
-		LabelSB.classList.add("switch");
-		
-		// Create inputSB
-		let inputSB = document.createElement("input");
-		// Set inputSB
-		inputSB.classList.add("switch-input");
-		inputSB.setAttribute("type", "checkbox");
-		
-		// Create spanSB1
-		let spanSB1 = document.createElement("span");
-		// Set spanSB1
-		spanSB1.classList.add("switch-label");
-		spanSB1.setAttribute("data-on", "AutoFi...");
-		spanSB1.setAttribute("data-off", "Financé");
-		
-		// Create spanSB2
-		let spanSB2 = document.createElement("span");
-		// Set spanSB2
-		spanSB2.classList.add("switch-handle");
-		
-		
-		// Insert TD
-		LabelSB.appendChild(inputSB);
-		LabelSB.appendChild(spanSB1);
-		LabelSB.appendChild(spanSB2);
-		tDforAF.appendChild(LabelSB);
-		session.appendChild(tDforAF);
-	}
+	// On récupère les éléments à supprimer
+	let mainArea = document.getElementById("mainContent").getElementsByClassName("dom-services-3-dom-services2")[0];
+	let mainAreaNavTab = mainArea.getElementsByClassName("dom-services-3-dom-services72")[0];
+	let mainAreaTab = mainArea.lastChild;
+	
+	// On supprime les éléments
+	mainArea.removeChild(mainAreaNavTab);
+	mainArea.removeChild(mainAreaTab);
+	
+	// Affichage des différents gros tableaux
+	displayTab("AutoFinancé", ["af"], [mountSelected], mainArea, ["Mentorat"]);
+	displayTab("Financé------", ["f"], [mountSelected], mainArea, ["Mentorat"]);
+	displayTab("Soutenance---", ["af", "f"], [mountSelected], mainArea, ["Soutenance"]);
+	
+	// Affichage le détail des sessions réalisées, financées, lvl 3, mentorat
+	displayDetails("Détails Financé", "f", mountSelected, mainArea, "Mentorat");
 }
 
 function displayTab(tabName, studentFaOrF, mountSelected, mainArea, sessionType) {
@@ -203,6 +227,7 @@ function displayTab(tabName, studentFaOrF, mountSelected, mainArea, sessionType)
 	// Create TBODY
 	let sessionsTbody = document.createElement("tbody");
 	
+	//////////////////////////////
 	// Create TR1 (EN TETE)
 	let sessionsTr1 = document.createElement("tr");
 	// Create TD
@@ -220,58 +245,66 @@ function displayTab(tabName, studentFaOrF, mountSelected, mainArea, sessionType)
 	sessionsTr1.appendChild(sessionsTr1Td3);
 	sessionsTr1.appendChild(sessionsTr1Td4);
 	
+	//////////////////////////////
 	// Create TR2 (REALISEES)
 	let sessionsTr2 = document.createElement("tr");
 	// Create TD
 	let sessionsTr2Td1 = document.createElement("td");
 	sessionsTr2Td1.textContent = "Réalisées";
-	
 	let sessionsTr2Td2 = document.createElement("td");
-	sessionsTr2Td2.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "1", "Réalisée", sessionType).length;
-	if (sessionType == "Soutenance")
-		sessionsTr2Td2.textContent =  getSessionsWithParams("af", mountSelected, "1", "Réalisée", sessionType).length + getSessionsWithParams("f", mountSelected, "1", "Réalisée", sessionType).length;
-	
+	sessionsTr2Td2.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["1"], ["Réalisée"], sessionType).length;
 	let sessionsTr2Td3 = document.createElement("td");
-	sessionsTr2Td3.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "2", "Réalisée", sessionType).length;
-	if (sessionType == "Soutenance")
-		sessionsTr2Td3.textContent =  getSessionsWithParams("af", mountSelected, "2", "Réalisée", sessionType).length + getSessionsWithParams("f", mountSelected, "2", "Réalisée", sessionType).length;
-	
+	sessionsTr2Td3.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["2"], ["Réalisée"], sessionType).length;
 	let sessionsTr2Td4 = document.createElement("td");
-	sessionsTr2Td4.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "3", "Réalisée", sessionType).length;
-	if (sessionType == "Soutenance")
-		sessionsTr2Td4.textContent =  getSessionsWithParams("af", mountSelected, "3", "Réalisée", sessionType).length + getSessionsWithParams("f", mountSelected, "3", "Réalisée", sessionType).length;
+	sessionsTr2Td4.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["3"], ["Réalisée"], sessionType).length;
 	// Add TD inside Tr2
 	sessionsTr2.appendChild(sessionsTr2Td1);
 	sessionsTr2.appendChild(sessionsTr2Td2);
 	sessionsTr2.appendChild(sessionsTr2Td3);
 	sessionsTr2.appendChild(sessionsTr2Td4);
 	
+	//////////////////////////////
 	// Create TR3 (NO-SHOW)
 	let sessionsTr3 = document.createElement("tr");
 	// Create TD
 	let sessionsTr3Td1 = document.createElement("td");
 	sessionsTr3Td1.textContent = "No-Show";
-	
 	let sessionsTr3Td2 = document.createElement("td");
-	sessionsTr3Td2.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "1", "Étudiant absent", sessionType).length;
-	if (sessionType == "Soutenance")
-		sessionsTr3Td2.textContent =  getSessionsWithParams("af", mountSelected, "1", "Étudiant absent", sessionType).length; + getSessionsWithParams("f", mountSelected, "1", "Étudiant absent", sessionType).length;
-		
+	sessionsTr3Td2.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["1"], ["Étudiant absent"], sessionType).length;
 	let sessionsTr3Td3 = document.createElement("td");
-	sessionsTr3Td3.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "2", "Étudiant absent", sessionType).length;
-	if (sessionType == "Soutenance")
-		sessionsTr3Td2.textContent =  getSessionsWithParams("af", mountSelected, "2", "Étudiant absent", sessionType).length; + getSessionsWithParams("f", mountSelected, "2", "Étudiant absent", sessionType).length;
-	
+	sessionsTr3Td3.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["2"], ["Étudiant absent"], sessionType).length;
 	let sessionsTr3Td4 = document.createElement("td");
-	sessionsTr3Td4.textContent = getSessionsWithParams(studentFaOrF, mountSelected, "3", "Étudiant absent", sessionType).length;
-	if (sessionType == "Soutenance")
-		sessionsTr3Td2.textContent =  getSessionsWithParams("af", mountSelected, "3", "Étudiant absent", sessionType).length; + getSessionsWithParams("f", mountSelected, "3", "Étudiant absent", sessionType).length;
+	sessionsTr3Td4.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["3"], ["Étudiant absent"], sessionType).length;
 	// Add TD af inside Tr3
 	sessionsTr3.appendChild(sessionsTr3Td1);
 	sessionsTr3.appendChild(sessionsTr3Td2);
 	sessionsTr3.appendChild(sessionsTr3Td3);
 	sessionsTr3.appendChild(sessionsTr3Td4);
+	
+	//////////////////////////////
+	// Create TR4 (Etudiants suivis)
+	let sessionsTr4 = document.createElement("tr");
+	// Create TD
+	let sessionsTr4Td1 = document.createElement("td");
+	sessionsTr4Td1.textContent = "Etudiants suivis";
+	// Create TD 
+	let sessionsTr4Td2 = document.createElement("td");
+	///// Get sessions
+	let sessions = getSessionsWithParams(studentFaOrF, mountSelected, ["1", "2", "3"], ["Réalisée", "Étudiant absent"], sessionType);
 
+	let uniqueStudents = uniqueStudentsAmongSessions(sessions);
+	let uniqueStudentsNumber = uniqueStudents.length;
+	sessionsTr4Td2.textContent = uniqueStudentsNumber;
+	console.log("Liste des Etudiants " + tabName + " : ");
+	console.log(uniqueStudents);
+	console.log("|");
+	console.log("|");
+	console.log("|");
+	// Add TD af inside Tr4
+	sessionsTr4.appendChild(sessionsTr4Td1);
+	sessionsTr3.appendChild(sessionsTr4Td2);
+
+	//////////////////////////////
 	// Add TR inside TBODY
 	sessionsTbody.appendChild(sessionsTr1);
 	sessionsTbody.appendChild(sessionsTr2);
@@ -308,31 +341,7 @@ function displayDetails(tabName, studentFaOrF, mountSelected, mainArea, sessionT
 	mainArea.appendChild(sessionsDetailsDiv);	
 }
 
-function displayRecapTabs() {
-	console.log("displayRecapTabs clicked");
-	
-	// TODO, à ce moment, demander au user le mois à afficher. Pour le moment, set d'une valeur de test 
-	let mountSelected = "mai";
-	
-	// On récupère les éléments à supprimer
-	let mainArea = document.getElementById("mainContent").getElementsByClassName("dom-services-3-dom-services2")[0];
-	let mainAreaNavTab = mainArea.getElementsByClassName("dom-services-3-dom-services72")[0];
-	let mainAreaTab = mainArea.lastChild;
-	
-	// On supprime les éléments
-	mainArea.removeChild(mainAreaNavTab);
-	mainArea.removeChild(mainAreaTab);
-	
-	// Affichage des différents gros tableaux
-	displayTab("AutoFinancé", "af", mountSelected, mainArea, "Mentorat");
-	displayTab("Financé------", "f", mountSelected, mainArea, "Mentorat");
-	displayTab("Soutenance---", "f", mountSelected, mainArea, "Soutenance");
-	
-	// Affichage le détail des sessions réalisées, financées, lvl 3, mentorat
-	displayDetails("Détails Financé", "f", mountSelected, mainArea, "Mentorat");
-}
-
-function getSessionsWithParams(studentFaOrF, sessionDateMonth, sessionLvl, sessionStatus, sessionType) {
+function getSessionsWithParams(studentFaOrFArray, sessionDateMonthArray, sessionLvlArray, sessionStatusArray, sessionTypeArray) {
 	// Get l'historique des sessions
 	let sessionsHistoryTab = JSON.parse(localStorage.getItem('sessionsHistoryTab'));
 	
@@ -340,16 +349,34 @@ function getSessionsWithParams(studentFaOrF, sessionDateMonth, sessionLvl, sessi
 	
 	// Keep les sessions qui match avec les param
 	for (session of sessionsHistoryTab) {
-		if (session.studentFaOrF == studentFaOrF && 
-		session.sessionDateMonth == sessionDateMonth && 
-		session.sessionLvl == sessionLvl && 
-		session.sessionStatus == sessionStatus&& 
-		session.sessionType == sessionType) {
+		if (studentFaOrFArray.includes(session.studentFaOrF) && 
+		sessionDateMonthArray.includes(session.sessionDateMonth) && 
+		sessionLvlArray.includes(session.sessionLvl) && 
+		sessionStatusArray.includes(session.sessionStatus) && 
+		sessionTypeArray.includes(session.sessionType)) {
 			sessionsSelected.push(session);
 		}
 	}
 	
 	return(sessionsSelected);
+}
+
+function uniqueStudentsAmongSessions(sessions) {
+	let uniqueStudents = [];
+	
+	for (session of sessions) {
+		let studentNameAlreadyInsideUniqueStudents = 0;
+		for (uniqueStudent of uniqueStudents) {
+			if (uniqueStudent == session.studentName){
+				studentNameAlreadyInsideUniqueStudents++;
+				break;
+			}
+		}
+		if (studentNameAlreadyInsideUniqueStudents == 0)
+			uniqueStudents.push(session.studentName);
+	}
+	
+	return uniqueStudents;
 }
 
 miseEnAttente();
