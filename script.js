@@ -296,24 +296,18 @@ function displayTab(tabName, studentFaOrF, mountSelected, myMainArea, sessionTyp
 	let sessionsTr4Td2 = document.createElement("td");
 	///// Get sessions
 	let sessions = getSessionsWithParams(studentFaOrF, mountSelected, ["1", "2", "3"], ["Réalisée", "Étudiant absent"], sessionType);
-
-	let uniqueStudents = uniqueStudentsAmongSessions(sessions);
-	let uniqueStudentsNumber = uniqueStudents.length;
-	sessionsTr4Td2.textContent = uniqueStudentsNumber;
-	console.log("Liste des Etudiants " + tabName + " : ");
-	console.log(uniqueStudents);
-	console.log("|");
-	console.log("|");
-	console.log("|");
+	///// Set TD
+	sessionsTr4Td2.textContent = uniqueStudentsAmongSessions(sessions).length;
 	// Add TD af inside Tr4
 	sessionsTr4.appendChild(sessionsTr4Td1);
-	sessionsTr3.appendChild(sessionsTr4Td2);
+	sessionsTr4.appendChild(sessionsTr4Td2);
 
 	//////////////////////////////
 	// Add TR inside TBODY
 	sessionsTbody.appendChild(sessionsTr1);
 	sessionsTbody.appendChild(sessionsTr2);
 	sessionsTbody.appendChild(sessionsTr3);
+	sessionsTbody.appendChild(sessionsTr4);
 	
 	// Add TBODY inside TABLE
 	sessionsTable.appendChild(sessionsTbody);
@@ -388,5 +382,5 @@ miseEnAttente();
 
 
 // TODO
-// - Clean code, rename var, factoriser 
+// - Clean code, rename var/function, factoriser 
 // - bosser le front
