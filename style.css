@@ -8,13 +8,40 @@
 }
 
 
+/*Display tab param*/
 
+#myMainArea .tabName {
+	text-align: left;
+}
 
-/*<label class="switch">*/
-/*	<input class="switch-input" type="checkbox" />*/
-/*	<span class="switch-label" data-on="On" data-off="Off"></span> */
-/*	<span class="switch-handle"></span> */
-/*</label>*/
+#myMainArea .recaptTab {
+	width: 50%;
+	margin-bottom: 70px;
+}
+
+div#myMainArea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 70px;
+}
+
+#myMainArea .data-td {
+    text-align: center;
+}
+
+#myMainArea th {
+    text-align: center;
+    
+}
+
+#myMainArea .data-td:hover {
+    text-align: center;
+    border-radius: 12px;
+    background-color: #c6baed;
+    cursor: pointer;
+}
+
 
 
 
