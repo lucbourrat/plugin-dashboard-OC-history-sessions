@@ -222,9 +222,7 @@ function displayRecapTabs() {
 	displayTab("Soutenance", ["af", "f"], [mountSelected], myMainArea, ["Soutenance"]);
 	
 	// Affichage le détail des sessions réalisées, financées, lvl 3, mentorat
-	displayDetails("Détails Financé", "f", mountSelected, myMainArea, "Mentorat", "3", "Réalisée");
-	displayDetails("Détails Financé2", "f", mountSelected, myMainArea, "Mentorat", "3", "Réalisée");
-	displayDetails("Détails Financé3", "f", mountSelected, myMainArea, "Mentorat", "3", "Réalisée");
+	displayDetails("f", mountSelected, myMainArea, "Mentorat", "3", "Réalisée");
 }
 
 function displayTab(tabName, studentFaOrF, mountSelected, myMainArea, sessionType) {
@@ -261,12 +259,15 @@ function displayTab(tabName, studentFaOrF, mountSelected, myMainArea, sessionTyp
 	sessionsTr2Td1.textContent = "Réalisées";
 	let sessionsTr2Td2 = document.createElement("td");
 	sessionsTr2Td2.classList.add("data-td");
+	sessionsTr2Td2.addEventListener("click", function(){displayDetails(studentFaOrF, mountSelected, myMainArea, sessionType, "1", "Réalisée");});
 	sessionsTr2Td2.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["1"], ["Réalisée"], sessionType).length;
 	let sessionsTr2Td3 = document.createElement("td");
 	sessionsTr2Td3.classList.add("data-td");
+	sessionsTr2Td3.addEventListener("click", function(){displayDetails(studentFaOrF, mountSelected, myMainArea, sessionType, "2", "Réalisée");});
 	sessionsTr2Td3.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["2"], ["Réalisée"], sessionType).length;
 	let sessionsTr2Td4 = document.createElement("td");
 	sessionsTr2Td4.classList.add("data-td");
+	sessionsTr2Td4.addEventListener("click", function(){displayDetails(studentFaOrF, mountSelected, myMainArea, sessionType, "3", "Réalisée");});
 	sessionsTr2Td4.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["3"], ["Réalisée"], sessionType).length;
 	// Add TD inside Tr2
 	sessionsTr2.appendChild(sessionsTr2Td1);
@@ -282,12 +283,15 @@ function displayTab(tabName, studentFaOrF, mountSelected, myMainArea, sessionTyp
 	sessionsTr3Td1.textContent = "No-Show";
 	let sessionsTr3Td2 = document.createElement("td");
 	sessionsTr3Td2.classList.add("data-td");
+	sessionsTr3Td2.addEventListener("click", function(){displayDetails(studentFaOrF, mountSelected, myMainArea, sessionType, "1", "Étudiant absent");});
 	sessionsTr3Td2.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["1"], ["Étudiant absent"], sessionType).length;
 	let sessionsTr3Td3 = document.createElement("td");
 	sessionsTr3Td3.classList.add("data-td");
+	sessionsTr3Td3.addEventListener("click", function(){displayDetails(studentFaOrF, mountSelected, myMainArea, sessionType, "2", "Étudiant absent");});
 	sessionsTr3Td3.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["2"], ["Étudiant absent"], sessionType).length;
 	let sessionsTr3Td4 = document.createElement("td");
 	sessionsTr3Td4.classList.add("data-td");
+	sessionsTr3Td4.addEventListener("click", function(){displayDetails(studentFaOrF, mountSelected, myMainArea, sessionType, "3", "Étudiant absent");});
 	sessionsTr3Td4.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["3"], ["Étudiant absent"], sessionType).length;
 	// Add TD af inside Tr3
 	sessionsTr3.appendChild(sessionsTr3Td1);
@@ -308,6 +312,7 @@ function displayTab(tabName, studentFaOrF, mountSelected, myMainArea, sessionTyp
 	let sessions = getSessionsWithParams(studentFaOrF, mountSelected, ["1", "2", "3"], ["Réalisée", "Étudiant absent"], sessionType);
 	///// Set TD
 	sessionsTr4Td2.textContent = uniqueStudentsAmongSessions(sessions).length;
+	sessionsTr4Td2.addEventListener("click", function(){displayUniqueStudentsAmongSessions(studentFaOrF, mountSelected, myMainArea, sessionType, "3", "Étudiant absent", sessions);});
 	// Add TD af inside Tr4
 	sessionsTr4.appendChild(sessionsTr4Td1);
 	sessionsTr4.appendChild(sessionsTr4Td2);
@@ -326,7 +331,7 @@ function displayTab(tabName, studentFaOrF, mountSelected, myMainArea, sessionTyp
 	myMainArea.appendChild(sessionsTable);
 }
 
-function displayDetails(tabName, studentFaOrF, mountSelected, myMainArea, sessionType, sessionLvl, sessionStatus) {
+function displayDetails(studentFaOrF, mountSelected, myMainArea, sessionType, sessionLvl, sessionStatus) {
 	// Clean old sessionsDetailsDiv
 	let oldSessionsDetailsDiv = document.getElementsByClassName("sessionsDetailsDiv");
 	if(oldSessionsDetailsDiv.length > 0)
@@ -337,7 +342,10 @@ function displayDetails(tabName, studentFaOrF, mountSelected, myMainArea, sessio
 	sessionsDetailsDiv.classList.add("sessionsDetailsDiv");
 	// Create H3
 	let sessionsDetailsH3 = document.createElement("h3");
-	sessionsDetailsH3.textContent = tabName;
+	if (sessionType == "Soutenance")
+		sessionsDetailsH3.textContent = "Sessions de " + sessionType +  " de niveau " + sessionLvl + " (" + sessionStatus + ")";
+	else
+		sessionsDetailsH3.textContent = "Sessions de " + sessionType + " (" + studentFaOrF +  ") de niveau " + sessionLvl + " (" + sessionStatus + ")";
 	// Add H3 inside Div
 	sessionsDetailsDiv.appendChild(sessionsDetailsH3);
 	
@@ -346,7 +354,40 @@ function displayDetails(tabName, studentFaOrF, mountSelected, myMainArea, sessio
 	let c = 1;
 	for (session of sessions) {
 		let sessionsDetailsP = document.createElement("p");
-		sessionsDetailsP.textContent = c + " => " + session.sessionStatus + " " + session.sessionType + " " + session.sessionDate + " " + session.studentName + " " + session.sessionLvl;
+		sessionsDetailsP.textContent = c + "  =>  " + session.sessionDate + " --- " + session.studentName;
+		// Add P inside Div
+		sessionsDetailsDiv.appendChild(sessionsDetailsP);
+		c++;
+	}
+	
+	// Add Div inside FRONTEND
+	myMainArea.appendChild(sessionsDetailsDiv);	
+}
+
+function displayUniqueStudentsAmongSessions(studentFaOrF, mountSelected, myMainArea, sessionType, sessionLvl, sessionStatus, studentsList) {
+	// Clean old sessionsDetailsDiv
+	let oldSessionsDetailsDiv = document.getElementsByClassName("sessionsDetailsDiv");
+	if(oldSessionsDetailsDiv.length > 0)
+	 	document.getElementById("myMainArea").removeChild(oldSessionsDetailsDiv[0]);
+		
+	// Create Div
+	let sessionsDetailsDiv = document.createElement("div");
+	sessionsDetailsDiv.classList.add("sessionsDetailsDiv");
+	// Create H3
+	let sessionsDetailsH3 = document.createElement("h3");
+	if (sessionType == "Soutenance")
+		sessionsDetailsH3.textContent = "Etudiants suivis en sessions de " + sessionType;
+	else
+		sessionsDetailsH3.textContent = "Etudiants suivis en sessions de " + sessionType + " (" + studentFaOrF + ")";
+	// Add H3 inside Div
+	sessionsDetailsDiv.appendChild(sessionsDetailsH3);
+	
+	// Get sessions
+	let uniqueStudentsList = uniqueStudentsAmongSessions(studentsList);
+	let c = 1;
+	for (uniqueStudent of uniqueStudentsList) {
+		let sessionsDetailsP = document.createElement("p");
+		sessionsDetailsP.textContent = c + "  =>  " + uniqueStudent;
 		// Add P inside Div
 		sessionsDetailsDiv.appendChild(sessionsDetailsP);
 		c++;
