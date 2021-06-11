@@ -135,8 +135,10 @@ function addToolBar() {
 	toolBarSectionExtra.id = "toolBarSectionExtra";
 	toolBarSectionExtra.setAttribute("name", "extra");
 	toolBarSectionExtra.addEventListener("change", function() {
-    	if(toolBarSectionExtra.value == "DeleteBDD")
+    	if(toolBarSectionExtra.value == "DeleteBDD") {
         	deleteRecapTab();
+        	toolBarSectionExtra.value = "default";
+    	}
 	});
 	///// Option
 	////////// Default
@@ -297,11 +299,13 @@ function getDisplayedSessions() {
 	// Update sessionsHistoryTab in localStorage
 	localStorage.setItem('sessionsHistoryTab', JSON.stringify(sessionsHistoryTab));
 	
+	markIfSessionIsAlreadyInBDD();
 }
 
 function deleteRecapTab() {
 	console.log("BDD deleted");
 	localStorage.removeItem('sessionsHistoryTab');
+	markIfSessionIsAlreadyInBDD();
 }
 
 function displayRecapTabs() {
@@ -698,19 +702,41 @@ function uniqueStudentsAmongSessions(sessions) {
 	return uniqueStudents;
 }
 
+function markIfSessionIsAlreadyInBDD() {
+	// Get sessions BDD
+	let sessionsHistoryBDD = JSON.parse(localStorage.getItem('sessionsHistoryTab'));
+	console.log("sessionsHistoryBDD => " + sessionsHistoryBDD);
+	// Get displayed sessions Elements TR
+	let sessionsHistoryDisplayed = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
+	// Check if sessionsDisplayed are already in the BDD
+	for (sessionDisplayed of sessionsHistoryDisplayed) {
+		let sessionDisplayedId = sessionDisplayed.getElementsByTagName("td")[1].getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("td")[2].getElementsByTagName("a")[0].textContent;
+		sessionDisplayed.getElementsByClassName("isItAnAF")[0].classList.remove("studentListed");
+		sessionDisplayed.getElementsByClassName("isItAnAF")[0].classList.remove("studentListedAlreadyInBDD");
+		sessionDisplayed.getElementsByClassName("isItAnAF")[0].classList.add("studentListed");
+		if (sessionsHistoryBDD)
+			for (sessionBDD of sessionsHistoryBDD) {
+				console.log("sessionBDD.sessionId => " + sessionBDD.sessionId);
+				if (sessionDisplayedId == sessionBDD.sessionId)
+					sessionDisplayed.getElementsByClassName("isItAnAF")[0].classList.add("studentListedAlreadyInBDD");
+			}
+	}
+}
+
 function observerHistoryTableChanging() {
 	let elementToObserve = document.getElementById("sessions_2");
 	let options = {childList: true, subtree: true};
 	let observer = new MutationObserver(mCallback);
 	
 	function mCallback(mutations) {
-		for (let mutation of mutations) {
-		    if (mutation.type === 'childList') {
-	    		console.log('Mutation Detected: A child element has been added or removed.');
-	    	}
-    	}
+		// for (let mutation of mutations) {
+		//     if (mutation.type === 'childList') {
+	 //   		console.log('Mutation Detected: A child element has been added or removed.');
+	 //   	}
+  //  	}
 		observer.disconnect();
 	    setAF();
+	    markIfSessionIsAlreadyInBDD();
 		observerHistoryTableChanging();
 	}
 	
@@ -734,6 +760,7 @@ function observerHistoryTableLoading() {
 	    observer.disconnect();
 	    addToolBar();
 	    setAF();
+	    markIfSessionIsAlreadyInBDD();
 	    observerHistoryTableChanging();
 	  }
 	}
@@ -751,6 +778,5 @@ observerHistoryTableLoading();
 
 // TODO
 // - Gérer l'auto set du switch F/AF si étudiant déjà set
-// - Indiquer si la session est déjà get
 // 
 //

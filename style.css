@@ -45,6 +45,17 @@
     cursor: pointer;
 }
 
+/*Display students list */
+
+.studentListed {
+	border-right: 1px solid red;
+}
+
+.studentListedAlreadyInBDD {
+	border-color: green;
+}
+
+
 /*Display tab param*/
 
 #myMainArea .tabName {
