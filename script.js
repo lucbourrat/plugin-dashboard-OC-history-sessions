@@ -57,6 +57,78 @@ function addToolBar() {
 	toolBarSectionButtonSpanSpan3.textContent = "display recap tab";
 	toolBarSectionButtonSpanSpan3.style.textTransform = "none";
 	
+	// Create Select month
+	///// Select
+	let toolBarSectionSelectMonthSelect = document.createElement("select");
+	toolBarSectionSelectMonthSelect.id = "monthSelect";
+	toolBarSectionSelectMonthSelect.setAttribute("name", "month");
+	///// Option
+	////////// Default
+	let toolBarSectionSelectMonthSelectOptionDefault = document.createElement("option");
+	toolBarSectionSelectMonthSelectOptionDefault.classList.add("monthSelectOption");
+	toolBarSectionSelectMonthSelectOptionDefault.setAttribute("value", "default");
+	toolBarSectionSelectMonthSelectOptionDefault.textContent = "Choisir un mois";
+	////////// janvier
+	let toolBarSectionSelectMonthSelectOptionJanvier = document.createElement("option");
+	toolBarSectionSelectMonthSelectOptionJanvier.classList.add("monthSelectOption");
+	toolBarSectionSelectMonthSelectOptionJanvier.setAttribute("value", "janvier");
+	toolBarSectionSelectMonthSelectOptionJanvier.textContent = "Janvier";
+	////////// février
+	let toolBarSectionSelectMonthSelectOptionFevrier = document.createElement("option");
+	toolBarSectionSelectMonthSelectOptionFevrier.classList.add("monthSelectOption");
+	toolBarSectionSelectMonthSelectOptionFevrier.setAttribute("value", "février");
+	toolBarSectionSelectMonthSelectOptionFevrier.textContent = "Février";
+	////////// mars
+	let toolBarSectionSelectMonthSelectOptionMars = document.createElement("option");
+	toolBarSectionSelectMonthSelectOptionMars.classList.add("monthSelectOption");
+	toolBarSectionSelectMonthSelectOptionMars.setAttribute("value", "mars");
+	toolBarSectionSelectMonthSelectOptionMars.textContent = "Mars";
+	////////// avril
+	let toolBarSectionSelectMonthSelectOptionAvril = document.createElement("option");
+	toolBarSectionSelectMonthSelectOptionAvril.classList.add("monthSelectOption");
+	toolBarSectionSelectMonthSelectOptionAvril.setAttribute("value", "avril");
+	toolBarSectionSelectMonthSelectOptionAvril.textContent = "Avril";
+	////////// mai
+	let toolBarSectionSelectMonthSelectOptionMai = document.createElement("option");
+	toolBarSectionSelectMonthSelectOptionMai.classList.add("monthSelectOption");
+	toolBarSectionSelectMonthSelectOptionMai.setAttribute("value", "mai");
+	toolBarSectionSelectMonthSelectOptionMai.textContent = "Mai";
+	////////// juin
+	let toolBarSectionSelectMonthSelectOptionJuin = document.createElement("option");
+	toolBarSectionSelectMonthSelectOptionJuin.classList.add("monthSelectOption");
+	toolBarSectionSelectMonthSelectOptionJuin.setAttribute("value", "juin");
+	toolBarSectionSelectMonthSelectOptionJuin.textContent = "Juin";
+	////////// juillet
+	let toolBarSectionSelectMonthSelectOptionJuillet = document.createElement("option");
+	toolBarSectionSelectMonthSelectOptionJuillet.classList.add("monthSelectOption");
+	toolBarSectionSelectMonthSelectOptionJuillet.setAttribute("value", "juillet");
+	toolBarSectionSelectMonthSelectOptionJuillet.textContent = "Juillet";
+	////////// août
+	let toolBarSectionSelectMonthSelectOptionAout = document.createElement("option");
+	toolBarSectionSelectMonthSelectOptionAout.classList.add("monthSelectOption");
+	toolBarSectionSelectMonthSelectOptionAout.setAttribute("value", "août");
+	toolBarSectionSelectMonthSelectOptionAout.textContent = "Août";
+	////////// septembre
+	let toolBarSectionSelectMonthSelectOptionSeptembre = document.createElement("option");
+	toolBarSectionSelectMonthSelectOptionSeptembre.classList.add("monthSelectOption");
+	toolBarSectionSelectMonthSelectOptionSeptembre.setAttribute("value", "septembre");
+	toolBarSectionSelectMonthSelectOptionSeptembre.textContent = "Septembre";
+	////////// octobre
+	let toolBarSectionSelectMonthSelectOptionOctobre = document.createElement("option");
+	toolBarSectionSelectMonthSelectOptionOctobre.classList.add("monthSelectOption");
+	toolBarSectionSelectMonthSelectOptionOctobre.setAttribute("value", "octobre");
+	toolBarSectionSelectMonthSelectOptionOctobre.textContent = "Octobre";
+	////////// novembre
+	let toolBarSectionSelectMonthSelectOptionNovembre = document.createElement("option");
+	toolBarSectionSelectMonthSelectOptionNovembre.classList.add("monthSelectOption");
+	toolBarSectionSelectMonthSelectOptionNovembre.setAttribute("value", "novembre");
+	toolBarSectionSelectMonthSelectOptionNovembre.textContent = "Novembre";
+	////////// décembre
+	let toolBarSectionSelectMonthSelectOptionDecembre = document.createElement("option");
+	toolBarSectionSelectMonthSelectOptionDecembre.classList.add("monthSelectOption");
+	toolBarSectionSelectMonthSelectOptionDecembre.setAttribute("value", "décembre");
+	toolBarSectionSelectMonthSelectOptionDecembre.textContent = "Décembre";
+	
 	
 	
 	// Insert button 0
@@ -75,6 +147,21 @@ function addToolBar() {
 	toolBarSectionButtonSpan3.appendChild(toolBarSectionButtonSpanSpan3);
 	toolBarSectionButton3.appendChild(toolBarSectionButtonSpan3);
 	toolBarSection.appendChild(toolBarSectionButton3);
+	// Insert Select month
+	toolBarSectionSelectMonthSelect.appendChild(toolBarSectionSelectMonthSelectOptionDefault);
+	toolBarSectionSelectMonthSelect.appendChild(toolBarSectionSelectMonthSelectOptionJanvier);
+	toolBarSectionSelectMonthSelect.appendChild(toolBarSectionSelectMonthSelectOptionFevrier);
+	toolBarSectionSelectMonthSelect.appendChild(toolBarSectionSelectMonthSelectOptionMars);
+	toolBarSectionSelectMonthSelect.appendChild(toolBarSectionSelectMonthSelectOptionAvril);
+	toolBarSectionSelectMonthSelect.appendChild(toolBarSectionSelectMonthSelectOptionMai);
+	toolBarSectionSelectMonthSelect.appendChild(toolBarSectionSelectMonthSelectOptionJuin);
+	toolBarSectionSelectMonthSelect.appendChild(toolBarSectionSelectMonthSelectOptionJuillet);
+	toolBarSectionSelectMonthSelect.appendChild(toolBarSectionSelectMonthSelectOptionAout);
+	toolBarSectionSelectMonthSelect.appendChild(toolBarSectionSelectMonthSelectOptionSeptembre);
+	toolBarSectionSelectMonthSelect.appendChild(toolBarSectionSelectMonthSelectOptionOctobre);
+	toolBarSectionSelectMonthSelect.appendChild(toolBarSectionSelectMonthSelectOptionNovembre);
+	toolBarSectionSelectMonthSelect.appendChild(toolBarSectionSelectMonthSelectOptionDecembre);
+	toolBarSection.appendChild(toolBarSectionSelectMonthSelect);
 	// AddEventListener
 	toolBarSectionButton0.addEventListener("click", setAF);
 	toolBarSectionButton1.addEventListener("click", getDisplayedSessions);
@@ -82,14 +169,9 @@ function addToolBar() {
 	toolBarSectionButton3.addEventListener("click", displayRecapTabs);
 	// Insert toolBar
 	container.insertBefore(toolBarSection, navSection);
-	
-	// consoleLog tester
-	console.log("addToolBar added");
 }
 
 function setAF() {
-	console.log("setAF clicked");
-	
 	// Get displayed sessions Elements TR
 	let sessionsHistory = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
 	
@@ -138,7 +220,6 @@ function setAF() {
 }
 
 function getDisplayedSessions() {
-	
 	// Get displayed sessions Elements
 	console.log("getDisplayedSessions clicked");
 	let sessionsHistory = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
@@ -192,24 +273,26 @@ function getDisplayedSessions() {
 }
 
 function deleteRecapTab() {
-	console.log("deleteRecapTab clicked");
 	localStorage.removeItem('sessionsHistoryTab');
 }
 
 function displayRecapTabs() {
-	console.log("displayRecapTabs clicked");
-	
-	// TODO, à ce moment, demander au user le mois à afficher. Pour le moment, set d'une valeur de test 
-	let mountSelected = "mai";
-	
 	// On récupère les éléments à supprimer
 	let mainArea = document.getElementById("mainContent").getElementsByClassName("dom-services-3-dom-services2")[0];
 	let mainAreaNavTab = mainArea.getElementsByClassName("dom-services-3-dom-services72")[0];
 	let mainAreaTab = mainArea.lastChild;
 	
-	// On supprime les éléments
-	mainArea.removeChild(mainAreaNavTab);
-	mainArea.removeChild(mainAreaTab);
+	
+	if (mainAreaNavTab) {
+		// On supprime les éléments
+		mainArea.removeChild(mainAreaNavTab);
+		mainArea.removeChild(mainAreaTab);
+	}
+	else
+		mainArea.removeChild(document.getElementById("myMainArea"));
+	
+	// Get selected month
+	let mountSelected =  document.getElementById("monthSelect").value;
 	
 	// Création de l'élément dans lequel je vais ajouter les éléments html
 	let myMainArea = document.createElement("div");
@@ -469,8 +552,6 @@ function displayBigToto() {
 	// Init BigToto 
 	let bigToto = 0;
 	for (const toto of totos) {
-		console.log("toto.innerHTML => " + toto.innerHTML);
-		console.log("parseFloat(toto.textContent) => " + parseFloat(toto.textContent));
 		bigToto += parseFloat(toto.textContent);
 	}
 	bigTotoDiv.textContent = "TOTAL HT  = " + bigToto + " €";

@@ -8,6 +8,26 @@
 }
 
 
+
+/*Display select dropdown*/
+
+#monthSelect {
+	font-family: Montserrat;
+	font-weight: 700;
+    line-height: 1.5rem;
+    border: none;
+    background-color: #7451eb;
+    color: white;
+    border-radius: 4px;
+    padding: 0 11px;
+}
+
+#monthSelect .monthSelectOption {
+	font-family: Montserrat;
+	font-weight: 500;
+    line-height: 1.5rem;
+}
+
 /*Display tab param*/
 
 #myMainArea .tabName {
