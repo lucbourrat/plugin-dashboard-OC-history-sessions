@@ -301,7 +301,7 @@ function getDisplayedSessions() {
 
 function deleteRecapTab() {
 	console.log("BDD deleted");
-	//localStorage.removeItem('sessionsHistoryTab');
+	localStorage.removeItem('sessionsHistoryTab');
 }
 
 function displayRecapTabs() {
@@ -698,35 +698,59 @@ function uniqueStudentsAmongSessions(sessions) {
 	return uniqueStudents;
 }
 
-
-
-let containerToObserve = document.getElementById("mainContentWithHeader");
-console.log("containerToObserve => " + containerToObserve);
-let options = {childList: true, subtree: true};
-let observer = new MutationObserver(mCallback);
-
-function mCallback(mutations) {
-  //for (let mutation of mutations) {
-  //  if (mutation.type === 'childList') {
-  //    console.log('Mutation Detected: A child element has been added or removed.');
-  //  }
-  //}
-  let sessionsHistory = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
-  if (sessionsHistory.length == 20) {
-	console.log("HISTORY TABLE LOADED");
-    observer.disconnect();
-    addToolBar();
-    setAF();
-  }
+function observerHistoryTableChanging() {
+	let elementToObserve = document.getElementById("sessions_2");
+	let options = {childList: true, subtree: true};
+	let observer = new MutationObserver(mCallback);
+	
+	function mCallback(mutations) {
+		for (let mutation of mutations) {
+		    if (mutation.type === 'childList') {
+	    		console.log('Mutation Detected: A child element has been added or removed.');
+	    	}
+    	}
+		observer.disconnect();
+	    setAF();
+		observerHistoryTableChanging();
+	}
+	
+	observer.observe(elementToObserve, options);
 }
 
-observer.observe(containerToObserve, options);
+function observerHistoryTableLoading() {
+	let containerToObserve = document.getElementById("mainContentWithHeader");
+	let options = {childList: true, subtree: true};
+	let observer = new MutationObserver(mCallback);
+	
+	function mCallback(mutations) {
+	  //for (let mutation of mutations) {
+	  //  if (mutation.type === 'childList') {
+	  //    console.log('Mutation Detected: A child element has been added or removed.');
+	  //  }
+	  //}
+	  let sessionsHistory = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
+	  if (sessionsHistory.length == 20) {
+		console.log("HISTORY TABLE LOADED");
+	    observer.disconnect();
+	    addToolBar();
+	    setAF();
+	    observerHistoryTableChanging();
+	  }
+	}
+	
+	observer.observe(containerToObserve, options);
+}
+
+observerHistoryTableLoading();
+
+
+
+
+
 
 
 // TODO
-// - Gestion de l'affichage des switch f/AF lors du changement de page
-// - Décommenter 2eme ligne de   function deleteRecapTab
 // - Gérer l'auto set du switch F/AF si étudiant déjà set
-// - Indiquer si la session est déjà set
+// - Indiquer si la session est déjà get
 // 
 //
