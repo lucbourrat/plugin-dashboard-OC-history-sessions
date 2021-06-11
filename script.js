@@ -13,16 +13,16 @@ function addToolBar() {
 	let toolBarSection = document.createElement("div");
 	toolBarSection.classList.add("toolBarSection");
 	
-	// Create button 0
-	let toolBarSectionButton0 = document.createElement("button");
-	toolBarSectionButton0.classList.add("dom-services-3-MuiButton-containedPrimary", "dom-services-3-dom-services80", "dom-services-3-MuiButton-root", "dom-services-3-MuiButtonBase-root", "toolBarSectionButton");
+	// // Create button 0
+	// let toolBarSectionButton0 = document.createElement("button");
+	// toolBarSectionButton0.classList.add("dom-services-3-MuiButton-containedPrimary", "dom-services-3-dom-services80", "dom-services-3-MuiButton-root", "dom-services-3-MuiButtonBase-root", "toolBarSectionButton");
 	
-	let toolBarSectionButtonSpan0 = document.createElement("span");
-	toolBarSectionButtonSpan0.classList.add("dom-services-3-MuiButton-label");
+	// let toolBarSectionButtonSpan0 = document.createElement("span");
+	// toolBarSectionButtonSpan0.classList.add("dom-services-3-MuiButton-label");
 	
-	let toolBarSectionButtonSpanSpan0 = document.createElement("span");
-	toolBarSectionButtonSpanSpan0.textContent = "set AF";
-	toolBarSectionButtonSpanSpan0.style.textTransform = "none";
+	// let toolBarSectionButtonSpanSpan0 = document.createElement("span");
+	// toolBarSectionButtonSpanSpan0.textContent = "set AF";
+	// toolBarSectionButtonSpanSpan0.style.textTransform = "none";
 	
 	// Create button 1
 	let toolBarSectionButton1 = document.createElement("button");
@@ -150,10 +150,10 @@ function addToolBar() {
 	toolBarSectionExtraOptionDefaultDeleteBDD.setAttribute("value", "DeleteBDD");
 	toolBarSectionExtraOptionDefaultDeleteBDD.textContent = "Delete BDD";
 	
-	// Insert button 0
-	toolBarSectionButtonSpan0.appendChild(toolBarSectionButtonSpanSpan0);
-	toolBarSectionButton0.appendChild(toolBarSectionButtonSpan0);
-	toolBarSection.appendChild(toolBarSectionButton0);
+	// // Insert button 0
+	// toolBarSectionButtonSpan0.appendChild(toolBarSectionButtonSpanSpan0);
+	// toolBarSectionButton0.appendChild(toolBarSectionButtonSpan0);
+	// toolBarSection.appendChild(toolBarSectionButton0);
 	// Insert button 1
 	toolBarSectionButtonSpan1.appendChild(toolBarSectionButtonSpanSpan1);
 	toolBarSectionButton1.appendChild(toolBarSectionButtonSpan1);
@@ -188,7 +188,7 @@ function addToolBar() {
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaultDeleteBDD);
 	toolBarSection.appendChild(toolBarSectionExtra);
 	// AddEventListener
-	toolBarSectionButton0.addEventListener("click", setAF);
+	// toolBarSectionButton0.addEventListener("click", setAF);
 	toolBarSectionButton1.addEventListener("click", getDisplayedSessions);
 	// toolBarSectionButton2.addEventListener("click", deleteRecapTab);
 	toolBarSectionButton3.addEventListener("click", displayRecapTabs);
@@ -197,6 +197,7 @@ function addToolBar() {
 }
 
 function setAF() {
+	console.log("function setAF");
 	// Get displayed sessions Elements TR
 	let sessionsHistory = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
 	
@@ -699,13 +700,33 @@ function uniqueStudentsAmongSessions(sessions) {
 
 
 
-// // TEST START
+let containerToObserve = document.getElementById("mainContentWithHeader");
+console.log("containerToObserve => " + containerToObserve);
+let options = {childList: true, subtree: true};
+let observer = new MutationObserver(mCallback);
 
-// let mainAreaTab = mainArea.lastChild;
-// console.log("mainAreaTab => " + mainAreaTab);
+function mCallback(mutations) {
+  //for (let mutation of mutations) {
+  //  if (mutation.type === 'childList') {
+  //    console.log('Mutation Detected: A child element has been added or removed.');
+  //  }
+  //}
+  let sessionsHistory = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
+  if (sessionsHistory.length == 20) {
+	console.log("HISTORY TABLE LOADED");
+    observer.disconnect();
+    addToolBar();
+    setAF();
+  }
+}
 
-// // TEST END
+observer.observe(containerToObserve, options);
 
 
-
-miseEnAttente();
+// TODO
+// - Gestion de l'affichage des switch f/AF lors du changement de page
+// - Décommenter 2eme ligne de   function deleteRecapTab
+// - Gérer l'auto set du switch F/AF si étudiant déjà set
+// - Indiquer si la session est déjà set
+// 
+//
