@@ -42,7 +42,30 @@ div#myMainArea {
     cursor: pointer;
 }
 
+/*Display tab price*/
 
+#myMainArea span.price {
+    font-weight: 100;
+    font-size: 11px;
+}
+
+#myMainArea .total,
+#myMainArea .toto,
+#myMainArea .bigToto {
+    font-weight: 100;
+    font-size: 13px;
+    text-align: right;
+}
+
+#myMainArea .bigToto {
+    font-size: 18px !important;
+}
+
+/*Display tab price*/
+
+.sessionsDetailsDiv {
+	margin-top: 70px;
+}
 
 
 /*Switch Button*/

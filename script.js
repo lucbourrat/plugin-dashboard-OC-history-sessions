@@ -220,15 +220,13 @@ function displayRecapTabs() {
 	displayTab("AutoFinancé", ["af"], [mountSelected], myMainArea, ["Mentorat"]);
 	displayTab("Financé", ["f"], [mountSelected], myMainArea, ["Mentorat"]);
 	displayTab("Soutenance", ["af", "f"], [mountSelected], myMainArea, ["Soutenance"]);
-	
-	// Affichage le détail des sessions réalisées, financées, lvl 3, mentorat
-	displayDetails("f", mountSelected, myMainArea, "Mentorat", "3", "Réalisée");
+	displayBigToto();
 }
 
 function displayTab(tabName, studentFaOrF, mountSelected, myMainArea, sessionType) {
 	// Create TABLE
 	let sessionsTable = document.createElement("table");
-	sessionsTable.classList.add("recaptTab");
+	sessionsTable.classList.add("recaptTab", "recaptTab"+sessionType, "recaptTab"+studentFaOrF);
 	// Create TBODY
 	let sessionsTbody = document.createElement("tbody");
 	
@@ -239,17 +237,48 @@ function displayTab(tabName, studentFaOrF, mountSelected, myMainArea, sessionTyp
 	let sessionsTr1Td1 = document.createElement("th");
 	sessionsTr1Td1.classList.add("tabName");
 	sessionsTr1Td1.textContent = tabName;
+	//
 	let sessionsTr1Td2 = document.createElement("th");
-	sessionsTr1Td2.textContent = "Lvl 1";
+	sessionsTr1Td2.textContent = "Lvl 1 ";
+	let sessionsTr1Td2Span = document.createElement("span");
+	sessionsTr1Td2Span.classList.add("price", "priceTh");
+	if (studentFaOrF == "af")
+		sessionsTr1Td2Span.textContent = "(" + 30/2 + ")";
+	else
+		sessionsTr1Td2Span.textContent = "(" + 30 + ")";
+	//
 	let sessionsTr1Td3 = document.createElement("th");
-	sessionsTr1Td3.textContent = "Lvl 2";
+	sessionsTr1Td3.textContent = "Lvl 2 ";
+	let sessionsTr1Td3Span = document.createElement("span");
+	sessionsTr1Td3Span.classList.add("price", "priceTh");
+	if (studentFaOrF == "af")
+		sessionsTr1Td3Span.textContent = "(" + 35/2 + ")";
+	else
+		sessionsTr1Td3Span.textContent = "(" + 35 + ")";
+	//
 	let sessionsTr1Td4 = document.createElement("th");
-	sessionsTr1Td4.textContent = "Lvl 3";
+	sessionsTr1Td4.textContent = "Lvl 3 ";
+	let sessionsTr1Td4Span = document.createElement("span");
+	sessionsTr1Td4Span.classList.add("price", "priceTh");
+	if (studentFaOrF == "af")
+		sessionsTr1Td4Span.textContent = "(" + 40/2 + ")";
+	else
+		sessionsTr1Td4Span.textContent = "(" + 40 + ")";
+	//
+	let sessionsTr1Td5 = document.createElement("th");
+	sessionsTr1Td5.textContent = "Total";
+	//
+	// Add SPAN inside TD
+	sessionsTr1Td2.appendChild(sessionsTr1Td2Span);
+	sessionsTr1Td3.appendChild(sessionsTr1Td3Span);
+	sessionsTr1Td4.appendChild(sessionsTr1Td4Span);
+	//
 	// Add TD inside Tr1
 	sessionsTr1.appendChild(sessionsTr1Td1);
 	sessionsTr1.appendChild(sessionsTr1Td2);
 	sessionsTr1.appendChild(sessionsTr1Td3);
 	sessionsTr1.appendChild(sessionsTr1Td4);
+	sessionsTr1.appendChild(sessionsTr1Td5);
 	
 	//////////////////////////////
 	// Create TR2 (REALISEES)
@@ -257,23 +286,49 @@ function displayTab(tabName, studentFaOrF, mountSelected, myMainArea, sessionTyp
 	// Create TD
 	let sessionsTr2Td1 = document.createElement("td");
 	sessionsTr2Td1.textContent = "Réalisées";
+	//
 	let sessionsTr2Td2 = document.createElement("td");
-	sessionsTr2Td2.classList.add("data-td");
+	sessionsTr2Td2.classList.add("data-td", "Réalisée", "lvl1");
 	sessionsTr2Td2.addEventListener("click", function(){displayDetails(studentFaOrF, mountSelected, myMainArea, sessionType, "1", "Réalisée");});
-	sessionsTr2Td2.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["1"], ["Réalisée"], sessionType).length;
+	let sessionsTr2Td2Length = getSessionsWithParams(studentFaOrF, mountSelected, ["1"], ["Réalisée"], sessionType).length;
+	sessionsTr2Td2.textContent = sessionsTr2Td2Length;
+	let sessionsTr2Td2Span = document.createElement("span");
+	sessionsTr2Td2Span.classList.add("price", "priceRéalisée", "priceLvl1");
+	sessionsTr2Td2Span.textContent += " (" + parseFloat(sessionsTr1Td2Span.textContent.replace('(', '').replace(')', '')) * sessionsTr2Td2Length + ")";
+	sessionsTr2Td2.appendChild(sessionsTr2Td2Span);
+	//
 	let sessionsTr2Td3 = document.createElement("td");
-	sessionsTr2Td3.classList.add("data-td");
+	sessionsTr2Td3.classList.add("data-td", "Réalisée", "lvl2");
 	sessionsTr2Td3.addEventListener("click", function(){displayDetails(studentFaOrF, mountSelected, myMainArea, sessionType, "2", "Réalisée");});
-	sessionsTr2Td3.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["2"], ["Réalisée"], sessionType).length;
+	let sessionsTr2Td3Length = getSessionsWithParams(studentFaOrF, mountSelected, ["2"], ["Réalisée"], sessionType).length;
+	sessionsTr2Td3.textContent = sessionsTr2Td3Length;
+	let sessionsTr2Td3Span = document.createElement("span");
+	sessionsTr2Td3Span.classList.add("price", "priceRéalisée", "priceLvl2");
+	sessionsTr2Td3Span.textContent += " (" + parseFloat(sessionsTr1Td3Span.textContent.replace('(', '').replace(')', '')) * sessionsTr2Td3Length + ")";
+	sessionsTr2Td3.appendChild(sessionsTr2Td3Span);
+	//
 	let sessionsTr2Td4 = document.createElement("td");
-	sessionsTr2Td4.classList.add("data-td");
+	sessionsTr2Td4.classList.add("data-td", "Réalisée", "lvl3");
 	sessionsTr2Td4.addEventListener("click", function(){displayDetails(studentFaOrF, mountSelected, myMainArea, sessionType, "3", "Réalisée");});
-	sessionsTr2Td4.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["3"], ["Réalisée"], sessionType).length;
+	let sessionsTr2Td4Length = getSessionsWithParams(studentFaOrF, mountSelected, ["3"], ["Réalisée"], sessionType).length;
+	sessionsTr2Td4.textContent = sessionsTr2Td4Length;
+	let sessionsTr2Td4Span = document.createElement("span");
+	sessionsTr2Td4Span.classList.add("price", "priceRéalisée", "priceLvl3");
+	sessionsTr2Td4Span.textContent += " (" + parseFloat(sessionsTr1Td4Span.textContent.replace('(', '').replace(')', '')) * sessionsTr2Td4Length + ")";
+	sessionsTr2Td4.appendChild(sessionsTr2Td4Span);
+	//
+	let sessionsTr2Td5 = document.createElement("td");
+	sessionsTr2Td5.classList.add("Réalisée", "total");
+	let total1 = parseFloat(sessionsTr2Td2Span.textContent.replace('(', '').replace(')', '')) + parseFloat(sessionsTr2Td3Span.textContent.replace('(', '').replace(')', '')) + parseFloat(sessionsTr2Td4Span.textContent.replace('(', '').replace(')', '')) + " €";
+	sessionsTr2Td5.textContent = total1;
+	// Set total sessions of each line
+	sessionsTr2Td1.textContent += " (" + (sessionsTr2Td2Length + sessionsTr2Td3Length + sessionsTr2Td4Length) + ")";
 	// Add TD inside Tr2
 	sessionsTr2.appendChild(sessionsTr2Td1);
 	sessionsTr2.appendChild(sessionsTr2Td2);
 	sessionsTr2.appendChild(sessionsTr2Td3);
 	sessionsTr2.appendChild(sessionsTr2Td4);
+	sessionsTr2.appendChild(sessionsTr2Td5);
 	
 	//////////////////////////////
 	// Create TR3 (NO-SHOW)
@@ -281,23 +336,58 @@ function displayTab(tabName, studentFaOrF, mountSelected, myMainArea, sessionTyp
 	// Create TD
 	let sessionsTr3Td1 = document.createElement("td");
 	sessionsTr3Td1.textContent = "No-Show";
+	//
 	let sessionsTr3Td2 = document.createElement("td");
-	sessionsTr3Td2.classList.add("data-td");
+	sessionsTr3Td2.classList.add("data-td", "Étudiantabsent", "lvl1");
 	sessionsTr3Td2.addEventListener("click", function(){displayDetails(studentFaOrF, mountSelected, myMainArea, sessionType, "1", "Étudiant absent");});
-	sessionsTr3Td2.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["1"], ["Étudiant absent"], sessionType).length;
+	let sessionsTr3Td2Length = getSessionsWithParams(studentFaOrF, mountSelected, ["1"], ["Étudiant absent"], sessionType).length;
+	sessionsTr3Td2.textContent = sessionsTr3Td2Length;
+	let sessionsTr3Td2Span = document.createElement("span");
+	sessionsTr3Td2Span.classList.add("price", "priceÉtudiantabsent", "priceLvl1");
+	if (sessionType == "Soutenance")
+		sessionsTr3Td2Span.textContent += " (" + parseFloat(sessionsTr1Td2Span.textContent.replace('(', '').replace(')', '')) * sessionsTr3Td2Length + ")";
+	else
+		sessionsTr3Td2Span.textContent += " (" + parseFloat(sessionsTr1Td2Span.textContent.replace('(', '').replace(')', '')) * sessionsTr3Td2Length / 2+ ")";
+	sessionsTr3Td2.appendChild(sessionsTr3Td2Span);
+	//
 	let sessionsTr3Td3 = document.createElement("td");
-	sessionsTr3Td3.classList.add("data-td");
+	sessionsTr3Td3.classList.add("data-td", "Étudiantabsent", "lvl2");
 	sessionsTr3Td3.addEventListener("click", function(){displayDetails(studentFaOrF, mountSelected, myMainArea, sessionType, "2", "Étudiant absent");});
-	sessionsTr3Td3.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["2"], ["Étudiant absent"], sessionType).length;
+	let sessionsTr3Td3Length = getSessionsWithParams(studentFaOrF, mountSelected, ["2"], ["Étudiant absent"], sessionType).length;
+	sessionsTr3Td3.textContent = sessionsTr3Td3Length;
+	let sessionsTr3Td3Span = document.createElement("span");
+	sessionsTr3Td3Span.classList.add("price", "priceÉtudiantabsent", "priceLvl2");
+	if (sessionType == "Soutenance")
+		sessionsTr3Td3Span.textContent += " (" + parseFloat(sessionsTr1Td3Span.textContent.replace('(', '').replace(')', '')) * sessionsTr3Td3Length + ")";
+	else
+		sessionsTr3Td3Span.textContent += " (" + parseFloat(sessionsTr1Td3Span.textContent.replace('(', '').replace(')', '')) * sessionsTr3Td3Length / 2 + ")";
+	sessionsTr3Td3.appendChild(sessionsTr3Td3Span);
+	//
 	let sessionsTr3Td4 = document.createElement("td");
-	sessionsTr3Td4.classList.add("data-td");
+	sessionsTr3Td4.classList.add("data-td", "Étudiantabsent", "lvl3");
 	sessionsTr3Td4.addEventListener("click", function(){displayDetails(studentFaOrF, mountSelected, myMainArea, sessionType, "3", "Étudiant absent");});
-	sessionsTr3Td4.textContent = getSessionsWithParams(studentFaOrF, mountSelected, ["3"], ["Étudiant absent"], sessionType).length;
+	let sessionsTr3Td4Length = getSessionsWithParams(studentFaOrF, mountSelected, ["3"], ["Étudiant absent"], sessionType).length;
+	sessionsTr3Td4.textContent = sessionsTr3Td4Length;
+	let sessionsTr3Td4Span = document.createElement("span");
+	sessionsTr3Td4Span.classList.add("price", "priceÉtudiantabsent", "priceLvl3");
+	if (sessionType == "Soutenance")
+		sessionsTr3Td4Span.textContent += " (" + parseFloat(sessionsTr1Td4Span.textContent.replace('(', '').replace(')', '')) * sessionsTr3Td4Length + ")";
+	else
+		sessionsTr3Td4Span.textContent += " (" + parseFloat(sessionsTr1Td4Span.textContent.replace('(', '').replace(')', '')) * sessionsTr3Td4Length / 2 + ")";
+	sessionsTr3Td4.appendChild(sessionsTr3Td4Span);
+	//
+	let sessionsTr3Td5 = document.createElement("td");
+	sessionsTr3Td5.classList.add("Étudiantabsent", "total");
+	let total2 = parseFloat(sessionsTr3Td2Span.textContent.replace('(', '').replace(')', '')) + parseFloat(sessionsTr3Td3Span.textContent.replace('(', '').replace(')', '')) + parseFloat(sessionsTr3Td4Span.textContent.replace('(', '').replace(')', '')) + " €";
+	sessionsTr3Td5.textContent = total2;
+	// Set total sessions of each line
+	sessionsTr3Td1.textContent += " (" + (sessionsTr3Td2Length + sessionsTr3Td3Length + sessionsTr3Td4Length) + ")";
 	// Add TD af inside Tr3
 	sessionsTr3.appendChild(sessionsTr3Td1);
 	sessionsTr3.appendChild(sessionsTr3Td2);
 	sessionsTr3.appendChild(sessionsTr3Td3);
 	sessionsTr3.appendChild(sessionsTr3Td4);
+	sessionsTr3.appendChild(sessionsTr3Td5);
 	
 	//////////////////////////////
 	// Create TR4 (Etudiants suivis)
@@ -307,15 +397,47 @@ function displayTab(tabName, studentFaOrF, mountSelected, myMainArea, sessionTyp
 	sessionsTr4Td1.textContent = "Etudiants suivis";
 	// Create TD 
 	let sessionsTr4Td2 = document.createElement("td");
-	sessionsTr4Td2.classList.add("data-td");
+	sessionsTr4Td2.classList.add("data-td", "EtudiantsSuivis");
 	///// Get sessions
 	let sessions = getSessionsWithParams(studentFaOrF, mountSelected, ["1", "2", "3"], ["Réalisée", "Étudiant absent"], sessionType);
 	///// Set TD
 	sessionsTr4Td2.textContent = uniqueStudentsAmongSessions(sessions).length;
 	sessionsTr4Td2.addEventListener("click", function(){displayUniqueStudentsAmongSessions(studentFaOrF, mountSelected, myMainArea, sessionType, "3", "Étudiant absent", sessions);});
+	// Create TD 
+	let sessionsTr4Td3 = document.createElement("td");
+	let sessionsTr4Td4 = document.createElement("td");
+	let sessionsTr4Td5 = document.createElement("td");
+	let total3 = 0;
+	if (studentFaOrF == "af") {
+		sessionsTr4Td5.classList.add("Étudiantsuivis", "total");
+		total3 = parseInt(sessionsTr4Td2.textContent) * 30;
+		sessionsTr4Td5.textContent = total3 + " €";
+	}
 	// Add TD af inside Tr4
 	sessionsTr4.appendChild(sessionsTr4Td1);
 	sessionsTr4.appendChild(sessionsTr4Td2);
+	sessionsTr4.appendChild(sessionsTr4Td3);
+	sessionsTr4.appendChild(sessionsTr4Td4);
+	sessionsTr4.appendChild(sessionsTr4Td5);
+	
+	//////////////////////////////
+	// Create TR5 (Toto)
+	let sessionsTr5 = document.createElement("tr");
+	// Create TD
+	let sessionsTr5Td1 = document.createElement("td");
+	sessionsTr5Td1.textContent = "Toto";
+	let sessionsTr5Td2 = document.createElement("td");
+	let sessionsTr5Td3 = document.createElement("td");
+	let sessionsTr5Td4 = document.createElement("td");
+	let sessionsTr5Td5 = document.createElement("td");
+	sessionsTr5Td5.classList.add("toto");
+	sessionsTr5Td5.textContent = parseFloat(total1) + parseFloat(total2) + parseFloat(total3) + "€";
+	// Add TD af inside Tr5
+	sessionsTr5.appendChild(sessionsTr5Td1);
+	sessionsTr5.appendChild(sessionsTr5Td2);
+	sessionsTr5.appendChild(sessionsTr5Td3);
+	sessionsTr5.appendChild(sessionsTr5Td4);
+	sessionsTr5.appendChild(sessionsTr5Td5);
 
 	//////////////////////////////
 	// Add TR inside TBODY
@@ -323,12 +445,40 @@ function displayTab(tabName, studentFaOrF, mountSelected, myMainArea, sessionTyp
 	sessionsTbody.appendChild(sessionsTr2);
 	sessionsTbody.appendChild(sessionsTr3);
 	sessionsTbody.appendChild(sessionsTr4);
+	sessionsTbody.appendChild(sessionsTr5);
 	
 	// Add TBODY inside TABLE
 	sessionsTable.appendChild(sessionsTbody);
 	
 	// Add TABLE inside FRONTEND
 	myMainArea.appendChild(sessionsTable);
+}
+
+function displayBigToto() {
+	// Get 3 totos
+	let totos = document.getElementsByClassName("toto");
+	
+	// Create BigToto 
+	let bigTotoDiv = document.createElement("div");
+	bigTotoDiv.classList.add("bigToto", "bigTotoHT");
+	
+	// Create BigToto TTC
+	let bigTotoDivTTC = document.createElement("div");
+	bigTotoDivTTC.classList.add("bigToto", "bigTotoTTC");
+	
+	// Init BigToto 
+	let bigToto = 0;
+	for (const toto of totos) {
+		console.log("toto.innerHTML => " + toto.innerHTML);
+		console.log("parseFloat(toto.textContent) => " + parseFloat(toto.textContent));
+		bigToto += parseFloat(toto.textContent);
+	}
+	bigTotoDiv.textContent = "TOTAL HT  = " + bigToto + " €";
+	bigTotoDivTTC.textContent = "TOTAL TTC = " + (bigToto/100*120) + " €";
+	
+	// Add bigToto inside FRONTEND
+	myMainArea.appendChild(bigTotoDiv);
+	myMainArea.appendChild(bigTotoDivTTC);
 }
 
 function displayDetails(studentFaOrF, mountSelected, myMainArea, sessionType, sessionLvl, sessionStatus) {
