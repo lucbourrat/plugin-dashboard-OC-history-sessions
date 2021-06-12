@@ -43,7 +43,7 @@ function addToolBar() {
 	toolBarSectionButtonSpan2.classList.add("dom-services-3-MuiButton-label");
 	
 	let toolBarSectionButtonSpanSpan2 = document.createElement("span");
-	toolBarSectionButtonSpanSpan2.textContent = "delete BDD";
+	toolBarSectionButtonSpanSpan2.textContent = "Effacer BDD";
 	toolBarSectionButtonSpanSpan2.style.textTransform = "none";
 	
 	// Create button 3
@@ -150,7 +150,7 @@ function addToolBar() {
 	let toolBarSectionExtraOptionDefaultDeleteBDD = document.createElement("option");
 	toolBarSectionExtraOptionDefaultDeleteBDD.classList.add("extraDefaultOptionDeleteBDD");
 	toolBarSectionExtraOptionDefaultDeleteBDD.setAttribute("value", "DeleteBDD");
-	toolBarSectionExtraOptionDefaultDeleteBDD.textContent = "Delete BDD";
+	toolBarSectionExtraOptionDefaultDeleteBDD.textContent = "Effacer BDD";
 	
 	// // Insert button 0
 	// toolBarSectionButtonSpan0.appendChild(toolBarSectionButtonSpanSpan0);
@@ -199,7 +199,6 @@ function addToolBar() {
 }
 
 function setAF() {
-	console.log("function setAF");
 	// Get displayed sessions Elements TR
 	let sessionsHistory = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
 	
@@ -250,7 +249,6 @@ function setAF() {
 function getDisplayedSessions() {
 	
 	// Get displayed sessions Elements
-	console.log("getDisplayedSessions clicked");
 	let sessionsHistory = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
 	
 	// Init sessionsHistoryTab form localstorage
@@ -298,13 +296,14 @@ function getDisplayedSessions() {
 	
 	// Update sessionsHistoryTab in localStorage
 	localStorage.setItem('sessionsHistoryTab', JSON.stringify(sessionsHistoryTab));
+	alert("Etudiants ajoutés");
 	
 	markIfSessionIsAlreadyInBDD();
 }
 
 function deleteRecapTab() {
-	console.log("BDD deleted");
 	localStorage.removeItem('sessionsHistoryTab');
+	alert("Remise à zéro de la BDD effectuée");
 	markIfSessionIsAlreadyInBDD();
 }
 
@@ -314,32 +313,32 @@ function displayRecapTabs() {
 	let mainAreaNavTab = mainArea.getElementsByClassName("dom-services-3-dom-services72")[0];
 	let mainAreaTab = mainArea.lastChild;
 	
-	
-	if (mainAreaNavTab) {
-		// On supprime les éléments
-		mainArea.removeChild(mainAreaNavTab);
-		mainArea.removeChild(mainAreaTab);
-	}
-	else
-		mainArea.removeChild(document.getElementById("myMainArea"));
-	
 	// Get selected month
 	let monthSelected =  document.getElementById("monthSelect").value;
 		
 	console.log("monthSelected = " + monthSelected);
 	if (monthSelected == "default")
 		alert("Choisir un mois");
-	
-	// Création de l'élément dans lequel je vais ajouter les éléments html
-	let myMainArea = document.createElement("div");
-	myMainArea.id = "myMainArea";
-	mainArea.appendChild(myMainArea);
-	
-	// Affichage des différents gros tableaux
-	displayTab("AutoFinancé", ["af"], [monthSelected], myMainArea, ["Mentorat"]);
-	displayTab("Financé", ["f"], [monthSelected], myMainArea, ["Mentorat"]);
-	displayTab("Soutenance", ["af", "f"], [monthSelected], myMainArea, ["Soutenance"]);
-	displayBigToto();
+	else {
+		// On supprime les éléments pour faire du vide (la liste des étudiants, la pagination ...)
+		if (mainAreaNavTab) {
+			mainArea.removeChild(mainAreaNavTab);
+			mainArea.removeChild(mainAreaTab);
+		}
+		else // Sinon on supprime l'ancien tableau récapitulatif déjà affiché
+			mainArea.removeChild(document.getElementById("myMainArea"));
+		
+		// Création de l'élément dans lequel je vais ajouter les éléments html
+		let myMainArea = document.createElement("div");
+		myMainArea.id = "myMainArea";
+		mainArea.appendChild(myMainArea);
+		
+		// Affichage des différents gros tableaux
+		displayTab("AutoFinancé", ["af"], [monthSelected], myMainArea, ["Mentorat"]);
+		displayTab("Financé", ["f"], [monthSelected], myMainArea, ["Mentorat"]);
+		displayTab("Soutenance", ["af", "f"], [monthSelected], myMainArea, ["Soutenance"]);
+		displayBigToto();
+	}
 }
 
 function displayTab(tabName, studentFaOrF, monthSelected, myMainArea, sessionType) {
