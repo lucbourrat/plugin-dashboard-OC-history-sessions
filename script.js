@@ -32,7 +32,7 @@ function addToolBar() {
 	toolBarSectionButtonSpan1.classList.add("dom-services-3-MuiButton-label");
 	
 	let toolBarSectionButtonSpanSpan1 = document.createElement("span");
-	toolBarSectionButtonSpanSpan1.textContent = "Ajouter les étudiants ci-dessous";
+	toolBarSectionButtonSpanSpan1.textContent = "Ajouter les étudiants ci-dessous à la BDD";
 	toolBarSectionButtonSpanSpan1.style.textTransform = "none";
 	
 	// Create button 2
