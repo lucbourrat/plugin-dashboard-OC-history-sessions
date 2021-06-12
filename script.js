@@ -705,7 +705,6 @@ function uniqueStudentsAmongSessions(sessions) {
 function markIfSessionIsAlreadyInBDD() {
 	// Get sessions BDD
 	let sessionsHistoryBDD = JSON.parse(localStorage.getItem('sessionsHistoryTab'));
-	console.log("sessionsHistoryBDD => " + sessionsHistoryBDD);
 	// Get displayed sessions Elements TR
 	let sessionsHistoryDisplayed = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
 	// Check if sessionsDisplayed are already in the BDD
@@ -716,10 +715,26 @@ function markIfSessionIsAlreadyInBDD() {
 		sessionDisplayed.getElementsByClassName("isItAnAF")[0].classList.add("studentListed");
 		if (sessionsHistoryBDD)
 			for (sessionBDD of sessionsHistoryBDD) {
-				console.log("sessionBDD.sessionId => " + sessionBDD.sessionId);
 				if (sessionDisplayedId == sessionBDD.sessionId)
 					sessionDisplayed.getElementsByClassName("isItAnAF")[0].classList.add("studentListedAlreadyInBDD");
 			}
+	}
+}
+
+function markIfSessionIsAForF() {
+	// Get sessions BDD
+	let sessionsHistoryBDD = JSON.parse(localStorage.getItem('sessionsHistoryTab'));
+	// Get displayed sessions Elements TR
+	let sessionsHistoryDisplayed = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
+	// Check if sessionsDisplayed are AF or F sessions
+	for (sessionDisplayed of sessionsHistoryDisplayed) {
+		let sessionDisplayedId = sessionDisplayed.getElementsByTagName("td")[1].getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("td")[2].getElementsByTagName("a")[0].textContent;
+		if (sessionsHistoryBDD)
+		for (sessionBDD of sessionsHistoryBDD) {
+			if (sessionDisplayedId == sessionBDD.sessionId)
+				if (sessionBDD.studentFaOrF == "af")
+					sessionDisplayed.getElementsByTagName("td")[4].getElementsByClassName("switch-input")[0].checked = true;
+		}
 	}
 }
 
@@ -737,6 +752,7 @@ function observerHistoryTableChanging() {
 		observer.disconnect();
 	    setAF();
 	    markIfSessionIsAlreadyInBDD();
+	    markIfSessionIsAForF();
 		observerHistoryTableChanging();
 	}
 	
@@ -761,6 +777,7 @@ function observerHistoryTableLoading() {
 	    addToolBar();
 	    setAF();
 	    markIfSessionIsAlreadyInBDD();
+	    markIfSessionIsAForF();
 	    observerHistoryTableChanging();
 	  }
 	}
@@ -769,14 +786,3 @@ function observerHistoryTableLoading() {
 }
 
 observerHistoryTableLoading();
-
-
-
-
-
-
-
-// TODO
-// - Gérer l'auto set du switch F/AF si étudiant déjà set
-// 
-//
