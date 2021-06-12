@@ -9,4 +9,4 @@ INSTALLATION :
 - Copier le contenu de style.css dans la colonne de droite (CSS)
 
 UTILISATION :
-- Une fois à l'adresse "https://openclassrooms.com/fr/mentorship/dashboard/mentorship-sessions-history", F5 pour activer le plugin
+- Plugin visible à cette adresse : "https://openclassrooms.com/fr/mentorship/dashboard/mentorship-sessions-history". S'il n'est pas visible, F5
