@@ -4,10 +4,10 @@ function miseEnAttente() {
 
 function addToolBar() {	
 	// Get container 
-	let container = document.getElementById("mainContent").getElementsByClassName("dom-services-3-dom-services2")[0];
-		
+	let container = document.getElementById("mainContent").getElementsByTagName("div")[1];
+	
 	// Get navSection 
-	let navSection = container.getElementsByClassName("dom-services-3-dom-services72")[0];
+	let navSection = container.children[2];
 	
 	// Create toolBar
 	let toolBarSection = document.createElement("div");
@@ -26,7 +26,7 @@ function addToolBar() {
 	
 	// Create button 1
 	let toolBarSectionButton1 = document.createElement("button");
-	toolBarSectionButton1.classList.add("dom-services-3-MuiButton-containedPrimary", "dom-services-3-dom-services80", "dom-services-3-MuiButton-root", "dom-services-3-MuiButtonBase-root", "toolBarSectionButton");
+	toolBarSectionButton1.classList.add("toolBarSectionButton");
 	
 	let toolBarSectionButtonSpan1 = document.createElement("span");
 	toolBarSectionButtonSpan1.classList.add("dom-services-3-MuiButton-label");
@@ -37,7 +37,7 @@ function addToolBar() {
 	
 	// Create button 2
 	let toolBarSectionButton2 = document.createElement("button");
-	toolBarSectionButton2.classList.add("dom-services-3-MuiButton-containedPrimary", "dom-services-3-dom-services80", "dom-services-3-MuiButton-root", "dom-services-3-MuiButtonBase-root", "toolBarSectionButton");
+	toolBarSectionButton2.classList.add("toolBarSectionButton");
 	
 	let toolBarSectionButtonSpan2 = document.createElement("span");
 	toolBarSectionButtonSpan2.classList.add("dom-services-3-MuiButton-label");
@@ -48,7 +48,7 @@ function addToolBar() {
 	
 	// Create button 3
 	let toolBarSectionButton3 = document.createElement("button");
-	toolBarSectionButton3.classList.add("dom-services-3-MuiButton-containedPrimary", "dom-services-3-dom-services80", "dom-services-3-MuiButton-root", "dom-services-3-MuiButtonBase-root", "toolBarSectionButton");
+	toolBarSectionButton3.classList.add("toolBarSectionButton");
 	
 	let toolBarSectionButtonSpan3 = document.createElement("span");
 	toolBarSectionButtonSpan3.classList.add("dom-services-3-MuiButton-label");
@@ -61,6 +61,7 @@ function addToolBar() {
 	///// Select
 	let toolBarSectionSelectMonthSelect = document.createElement("select");
 	toolBarSectionSelectMonthSelect.id = "monthSelect";
+	toolBarSectionSelectMonthSelect.classList.add("toolBarSectionButton");
 	toolBarSectionSelectMonthSelect.setAttribute("name", "month");
 	///// Option
 	////////// Default
@@ -133,6 +134,7 @@ function addToolBar() {
 	///// Select
 	let toolBarSectionExtra = document.createElement("select");
 	toolBarSectionExtra.id = "toolBarSectionExtra";
+	toolBarSectionExtra.classList.add("toolBarSectionButton");
 	toolBarSectionExtra.setAttribute("name", "extra");
 	toolBarSectionExtra.addEventListener("change", function() {
     	if(toolBarSectionExtra.value == "DeleteBDD") {
@@ -200,7 +202,7 @@ function addToolBar() {
 
 function setAF() {
 	// Get displayed sessions Elements TR
-	let sessionsHistory = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
+	let sessionsHistory = document.getElementById("mainContent").lastChild.lastChild.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 	
 	// Insert TD
 	for (session of sessionsHistory) {
@@ -249,7 +251,7 @@ function setAF() {
 function getDisplayedSessions() {
 	
 	// Get displayed sessions Elements
-	let sessionsHistory = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
+	let sessionsHistory = document.getElementById("mainContent").lastChild.lastChild.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 	
 	// Init sessionsHistoryTab form localstorage
 	let sessionsHistoryTab = JSON.parse(localStorage.getItem('sessionsHistoryTab'));
@@ -309,8 +311,8 @@ function deleteRecapTab() {
 
 function displayRecapTabs() {
 	// On récupère les éléments à supprimer
-	let mainArea = document.getElementById("mainContent").getElementsByClassName("dom-services-3-dom-services2")[0];
-	let mainAreaNavTab = mainArea.getElementsByClassName("dom-services-3-dom-services72")[0];
+	let mainArea = document.getElementById("mainContent").getElementsByTagName("div")[1];
+	let mainAreaNavTab = mainArea.getElementsByClassName("dom-services-2-dom-services76")[0];
 	let mainAreaTab = mainArea.lastChild;
 	
 	// Get selected month
@@ -705,7 +707,7 @@ function markIfSessionIsAlreadyInBDD() {
 	// Get sessions BDD
 	let sessionsHistoryBDD = JSON.parse(localStorage.getItem('sessionsHistoryTab'));
 	// Get displayed sessions Elements TR
-	let sessionsHistoryDisplayed = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
+	let sessionsHistoryDisplayed = document.getElementById("mainContent").lastChild.lastChild.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 	// Check if sessionsDisplayed are already in the BDD
 	for (sessionDisplayed of sessionsHistoryDisplayed) {
 		let sessionDisplayedId = sessionDisplayed.getElementsByTagName("td")[1].getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("td")[2].getElementsByTagName("a")[0].textContent;
@@ -724,7 +726,7 @@ function markIfSessionIsAForF() {
 	// Get sessions BDD
 	let sessionsHistoryBDD = JSON.parse(localStorage.getItem('sessionsHistoryTab'));
 	// Get displayed sessions Elements TR
-	let sessionsHistoryDisplayed = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
+	let sessionsHistoryDisplayed = document.getElementById("mainContent").lastChild.lastChild.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 	// Check if sessionsDisplayed are AF or F sessions
 	for (sessionDisplayed of sessionsHistoryDisplayed) {
 		let sessionDisplayedId = sessionDisplayed.getElementsByTagName("td")[1].getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("td")[2].getElementsByTagName("a")[0].textContent;
@@ -738,8 +740,8 @@ function markIfSessionIsAForF() {
 }
 
 function observerHistoryTableChanging() {
-	let elementToObserve = document.getElementById("sessions_2");
-	let options = {childList: true, subtree: true};
+	let elementToObserve = document.getElementById("mainContent").lastChild;
+	let options = {childList: true, subtree: false};
 	let observer = new MutationObserver(mCallback);
 	
 	function mCallback(mutations) {
@@ -748,11 +750,14 @@ function observerHistoryTableChanging() {
 	 //   		console.log('Mutation Detected: A child element has been added or removed.');
 	 //   	}
   //  	}
-		observer.disconnect();
-	    setAF();
-	    markIfSessionIsAlreadyInBDD();
-	    markIfSessionIsAForF();
-		observerHistoryTableChanging();
+		let sessionsHistory = document.getElementById("mainContent").lastChild.lastChild.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+		if (sessionsHistory.length == 20) {
+			observer.disconnect();
+		    setAF();
+		    markIfSessionIsAlreadyInBDD();
+		    markIfSessionIsAForF();
+			observerHistoryTableChanging();
+		}
 	}
 	
 	observer.observe(elementToObserve, options);
@@ -764,12 +769,8 @@ function observerHistoryTableLoading() {
 	let observer = new MutationObserver(mCallback);
 	
 	function mCallback(mutations) {
-	  //for (let mutation of mutations) {
-	  //  if (mutation.type === 'childList') {
-	  //    console.log('Mutation Detected: A child element has been added or removed.');
-	  //  }
-	  //}
-	  let sessionsHistory = document.getElementsByClassName("dom-services-3-dom-services98")[0].getElementsByTagName("tr");
+	  //let sessionsHistory = document.getElementById("sessions_2").getElementsByTagName("tbody")[0].getElementsByTagName("tr"); OLD
+	  let sessionsHistory = document.getElementById("mainContent").lastChild.lastChild.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 	  if (sessionsHistory.length == 20) {
 		console.log("HISTORY TABLE LOADED");
 	    observer.disconnect();
