@@ -359,8 +359,9 @@ function displayRecapTabs() {
 }
 
 function hideRecapTabs(elementsToDisplay, elementToHide) {
-	for (elementToDisplay of elementsToDisplay)
-		elementToDisplay.style.display = "unset";
+	elementsToDisplay[0].style.display = "block";
+	elementsToDisplay[1].style.display = "block";
+	elementsToDisplay[2].style.display = "flex";
 	elementToHide.style.display = "none";
 }
 
