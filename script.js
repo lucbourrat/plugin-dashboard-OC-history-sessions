@@ -1,3 +1,5 @@
+let observerVoirPlusAuto;
+
 function miseEnAttente() {
 	setTimeout(addToolBar, 5000); //On attend 5 secondes avant d'exécuter la fonction
 }
@@ -130,6 +132,9 @@ function addToolBar() {
         	deleteRecapTab();
         	toolBarSectionExtra.value = "default";
     	}
+    	else if(toolBarSectionExtra.value == "VoirPlusAuto") {
+        	VoirPlusAuto();
+    	}
 	});
 	///// Option
 	////////// Default
@@ -142,6 +147,11 @@ function addToolBar() {
 	toolBarSectionExtraOptionDefaultDeleteBDD.classList.add("extraDefaultOptionDeleteBDD");
 	toolBarSectionExtraOptionDefaultDeleteBDD.setAttribute("value", "DeleteBDD");
 	toolBarSectionExtraOptionDefaultDeleteBDD.textContent = "Effacer BDD";
+	////////// VoirPlusAuto
+	let toolBarSectionExtraOptionDefaultVoirPlusAuto = document.createElement("option");
+	toolBarSectionExtraOptionDefaultVoirPlusAuto.classList.add("extraDefaultOptionVoirPlusAuto");
+	toolBarSectionExtraOptionDefaultVoirPlusAuto.setAttribute("value", "VoirPlusAuto");
+	toolBarSectionExtraOptionDefaultVoirPlusAuto.textContent = "Voir plus Auto";
 	
 	// // Insert button 0
 	// toolBarSectionButtonSpan0.appendChild(toolBarSectionButtonSpanSpan0);
@@ -179,6 +189,7 @@ function addToolBar() {
 	// Insert Extra
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefault);
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaultDeleteBDD);
+	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaultVoirPlusAuto);
 	toolBarSection.appendChild(toolBarSectionExtra);
 	// AddEventListener
 	// toolBarSectionButton0.addEventListener("click", setAF);
@@ -312,6 +323,50 @@ function deleteRecapTab() {
 	localStorage.removeItem('sessionsHistoryTab');
 	alert("Remise à zéro de la BDD effectuée");
 	markIfSessionIsAlreadyInBDD();
+}
+
+function VoirPlusAuto() {
+	console.log("function VoirPlusAuto");
+
+	
+	// create / set / add button StopVoirPlusAuto
+	if (document.getElementsByClassName("btnStopVoirPlusAuto").length == 0) {
+		let btnStopVoirPlusAuto = document.createElement("div");
+		btnStopVoirPlusAuto.textContent = "Stop Voir Plus Auto";
+		btnStopVoirPlusAuto.classList.add("btnStopVoirPlusAuto");
+		btnStopVoirPlusAuto.addEventListener("click", stopObserverVoirPlusAuto);
+		
+		let bodyContainer = document.getElementsByTagName("body")[0];
+		bodyContainer.appendChild(btnStopVoirPlusAuto);
+	}
+	else
+		document.getElementsByClassName("btnStopVoirPlusAuto")[0].style.display = "block";
+	
+	
+	let elementToObserve = document.querySelector("#mainContent > .dom-services-2-dom-services2 > table > tbody");
+	let options = {childList: true, subtree: true};
+	observerVoirPlusAuto = new MutationObserver(mCallback);
+	
+	function mCallback(mutations) {
+		let buttonVoirPLus = getVoirPlus();
+		if (buttonVoirPLus) {
+			window.scrollTo(0,document.body.scrollHeight);
+			buttonVoirPLus.click();
+		}
+		// observerVoirPlusAuto.disconnect();
+	}
+	
+	observerVoirPlusAuto.observe(elementToObserve, options);
+	
+	
+	let buttonVoirPLus = getVoirPlus();
+	buttonVoirPLus.click();
+}
+
+function stopObserverVoirPlusAuto() {
+	console.log("stopObserverVoirPlusAuto stopObserverVoirPlusAuto stopObserverVoirPlusAuto stopObserverVoirPlusAuto stopObserverVoirPlusAuto stopObserverVoirPlusAuto");
+	observerVoirPlusAuto.disconnect();
+	document.getElementsByClassName("btnStopVoirPlusAuto")[0].style.display = "none";
 }
 
 function displayRecapTabs() {

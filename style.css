@@ -157,6 +157,29 @@ div#RecapTabsArea {
 }
 
 
+
+/* Stop button Voir Plus Auto*/
+
+.btnStopVoirPlusAuto {
+    position: fixed;
+    top: 35%;
+    right: 39%;
+    z-index: 999999999;
+    background-color: #7451eb;
+    border-radius: 100px;
+    padding: 23px;
+    color: white;
+    font-size: 26px;
+    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+}
+
+.btnStopVoirPlusAuto:hover {
+    box-shadow: 0 6px 6px 0 rgb(0 0 0 / 26%), 0 10px 20px 0 rgb(0 0 0 / 19%);
+    cursor: pointer;
+}
+
+
+
 /*Switch Button*/
 /* Common Switch
 ==========================*/
