@@ -13,17 +13,6 @@ function addToolBar() {
 	let toolBarSection = document.createElement("div");
 	toolBarSection.classList.add("toolBarSection");
 	
-	// // Create button 0
-	// let toolBarSectionButton0 = document.createElement("button");
-	// toolBarSectionButton0.classList.add("dom-services-3-MuiButton-containedPrimary", "dom-services-3-dom-services80", "dom-services-3-MuiButton-root", "dom-services-3-MuiButtonBase-root", "toolBarSectionButton");
-	
-	// let toolBarSectionButtonSpan0 = document.createElement("span");
-	// toolBarSectionButtonSpan0.classList.add("dom-services-3-MuiButton-label");
-	
-	// let toolBarSectionButtonSpanSpan0 = document.createElement("span");
-	// toolBarSectionButtonSpanSpan0.textContent = "set AF";
-	// toolBarSectionButtonSpanSpan0.style.textTransform = "none";
-	
 	// Create button 1
 	let toolBarSectionButton1 = document.createElement("button");
 	toolBarSectionButton1.classList.add("toolBarSectionButton");
@@ -200,58 +189,74 @@ function addToolBar() {
 	container.insertBefore(toolBarSection, navSection);
 }
 
+function getSessionsHistoryTr() {
+	// Get displayed sessions Elements TR
+	let sessionsHistory = document.querySelector("#mainContent > .dom-services-2-dom-services2 > table > tbody").querySelectorAll("tr[tabindex='0']");
+
+	return (sessionsHistory);
+}
+
+function getVoirPlus() {
+	// Get button "Voir Plus"
+	let buttonVoirPlus = document.querySelectorAll("#mainContent > .dom-services-2-dom-services2 > div button"); // Get buttons
+	buttonVoirPlus = buttonVoirPlus[buttonVoirPlus.length -1];// Get the last button (Voir Plus)
+
+	return(buttonVoirPlus);
+}
+
 function setAF() {
 	// Get displayed sessions Elements TR
-	let sessionsHistory = document.getElementById("mainContent").lastChild.lastChild.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-	
+	let sessionsHistory = getSessionsHistoryTr();
 	// Insert TD
 	for (session of sessionsHistory) {
-		// Create TD
-		let tDforAF = document.createElement("td");
-		// Set TD
-		tDforAF.classList.add("dom-services-3-dom-services123", "isItAnAF");
-		tDforAF.style.width = "100%";
-		tDforAF.style.minWidth = "140px";
-		tDforAF.setAttribute("onclick", "event.stopPropagation();");
-		
-		
-		// Create LabelSB (switch button)
-		let LabelSB = document.createElement("label");
-		// Set LabelSB
-		LabelSB.classList.add("switch");
-		
-		// Create inputSB
-		let inputSB = document.createElement("input");
-		// Set inputSB
-		inputSB.classList.add("switch-input");
-		inputSB.setAttribute("type", "checkbox");
-		
-		// Create spanSB1
-		let spanSB1 = document.createElement("span");
-		// Set spanSB1
-		spanSB1.classList.add("switch-label");
-		spanSB1.setAttribute("data-on", "AutoFi...");
-		spanSB1.setAttribute("data-off", "Financé");
-		
-		// Create spanSB2
-		let spanSB2 = document.createElement("span");
-		// Set spanSB2
-		spanSB2.classList.add("switch-handle");
-		
-		
-		// Insert TD
-		LabelSB.appendChild(inputSB);
-		LabelSB.appendChild(spanSB1);
-		LabelSB.appendChild(spanSB2);
-		tDforAF.appendChild(LabelSB);
-		session.appendChild(tDforAF);
+		if(!session.querySelector(".isItAnAF")) { // Si les switch AF/F n'existent pas
+			// Create TD
+			let tDforAF = document.createElement("td");
+			// Set TD
+			tDforAF.classList.add("dom-services-3-dom-services123", "isItAnAF");
+			tDforAF.style.width = "100%";
+			tDforAF.style.minWidth = "140px";
+			tDforAF.setAttribute("onclick", "event.stopPropagation();");
+			
+			
+			// Create LabelSB (switch button)
+			let LabelSB = document.createElement("label");
+			// Set LabelSB
+			LabelSB.classList.add("switch");
+			
+			// Create inputSB
+			let inputSB = document.createElement("input");
+			// Set inputSB
+			inputSB.classList.add("switch-input");
+			inputSB.setAttribute("type", "checkbox");
+			
+			// Create spanSB1
+			let spanSB1 = document.createElement("span");
+			// Set spanSB1
+			spanSB1.classList.add("switch-label");
+			spanSB1.setAttribute("data-on", "AutoFi...");
+			spanSB1.setAttribute("data-off", "Financé");
+			
+			// Create spanSB2
+			let spanSB2 = document.createElement("span");
+			// Set spanSB2
+			spanSB2.classList.add("switch-handle");
+				
+			
+			// Insert TD
+			LabelSB.appendChild(inputSB);
+			LabelSB.appendChild(spanSB1);
+			LabelSB.appendChild(spanSB2);
+				tDforAF.appendChild(LabelSB);
+			session.appendChild(tDforAF);
+		}
 	}
 }
 
 function getDisplayedSessions() {
 	
 	// Get displayed sessions Elements
-	let sessionsHistory = document.getElementById("mainContent").lastChild.lastChild.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+	let sessionsHistory = getSessionsHistoryTr();
 	
 	// Init sessionsHistoryTab form localstorage
 	let sessionsHistoryTab = JSON.parse(localStorage.getItem('sessionsHistoryTab'));
@@ -310,40 +315,56 @@ function deleteRecapTab() {
 }
 
 function displayRecapTabs() {
-	// On récupère les éléments à supprimer
+	// On récupère les éléments à cacher
 	let mainArea = document.getElementById("mainContent").getElementsByTagName("div")[1];
-	let mainAreaNavTab = mainArea.getElementsByClassName("dom-services-2-dom-services76")[0];
-	let mainAreaTab = mainArea.lastChild;
+	let elementsToHide = [mainArea.querySelector("table").previousElementSibling, 
+						  mainArea.querySelector("table"), 
+						  mainArea.querySelector("table").nextElementSibling];
 	
 	// Get selected month
 	let monthSelected =  document.getElementById("monthSelect").value;
-		
 	console.log("monthSelected = " + monthSelected);
 	if (monthSelected == "default")
 		alert("Choisir un mois");
 	else {
-		// On supprime les éléments pour faire du vide (la liste des étudiants, la pagination ...)
-		if (mainAreaNavTab) {
-			mainArea.removeChild(mainAreaNavTab);
-			mainArea.removeChild(mainAreaTab);
+		// On cache les éléments de la page "mentorship-sessions-history" pour faire du vide (un menu, la liste des étudiants, la pagination)
+		if (elementsToHide[0].style.display != "none") {
+			for (elementToHide of elementsToHide)
+				elementToHide.style.display = "none";
 		}
-		else // Sinon on supprime l'ancien tableau récapitulatif déjà affiché
-			mainArea.removeChild(document.getElementById("myMainArea"));
+		// Si ancien tableau récapitulatif est déjà affiché, on supprime celui-ci
+		if (document.getElementById("RecapTabsArea")) 
+			mainArea.removeChild(document.getElementById("RecapTabsArea"));
 		
 		// Création de l'élément dans lequel je vais ajouter les éléments html
-		let myMainArea = document.createElement("div");
-		myMainArea.id = "myMainArea";
-		mainArea.appendChild(myMainArea);
+		let RecapTabsArea = document.createElement("div");
+		RecapTabsArea.id = "RecapTabsArea";
+		mainArea.appendChild(RecapTabsArea);
+		
+		// Affichage de la croix (exit)
+		let exitCross = document.createElement("div");
+		exitCross.id = "RecapTabsAreaExit";
+		exitCross.textContent = "X";
+		exitCross.addEventListener('click', function() {
+			hideRecapTabs(elementsToHide, RecapTabsArea);
+		});
+		RecapTabsArea.appendChild(exitCross);
 		
 		// Affichage des différents gros tableaux
-		displayTab("AutoFinancé", ["af"], [monthSelected], myMainArea, ["Mentorat"]);
-		displayTab("Financé", ["f"], [monthSelected], myMainArea, ["Mentorat"]);
-		displayTab("Soutenance", ["af", "f"], [monthSelected], myMainArea, ["Soutenance"]);
-		displayBigToto();
+		displayTab("AutoFinancé", ["af"], [monthSelected], RecapTabsArea, ["Mentorat"]);
+		displayTab("Financé", ["f"], [monthSelected], RecapTabsArea, ["Mentorat"]);
+		displayTab("Soutenance", ["af", "f"], [monthSelected], RecapTabsArea, ["Soutenance"]);
+		displayBigToto(RecapTabsArea);
 	}
 }
 
-function displayTab(tabName, studentFaOrF, monthSelected, myMainArea, sessionType) {
+function hideRecapTabs(elementsToDisplay, elementToHide) {
+	for (elementToDisplay of elementsToDisplay)
+		elementToDisplay.style.display = "unset";
+	elementToHide.style.display = "none";
+}
+
+function displayTab(tabName, studentFaOrF, monthSelected, RecapTabsArea, sessionType) {
 	// Create TABLE
 	let sessionsTable = document.createElement("table");
 	sessionsTable.classList.add("recaptTab", "recaptTab"+sessionType, "recaptTab"+studentFaOrF);
@@ -409,7 +430,7 @@ function displayTab(tabName, studentFaOrF, monthSelected, myMainArea, sessionTyp
 	//
 	let sessionsTr2Td2 = document.createElement("td");
 	sessionsTr2Td2.classList.add("data-td", "Réalisée", "lvl1");
-	sessionsTr2Td2.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, myMainArea, sessionType, "1", "Réalisée");});
+	sessionsTr2Td2.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, RecapTabsArea, sessionType, "1", "Réalisée");});
 	let sessionsTr2Td2Length = getSessionsWithParams(studentFaOrF, monthSelected, ["1"], ["Réalisée"], sessionType).length;
 	sessionsTr2Td2.textContent = sessionsTr2Td2Length;
 	let sessionsTr2Td2Span = document.createElement("span");
@@ -419,7 +440,7 @@ function displayTab(tabName, studentFaOrF, monthSelected, myMainArea, sessionTyp
 	//
 	let sessionsTr2Td3 = document.createElement("td");
 	sessionsTr2Td3.classList.add("data-td", "Réalisée", "lvl2");
-	sessionsTr2Td3.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, myMainArea, sessionType, "2", "Réalisée");});
+	sessionsTr2Td3.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, RecapTabsArea, sessionType, "2", "Réalisée");});
 	let sessionsTr2Td3Length = getSessionsWithParams(studentFaOrF, monthSelected, ["2"], ["Réalisée"], sessionType).length;
 	sessionsTr2Td3.textContent = sessionsTr2Td3Length;
 	let sessionsTr2Td3Span = document.createElement("span");
@@ -429,7 +450,7 @@ function displayTab(tabName, studentFaOrF, monthSelected, myMainArea, sessionTyp
 	//
 	let sessionsTr2Td4 = document.createElement("td");
 	sessionsTr2Td4.classList.add("data-td", "Réalisée", "lvl3");
-	sessionsTr2Td4.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, myMainArea, sessionType, "3", "Réalisée");});
+	sessionsTr2Td4.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, RecapTabsArea, sessionType, "3", "Réalisée");});
 	let sessionsTr2Td4Length = getSessionsWithParams(studentFaOrF, monthSelected, ["3"], ["Réalisée"], sessionType).length;
 	sessionsTr2Td4.textContent = sessionsTr2Td4Length;
 	let sessionsTr2Td4Span = document.createElement("span");
@@ -459,7 +480,7 @@ function displayTab(tabName, studentFaOrF, monthSelected, myMainArea, sessionTyp
 	//
 	let sessionsTr3Td2 = document.createElement("td");
 	sessionsTr3Td2.classList.add("data-td", "Étudiantabsent", "lvl1");
-	sessionsTr3Td2.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, myMainArea, sessionType, "1", "Étudiant absent");});
+	sessionsTr3Td2.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, RecapTabsArea, sessionType, "1", "Étudiant absent");});
 	let sessionsTr3Td2Length = getSessionsWithParams(studentFaOrF, monthSelected, ["1"], ["Étudiant absent"], sessionType).length;
 	sessionsTr3Td2.textContent = sessionsTr3Td2Length;
 	let sessionsTr3Td2Span = document.createElement("span");
@@ -472,7 +493,7 @@ function displayTab(tabName, studentFaOrF, monthSelected, myMainArea, sessionTyp
 	//
 	let sessionsTr3Td3 = document.createElement("td");
 	sessionsTr3Td3.classList.add("data-td", "Étudiantabsent", "lvl2");
-	sessionsTr3Td3.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, myMainArea, sessionType, "2", "Étudiant absent");});
+	sessionsTr3Td3.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, RecapTabsArea, sessionType, "2", "Étudiant absent");});
 	let sessionsTr3Td3Length = getSessionsWithParams(studentFaOrF, monthSelected, ["2"], ["Étudiant absent"], sessionType).length;
 	sessionsTr3Td3.textContent = sessionsTr3Td3Length;
 	let sessionsTr3Td3Span = document.createElement("span");
@@ -485,7 +506,7 @@ function displayTab(tabName, studentFaOrF, monthSelected, myMainArea, sessionTyp
 	//
 	let sessionsTr3Td4 = document.createElement("td");
 	sessionsTr3Td4.classList.add("data-td", "Étudiantabsent", "lvl3");
-	sessionsTr3Td4.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, myMainArea, sessionType, "3", "Étudiant absent");});
+	sessionsTr3Td4.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, RecapTabsArea, sessionType, "3", "Étudiant absent");});
 	let sessionsTr3Td4Length = getSessionsWithParams(studentFaOrF, monthSelected, ["3"], ["Étudiant absent"], sessionType).length;
 	sessionsTr3Td4.textContent = sessionsTr3Td4Length;
 	let sessionsTr3Td4Span = document.createElement("span");
@@ -522,7 +543,7 @@ function displayTab(tabName, studentFaOrF, monthSelected, myMainArea, sessionTyp
 	let sessions = getSessionsWithParams(studentFaOrF, monthSelected, ["1", "2", "3"], ["Réalisée", "Étudiant absent"], sessionType);
 	///// Set TD
 	sessionsTr4Td2.textContent = uniqueStudentsAmongSessions(sessions).length;
-	sessionsTr4Td2.addEventListener("click", function(){displayUniqueStudentsAmongSessions(studentFaOrF, monthSelected, myMainArea, sessionType, "3", "Étudiant absent", sessions);});
+	sessionsTr4Td2.addEventListener("click", function(){displayUniqueStudentsAmongSessions(studentFaOrF, monthSelected, RecapTabsArea, sessionType, "3", "Étudiant absent", sessions);});
 	// Create TD 
 	let sessionsTr4Td3 = document.createElement("td");
 	let sessionsTr4Td4 = document.createElement("td");
@@ -571,16 +592,20 @@ function displayTab(tabName, studentFaOrF, monthSelected, myMainArea, sessionTyp
 	sessionsTable.appendChild(sessionsTbody);
 	
 	// Add TABLE inside FRONTEND
-	myMainArea.appendChild(sessionsTable);
+	RecapTabsArea.appendChild(sessionsTable);
 }
 
-function displayBigToto() {
+function displayBigToto(RecapTabsArea) {
 	// Get 3 totos
 	let totos = document.getElementsByClassName("toto");
 	
-	// Create BigToto 
-	let bigTotoDiv = document.createElement("div");
-	bigTotoDiv.classList.add("bigToto", "bigTotoHT");
+	// Create BigToto HT
+	let bigTotoDivHT = document.createElement("div");
+	bigTotoDivHT.classList.add("bigToto", "bigTotoHT");
+	
+	// Create BigToto Net
+	let bigTotoDivNet = document.createElement("div");
+	bigTotoDivNet.classList.add("bigToto", "bigTotoNet");
 	
 	// Create BigToto TTC
 	let bigTotoDivTTC = document.createElement("div");
@@ -591,19 +616,21 @@ function displayBigToto() {
 	for (const toto of totos) {
 		bigToto += parseFloat(toto.textContent);
 	}
-	bigTotoDiv.textContent = "TOTAL HT  = " + bigToto + " €";
-	bigTotoDivTTC.textContent = "TOTAL TTC = " + (bigToto/100*120) + " €";
+	bigTotoDivTTC.textContent = "TOTAL TTC  = " + (bigToto/100*120) + " €";
+	bigTotoDivHT.textContent  = "TOTAL HT   = " + bigToto + " €";
+	bigTotoDivNet.textContent = "TOTAL NET  = " + bigToto/100*75 + " €";
 	
 	// Add bigToto inside FRONTEND
-	myMainArea.appendChild(bigTotoDiv);
-	myMainArea.appendChild(bigTotoDivTTC);
+	RecapTabsArea.appendChild(bigTotoDivTTC);
+	RecapTabsArea.appendChild(bigTotoDivHT);
+	RecapTabsArea.appendChild(bigTotoDivNet);
 }
 
-function displayDetails(studentFaOrF, monthSelected, myMainArea, sessionType, sessionLvl, sessionStatus) {
+function displayDetails(studentFaOrF, monthSelected, RecapTabsArea, sessionType, sessionLvl, sessionStatus) {
 	// Clean old sessionsDetailsDiv
 	let oldSessionsDetailsDiv = document.getElementsByClassName("sessionsDetailsDiv");
 	if(oldSessionsDetailsDiv.length > 0)
-	 	document.getElementById("myMainArea").removeChild(oldSessionsDetailsDiv[0]);
+	 	document.getElementById("RecapTabsArea").removeChild(oldSessionsDetailsDiv[0]);
 		
 	// Create Div
 	let sessionsDetailsDiv = document.createElement("div");
@@ -629,14 +656,14 @@ function displayDetails(studentFaOrF, monthSelected, myMainArea, sessionType, se
 	}
 	
 	// Add Div inside FRONTEND
-	myMainArea.appendChild(sessionsDetailsDiv);	
+	RecapTabsArea.appendChild(sessionsDetailsDiv);	
 }
 
-function displayUniqueStudentsAmongSessions(studentFaOrF, monthSelected, myMainArea, sessionType, sessionLvl, sessionStatus, studentsList) {
+function displayUniqueStudentsAmongSessions(studentFaOrF, monthSelected, RecapTabsArea, sessionType, sessionLvl, sessionStatus, studentsList) {
 	// Clean old sessionsDetailsDiv
 	let oldSessionsDetailsDiv = document.getElementsByClassName("sessionsDetailsDiv");
 	if(oldSessionsDetailsDiv.length > 0)
-	 	document.getElementById("myMainArea").removeChild(oldSessionsDetailsDiv[0]);
+	 	document.getElementById("RecapTabsArea").removeChild(oldSessionsDetailsDiv[0]);
 		
 	// Create Div
 	let sessionsDetailsDiv = document.createElement("div");
@@ -662,7 +689,7 @@ function displayUniqueStudentsAmongSessions(studentFaOrF, monthSelected, myMainA
 	}
 	
 	// Add Div inside FRONTEND
-	myMainArea.appendChild(sessionsDetailsDiv);	
+	RecapTabsArea.appendChild(sessionsDetailsDiv);	
 }
 
 function getSessionsWithParams(studentFaOrFArray, sessionDateMonthArray, sessionLvlArray, sessionStatusArray, sessionTypeArray) {
@@ -707,7 +734,7 @@ function markIfSessionIsAlreadyInBDD() {
 	// Get sessions BDD
 	let sessionsHistoryBDD = JSON.parse(localStorage.getItem('sessionsHistoryTab'));
 	// Get displayed sessions Elements TR
-	let sessionsHistoryDisplayed = document.getElementById("mainContent").lastChild.lastChild.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+	let sessionsHistoryDisplayed = getSessionsHistoryTr();
 	// Check if sessionsDisplayed are already in the BDD
 	for (sessionDisplayed of sessionsHistoryDisplayed) {
 		let sessionDisplayedId = sessionDisplayed.getElementsByTagName("td")[1].getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("td")[2].getElementsByTagName("a")[0].textContent;
@@ -726,7 +753,7 @@ function markIfSessionIsAForF() {
 	// Get sessions BDD
 	let sessionsHistoryBDD = JSON.parse(localStorage.getItem('sessionsHistoryTab'));
 	// Get displayed sessions Elements TR
-	let sessionsHistoryDisplayed = document.getElementById("mainContent").lastChild.lastChild.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+	let sessionsHistoryDisplayed = getSessionsHistoryTr();
 	// Check if sessionsDisplayed are AF or F sessions
 	for (sessionDisplayed of sessionsHistoryDisplayed) {
 		let sessionDisplayedId = sessionDisplayed.getElementsByTagName("td")[1].getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("td")[2].getElementsByTagName("a")[0].textContent;
@@ -740,18 +767,18 @@ function markIfSessionIsAForF() {
 }
 
 function observerHistoryTableChanging() {
-	let elementToObserve = document.getElementById("mainContent").lastChild;
-	let options = {childList: true, subtree: false};
+	// let elementToObserve = document.getElementById("mainContent").lastChild;
+	// let options = {childList: true, subtree: false};
+	// let observer = new MutationObserver(mCallback);
+	
+	let elementToObserve = document.querySelector("#mainContent > .dom-services-2-dom-services2 > table > tbody");
+	let options = {childList: true, subtree: true};
 	let observer = new MutationObserver(mCallback);
 	
 	function mCallback(mutations) {
-		// for (let mutation of mutations) {
-		//     if (mutation.type === 'childList') {
-	 //   		console.log('Mutation Detected: A child element has been added or removed.');
-	 //   	}
-  //  	}
-		let sessionsHistory = document.getElementById("mainContent").lastChild.lastChild.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-		if (sessionsHistory.length == 20) {
+		let buttonVoirPLus = getVoirPlus();
+		if (buttonVoirPLus) {
+			console.log("HISTORY TABLE LOADEDD");
 			observer.disconnect();
 		    setAF();
 		    markIfSessionIsAlreadyInBDD();
@@ -769,17 +796,16 @@ function observerHistoryTableLoading() {
 	let observer = new MutationObserver(mCallback);
 	
 	function mCallback(mutations) {
-	  //let sessionsHistory = document.getElementById("sessions_2").getElementsByTagName("tbody")[0].getElementsByTagName("tr"); OLD
-	  let sessionsHistory = document.getElementById("mainContent").lastChild.lastChild.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-	  if (sessionsHistory.length == 20) {
-		console.log("HISTORY TABLE LOADED");
-	    observer.disconnect();
-	    addToolBar();
-	    setAF();
-	    markIfSessionIsAlreadyInBDD();
-	    markIfSessionIsAForF();
-	    observerHistoryTableChanging();
-	  }
+		let buttonVoirPLus = getVoirPlus();
+		if (buttonVoirPLus) {
+			console.log("HISTORY TABLE LOADED");
+		    observer.disconnect();
+		    addToolBar();
+		    setAF();
+		    markIfSessionIsAlreadyInBDD();
+		    markIfSessionIsAForF();
+		    observerHistoryTableChanging();
+		}
 	}
 	
 	observer.observe(containerToObserve, options);

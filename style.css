@@ -77,32 +77,54 @@
 
 /*Display tab param*/
 
-#myMainArea .tabName {
+#RecapTabsAreaExit {
+	width: 38px;
+	height: 38px;
+    background-color: #7451eb;
+    border-radius: 21px;
+    align-self: flex-end;
+    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+    cursor: pointer;
+    
+	color: #FFFFFF;
+	font-weight: 500;
+	font-size: 21px;
+	font-family: Arial, sans-serif;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#RecapTabsAreaExit:hover {
+	box-shadow: 0 6px 6px 0 rgb(0 0 0 / 26%), 0 10px 20px 0 rgb(0 0 0 / 19%);
+}
+
+#RecapTabsArea .tabName {
 	text-align: left;
 }
 
-#myMainArea .recaptTab {
+#RecapTabsArea .recaptTab {
 	width: 50%;
 	margin-bottom: 70px;
 }
 
-div#myMainArea {
+div#RecapTabsArea {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 70px;
 }
 
-#myMainArea .data-td {
+#RecapTabsArea .data-td {
     text-align: center;
 }
 
-#myMainArea th {
+#RecapTabsArea th {
     text-align: center;
     
 }
 
-#myMainArea .data-td:hover {
+#RecapTabsArea .data-td:hover {
     text-align: center;
     border-radius: 12px;
     background-color: #c6baed;
@@ -111,20 +133,20 @@ div#myMainArea {
 
 /*Display tab price*/
 
-#myMainArea span.price {
+#RecapTabsArea span.price {
     font-weight: 100;
     font-size: 11px;
 }
 
-#myMainArea .total,
-#myMainArea .toto,
-#myMainArea .bigToto {
+#RecapTabsArea .total,
+#RecapTabsArea .toto,
+#RecapTabsArea .bigToto {
     font-weight: 100;
     font-size: 13px;
     text-align: right;
 }
 
-#myMainArea .bigToto {
+#RecapTabsArea .bigToto {
     font-size: 18px !important;
 }
 
