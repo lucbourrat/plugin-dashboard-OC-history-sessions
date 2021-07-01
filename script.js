@@ -320,15 +320,49 @@ function getDisplayedSessions() {
 }
 
 function deleteRecapTab() {
-	localStorage.removeItem('sessionsHistoryTab');
-	alert("Remise à zéro de la BDD effectuée");
-	markIfSessionIsAlreadyInBDD();
+	// Creat confirmation databaseResetConfirmationBtns
+	let databaseResetConfirmationDiv = document.createElement("div");
+	databaseResetConfirmationDiv.classList.add("databaseResetConfirmationDiv");
+	
+	let databaseResetConfirmationP = document.createElement("p");
+	databaseResetConfirmationP.classList.add("databaseResetConfirmationP");
+	databaseResetConfirmationP.textContent = "Voulez vous vraiment RAS la BDD ?";
+	
+	let databaseResetConfirmationBtnContainer = document.createElement("div");
+	databaseResetConfirmationBtnContainer.classList.add("databaseResetConfirmationBtnContainer");
+	
+	let databaseResetConfirmationBtn1 = document.createElement("div");
+	databaseResetConfirmationBtn1.textContent = "Non";
+	databaseResetConfirmationBtn1.classList.add("databaseResetConfirmationBtn", "databaseResetConfirmationBtn1");
+		databaseResetConfirmationBtn1.addEventListener("click", function() {
+		// Hide confirmation databaseResetConfirmationBtns
+		databaseResetConfirmationDiv.style.display = "none";
+	});
+	
+	let databaseResetConfirmationBtn2 = document.createElement("div");
+	databaseResetConfirmationBtn2.textContent = "Oui";
+	databaseResetConfirmationBtn2.classList.add("databaseResetConfirmationBtn", "databaseResetConfirmationBtn2");
+	databaseResetConfirmationBtn2.addEventListener("click", function() {
+		// Hide confirmation databaseResetConfirmationBtns
+		databaseResetConfirmationDiv.style.display = "none";
+		// remove item from localStorage
+		localStorage.removeItem('sessionsHistoryTab');
+		// Display remove confirmation msg
+		alert("Remise à zéro de la BDD effectuée");
+		markIfSessionIsAlreadyInBDD();
+	});
+	
+	
+	databaseResetConfirmationDiv.appendChild(databaseResetConfirmationP);
+	databaseResetConfirmationBtnContainer.appendChild(databaseResetConfirmationBtn1);
+	databaseResetConfirmationBtnContainer.appendChild(databaseResetConfirmationBtn2);
+	databaseResetConfirmationDiv.appendChild(databaseResetConfirmationBtnContainer);
+	
+	let bodyContainer = document.getElementsByTagName("body")[0];
+	bodyContainer.appendChild(databaseResetConfirmationDiv);
 }
 
 function VoirPlusAuto() {
-	console.log("function VoirPlusAuto");
-
-	
 	// create / set / add button StopVoirPlusAuto
 	if (document.getElementsByClassName("btnStopVoirPlusAuto").length == 0) {
 		let btnStopVoirPlusAuto = document.createElement("div");
@@ -364,7 +398,6 @@ function VoirPlusAuto() {
 }
 
 function stopObserverVoirPlusAuto() {
-	console.log("stopObserverVoirPlusAuto stopObserverVoirPlusAuto stopObserverVoirPlusAuto stopObserverVoirPlusAuto stopObserverVoirPlusAuto stopObserverVoirPlusAuto");
 	observerVoirPlusAuto.disconnect();
 	document.getElementsByClassName("btnStopVoirPlusAuto")[0].style.display = "none";
 }
