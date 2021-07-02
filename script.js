@@ -1,4 +1,5 @@
 let observerVoirPlusAuto;
+let classOfDivContainingTable = ".dom-services-1-dom-services2";
 
 function miseEnAttente() {
 	setTimeout(addToolBar, 5000); //On attend 5 secondes avant d'exécuter la fonction
@@ -202,14 +203,14 @@ function addToolBar() {
 
 function getSessionsHistoryTr() {
 	// Get displayed sessions Elements TR
-	let sessionsHistory = document.querySelector("#mainContent > .dom-services-2-dom-services2 > table > tbody").querySelectorAll("tr[tabindex='0']");
+	let sessionsHistory = document.querySelector("#mainContent > " + classOfDivContainingTable + " > table > tbody").querySelectorAll("tr[tabindex='0']");
 
 	return (sessionsHistory);
 }
 
 function getVoirPlus() {
 	// Get button "Voir Plus"
-	let buttonVoirPlus = document.querySelectorAll("#mainContent > .dom-services-2-dom-services2 > div button"); // Get buttons
+	let buttonVoirPlus = document.querySelectorAll("#mainContent > " + classOfDivContainingTable + " > div button"); // Get buttons
 	buttonVoirPlus = buttonVoirPlus[buttonVoirPlus.length -1];// Get the last button (Voir Plus)
 
 	return(buttonVoirPlus);
@@ -377,7 +378,7 @@ function VoirPlusAuto() {
 		document.getElementsByClassName("btnStopVoirPlusAuto")[0].style.display = "block";
 	
 	
-	let elementToObserve = document.querySelector("#mainContent > .dom-services-2-dom-services2 > table > tbody");
+	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > table > tbody");
 	let options = {childList: true, subtree: true};
 	observerVoirPlusAuto = new MutationObserver(mCallback);
 	
@@ -860,7 +861,7 @@ function observerHistoryTableChanging() {
 	// let options = {childList: true, subtree: false};
 	// let observer = new MutationObserver(mCallback);
 	
-	let elementToObserve = document.querySelector("#mainContent > .dom-services-2-dom-services2 > table > tbody");
+	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > table > tbody");
 	let options = {childList: true, subtree: true};
 	let observer = new MutationObserver(mCallback);
 	
