@@ -24,7 +24,7 @@ function addToolBar() {
 	toolBarSectionButtonSpan1.classList.add("dom-services-3-MuiButton-label");
 	
 	let toolBarSectionButtonSpanSpan1 = document.createElement("span");
-	toolBarSectionButtonSpanSpan1.textContent = "Ajouter les étudiants ci-dessous à la BDD";
+	toolBarSectionButtonSpanSpan1.textContent = "Ajouter les sessions ci-dessous à la BDD";
 	toolBarSectionButtonSpanSpan1.style.textTransform = "none";
 	
 	// Create button 2
@@ -203,7 +203,10 @@ function addToolBar() {
 
 function getSessionsHistoryTr() {
 	// Get displayed sessions Elements TR
-	let sessionsHistory = document.querySelector("#mainContent > " + classOfDivContainingTable + " > table > tbody").querySelectorAll("tr[tabindex='0']");
+	//let sessionsHistory = document.querySelector("#mainContent > " + classOfDivContainingTable + " > table > tbody").querySelectorAll("tr[tabindex='0']");
+	let sessionsHistory = document.querySelector("#mainContent > " + classOfDivContainingTable + " > section > ol").querySelectorAll("a[tabindex='0']");
+	
+	console.log(sessionsHistory);
 
 	return (sessionsHistory);
 }
@@ -278,21 +281,21 @@ function getDisplayedSessions() {
 	// Create new object and push it in sessionsHistoryTab
 	for (session of sessionsHistory) {
 		let newItem = {};
-		newItem.studentName = session.getElementsByTagName("td")[2].getElementsByTagName("a")[0].textContent;
-		newItem.sessionStatus = session.getElementsByTagName("td")[0].getElementsByTagName("svg")[0].getAttribute("aria-label");
-		newItem.sessionDate = session.getElementsByTagName("td")[1].getElementsByTagName("time")[0].textContent;
+		newItem.studentName = session.getElementsByTagName("a")[0].textContent;
+		newItem.sessionStatus = session.getElementsByTagName("svg")[0].getAttribute("aria-label");
+		newItem.sessionDate = session.getElementsByTagName("time")[0].textContent;
 		newItem.sessionDateMonth = newItem.sessionDate.split(' ')[1];
 		newItem.sessionId = newItem.sessionDate + " - " + newItem.studentName;
-		newItem.sessionType = session.getElementsByTagName("td")[0].getElementsByTagName("p")[0].textContent;
+		newItem.sessionType = session.getElementsByTagName("p")[0].textContent;
 		// Set newItem.sessionLvl
 		if (newItem.sessionStatus == "Annulée" || newItem.sessionStatus == "Annulée tardivement")
 			newItem.sessionLvl = "0";
 		else
-			newItem.sessionLvl = session.getElementsByTagName("td")[3].getElementsByTagName("span")[0].textContent;
+			newItem.sessionLvl = session.children[3].getElementsByTagName("span")[0].textContent;
 		// Set newItem.studentFaOrF
-		if (session.getElementsByTagName("td")[4] == undefined)
+		if (session.children[4] == undefined)
 			alert("AF/F non set");
-		if (session.getElementsByTagName("td")[4].getElementsByClassName("switch-input")[0].checked)
+		if (session.children[4].getElementsByClassName("switch-input")[0].checked)
 			newItem.studentFaOrF = "af";
 		else
 		 	newItem.studentFaOrF = "f";
@@ -378,7 +381,7 @@ function VoirPlusAuto() {
 		document.getElementsByClassName("btnStopVoirPlusAuto")[0].style.display = "block";
 	
 	
-	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > table > tbody");
+	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > section > ol");
 	let options = {childList: true, subtree: true};
 	observerVoirPlusAuto = new MutationObserver(mCallback);
 	
@@ -406,9 +409,12 @@ function stopObserverVoirPlusAuto() {
 function displayRecapTabs() {
 	// On récupère les éléments à cacher
 	let mainArea = document.getElementById("mainContent").getElementsByTagName("div")[1];
-	let elementsToHide = [mainArea.querySelector("table").previousElementSibling, 
-						  mainArea.querySelector("table"), 
-						  mainArea.querySelector("table").nextElementSibling];
+	// let elementsToHide = [mainArea.querySelector("table").previousElementSibling, 
+	// 					  mainArea.querySelector("table"), 
+	// 					  mainArea.querySelector("table").nextElementSibling];
+	let elementsToHide = [mainArea.querySelector("section").previousElementSibling, 
+						  mainArea.querySelector("section"), 
+						  mainArea.querySelector("section").nextElementSibling];
 	
 	// Get selected month
 	let monthSelected =  document.getElementById("monthSelect").value;
@@ -827,7 +833,10 @@ function markIfSessionIsAlreadyInBDD() {
 	let sessionsHistoryDisplayed = getSessionsHistoryTr();
 	// Check if sessionsDisplayed are already in the BDD
 	for (sessionDisplayed of sessionsHistoryDisplayed) {
-		let sessionDisplayedId = sessionDisplayed.getElementsByTagName("td")[1].getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("td")[2].getElementsByTagName("a")[0].textContent;
+		console.log(sessionDisplayed);
+		console.log(sessionDisplayed.getElementsByTagName("div")[1]);
+		// let sessionDisplayedId = sessionDisplayed.getElementsByTagName("td")[1].getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("td")[2].getElementsByTagName("a")[0].textContent;
+		let sessionDisplayedId = sessionDisplayed.getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("a")[0].textContent;
 		sessionDisplayed.getElementsByClassName("isItAnAF")[0].classList.remove("studentListed");
 		sessionDisplayed.getElementsByClassName("isItAnAF")[0].classList.remove("studentListedAlreadyInBDD");
 		sessionDisplayed.getElementsByClassName("isItAnAF")[0].classList.add("studentListed");
@@ -846,12 +855,12 @@ function markIfSessionIsAForF() {
 	let sessionsHistoryDisplayed = getSessionsHistoryTr();
 	// Check if sessionsDisplayed are AF or F sessions
 	for (sessionDisplayed of sessionsHistoryDisplayed) {
-		let sessionDisplayedId = sessionDisplayed.getElementsByTagName("td")[1].getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("td")[2].getElementsByTagName("a")[0].textContent;
+		let sessionDisplayedId = sessionDisplayed.getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("a")[0].textContent;
 		if (sessionsHistoryBDD)
 		for (sessionBDD of sessionsHistoryBDD) {
 			if (sessionDisplayedId == sessionBDD.sessionId)
 				if (sessionBDD.studentFaOrF == "af")
-					sessionDisplayed.getElementsByTagName("td")[4].getElementsByClassName("switch-input")[0].checked = true;
+					sessionDisplayed.getElementsByClassName("switch-input")[0].checked = true;
 		}
 	}
 }
@@ -861,7 +870,8 @@ function observerHistoryTableChanging() {
 	// let options = {childList: true, subtree: false};
 	// let observer = new MutationObserver(mCallback);
 	
-	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > table > tbody");
+	// let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > table > tbody");
+	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > section > ol");
 	let options = {childList: true, subtree: true};
 	let observer = new MutationObserver(mCallback);
 	

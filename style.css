@@ -1,5 +1,5 @@
 .toolBarSection {
-	display: flex;
+	display: flex !important;
 	justify-content: space-around;
 	margin-top: 5px;
     margin-bottom: 15px;
@@ -28,21 +28,24 @@
 /*Display toolBarExtra*/
 
 .toolBarSectionButton {
-	color: #fff;
-    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
-    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    background-color: #7451eb;
-	font-family: Montserrat;
-	font-weight: 700;
-    line-height: 1.5rem;
-    border: none;
-    background-color: #7451eb;
-    color: white;
-    border-radius: 4px;
-	padding: 9px 16px;
+	color: #fff !important;
+    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%) !important;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms !important;
+    background-color: #7451eb !important;
+	font-family: Montserrat !important;
+	font-weight: 700 !important;
+    line-height: 1.5rem !important;
+    border: none !important;
+    background-color: #7451eb !important;
+    color: white !important;
+    border-radius: 4px !important;
+	padding: 9px 16px !important;
 }
 .toolBarSectionButton:hover {
 	box-shadow: 0 6px 6px 0 rgb(0 0 0 / 26%), 0 10px 20px 0 rgb(0 0 0 / 19%);
+}
+select.toolBarSectionButton {
+	height: 42px;
 }
 #toolBarSectionExtra {
 	font-family: Montserrat;
