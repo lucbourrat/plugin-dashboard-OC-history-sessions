@@ -833,8 +833,6 @@ function markIfSessionIsAlreadyInBDD() {
 	let sessionsHistoryDisplayed = getSessionsHistoryTr();
 	// Check if sessionsDisplayed are already in the BDD
 	for (sessionDisplayed of sessionsHistoryDisplayed) {
-		console.log(sessionDisplayed);
-		console.log(sessionDisplayed.getElementsByTagName("div")[1]);
 		// let sessionDisplayedId = sessionDisplayed.getElementsByTagName("td")[1].getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("td")[2].getElementsByTagName("a")[0].textContent;
 		let sessionDisplayedId = sessionDisplayed.getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("a")[0].textContent;
 		sessionDisplayed.getElementsByClassName("isItAnAF")[0].classList.remove("studentListed");
@@ -871,14 +869,14 @@ function observerHistoryTableChanging() {
 	// let observer = new MutationObserver(mCallback);
 	
 	// let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > table > tbody");
-	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > section > ol");
+	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > section");
 	let options = {childList: true, subtree: true};
 	let observer = new MutationObserver(mCallback);
 	
 	function mCallback(mutations) {
 		let buttonVoirPLus = getVoirPlus();
 		if (buttonVoirPLus) {
-			console.log("HISTORY TABLE LOADEDD");
+			console.log("HISTORY TABLE LOADED AFTER VOIR PLUS");
 			observer.disconnect();
 		    setAF();
 		    markIfSessionIsAlreadyInBDD();
@@ -898,7 +896,7 @@ function observerHistoryTableLoading() {
 	function mCallback(mutations) {
 		let buttonVoirPLus = getVoirPlus();
 		if (buttonVoirPLus) {
-			console.log("HISTORY TABLE LOADED");
+			console.log("HISTORY TABLE 1ST LOADED");
 		    observer.disconnect();
 		    addToolBar();
 		    setAF();
