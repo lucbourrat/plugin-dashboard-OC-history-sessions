@@ -136,6 +136,9 @@ function addToolBar() {
     	else if(toolBarSectionExtra.value == "VoirPlusAuto") {
         	VoirPlusAuto();
     	}
+    	else if(toolBarSectionExtra.value == "ManualOverlayReloader") {
+        	reloadingOverlay();
+    	}
 	});
 	///// Option
 	////////// Default
@@ -153,6 +156,11 @@ function addToolBar() {
 	toolBarSectionExtraOptionDefaultVoirPlusAuto.classList.add("extraDefaultOptionVoirPlusAuto");
 	toolBarSectionExtraOptionDefaultVoirPlusAuto.setAttribute("value", "VoirPlusAuto");
 	toolBarSectionExtraOptionDefaultVoirPlusAuto.textContent = "Voir plus Auto";
+	////////// ManualOverlayReloader
+	let toolBarSectionExtraOptionDefaulManualOverlayReloader = document.createElement("option");
+	toolBarSectionExtraOptionDefaulManualOverlayReloader.classList.add("extraDefaultOptionManualOverlayReloader");
+	toolBarSectionExtraOptionDefaulManualOverlayReloader.setAttribute("value", "ManualOverlayReloader");
+	toolBarSectionExtraOptionDefaulManualOverlayReloader.textContent = "Manual overlay reloader";
 	
 	// // Insert button 0
 	// toolBarSectionButtonSpan0.appendChild(toolBarSectionButtonSpanSpan0);
@@ -191,6 +199,7 @@ function addToolBar() {
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefault);
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaultDeleteBDD);
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaultVoirPlusAuto);
+	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaulManualOverlayReloader);
 	toolBarSection.appendChild(toolBarSectionExtra);
 	// AddEventListener
 	// toolBarSectionButton0.addEventListener("click", setAF);
@@ -869,7 +878,10 @@ function observerHistoryTableChanging() {
 	// let observer = new MutationObserver(mCallback);
 	
 	// let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > table > tbody");
+	// let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > section > ol");
 	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > section");
+	console.log(elementToObserve);
+	console.log(elementToObserve.classList);
 	let options = {childList: true, subtree: true};
 	let observer = new MutationObserver(mCallback);
 	
@@ -878,10 +890,7 @@ function observerHistoryTableChanging() {
 		if (buttonVoirPLus) {
 			console.log("HISTORY TABLE LOADED AFTER VOIR PLUS");
 			observer.disconnect();
-		    setAF();
-		    markIfSessionIsAlreadyInBDD();
-		    markIfSessionIsAForF();
-			observerHistoryTableChanging();
+			reloadingOverlay();
 		}
 	}
 	
@@ -899,14 +908,20 @@ function observerHistoryTableLoading() {
 			console.log("HISTORY TABLE 1ST LOADED");
 		    observer.disconnect();
 		    addToolBar();
-		    setAF();
-		    markIfSessionIsAlreadyInBDD();
-		    markIfSessionIsAForF();
-		    observerHistoryTableChanging();
+			reloadingOverlay();
 		}
 	}
 	
 	observer.observe(containerToObserve, options);
 }
+
+function reloadingOverlay() {
+	setAF();
+	markIfSessionIsAlreadyInBDD();
+	markIfSessionIsAForF();
+	observerHistoryTableChanging();
+}
+
+
 
 observerHistoryTableLoading();
