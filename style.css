@@ -38,7 +38,7 @@
     border: none !important;
     background-color: #7451eb !important;
     color: white !important;
-    border-radius: 4px !important;
+    border-radius: 10px !important;
 	padding: 9px 16px !important;
 }
 .toolBarSectionButton:hover {
@@ -80,7 +80,8 @@ select.toolBarSectionButton {
 
 /*Display tab param*/
 
-#RecapTabsAreaExit {
+#RecapTabsAreaExit,
+#studentsListTabsAreaExit {
 	width: 38px;
 	height: 38px;
     background-color: #7451eb;
@@ -222,6 +223,25 @@ div#RecapTabsArea {
 .databaseResetConfirmationBtn:hover {
     box-shadow: 0 6px 6px 0 rgb(0 0 0 / 26%), 0 10px 20px 0 rgb(0 0 0 / 19%);
     cursor: pointer;
+}
+
+
+
+
+/* students list*/
+
+.studentsListContainer {
+    display: flex;
+}
+
+.studentsList {
+    width: 50%;
+}
+
+#studentsListTabsArea {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
 }
 
 
