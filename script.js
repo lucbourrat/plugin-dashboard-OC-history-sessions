@@ -1106,25 +1106,36 @@ function displayStatsScreen() {
 	displayStats(statsArea);
 }
 
-function howManySessionsExecuted () {
-	return 0;
-}
+function howManySessions() {
+	let sessionsHistoryTab = JSON.parse(localStorage.getItem('sessionsHistoryTab'));
+	let howManySessions = {
+		executed: 0,
+		canceled: 0,
+		lateCanceled: 0,
+		absentStudent: 0
+	};
 
-function howManySessionsCanceled () {
-	return 0;
-}
+	let counter = 0;
+	for (session of sessionsHistoryTab) {
+		if (session.sessionStatus == "Réalisée")
+			howManySessions.executed++;
+		else if (session.sessionStatus == "Annulée")
+			howManySessions.canceled++;
+		else if (session.sessionStatus == "Annulée tardivement")
+			howManySessions.lateCanceled++;
+		else if (session.sessionStatus == "Étudiant absent")
+			howManySessions.absentStudent++;
+		else
+			alert("Problème avec le status d'une session, sessionId = " + session.sessionId);
+	}
 
-function howManySessionsLateCanceled () {
-	return 0;
-}
-
-function howManySessionsAbsentStudent () {
-	return 0;
+	return howManySessions;
 }
 
 function displayStats(statsArea) {
 
 	let allStudentListTab = JSON.parse(localStorage.getItem('allStudentListTab'));
+	let sessionsCounting = howManySessions();
 
 	let studentsMentoringFollowedNumberDiv = document.createElement("div");
 	studentsMentoringFollowedNumberDiv.classList.add("statsDiv", "studentsMentoringFollowedNumber");
@@ -1162,7 +1173,7 @@ function displayStats(statsArea) {
 	//////
 	let sessionsExecutedNumberP = document.createElement("p");
 	sessionsExecutedNumberP.classList.add("sessionsExecutedNumberP");
-	sessionsExecutedNumberP.textContent = howManySessionsExecuted();
+	sessionsExecutedNumberP.textContent = sessionsCounting.executed;
 	sessionsExecutedNumberDiv.appendChild(sessionsExecutedNumberP);
 	
 	let sessionsCanceledNumberDiv = document.createElement("div");
@@ -1175,7 +1186,7 @@ function displayStats(statsArea) {
 	//////
 	let sessionsCanceledNumberP = document.createElement("p");
 	sessionsCanceledNumberP.classList.add("sessionsCanceledNumberP");
-	sessionsCanceledNumberP.textContent = howManySessionsCanceled();
+	sessionsCanceledNumberP.textContent = sessionsCounting.canceled;
 	sessionsCanceledNumberDiv.appendChild(sessionsCanceledNumberP);
 	
 	let sessionsLateCanceledNumberDiv = document.createElement("div");
@@ -1188,7 +1199,7 @@ function displayStats(statsArea) {
 	//////
 	let sessionsLateCanceledNumberP = document.createElement("p");
 	sessionsLateCanceledNumberP.classList.add("sessionsLateCanceledNumberP");
-	sessionsLateCanceledNumberP.textContent = howManySessionsLateCanceled();
+	sessionsLateCanceledNumberP.textContent = sessionsCounting.lateCanceled;
 	sessionsLateCanceledNumberDiv.appendChild(sessionsLateCanceledNumberP);
 	
 	let sessionsAbsentStudentNumberDiv = document.createElement("div");
@@ -1201,7 +1212,7 @@ function displayStats(statsArea) {
 	//////
 	let sessionsAbsentStudentNumberP = document.createElement("p");
 	sessionsAbsentStudentNumberP.classList.add("sessionsAbsentStudentNumberP");
-	sessionsAbsentStudentNumberP.textContent = howManySessionsAbsentStudent();
+	sessionsAbsentStudentNumberP.textContent = sessionsCounting.absentStudent;
 	sessionsAbsentStudentNumberDiv.appendChild(sessionsAbsentStudentNumberP);
 
 	statsArea.appendChild(studentsMentoringFollowedNumberDiv);
