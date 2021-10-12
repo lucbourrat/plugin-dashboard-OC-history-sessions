@@ -957,6 +957,38 @@ function displayFollowedStudents() {
 	displayStudentsList(studentsListTabsArea);
 }
 
+function howManyStudentsMentoratFollowed(allStudentListTab) {
+	let counter = 0;
+	
+	for (student of allStudentListTab) {
+		if (student.type == "Mentorat")
+			counter++;
+	}
+	
+	return counter;
+}
+
+function howManyStudentsSoutenanceFollowed(allStudentListTab) {
+	let counter = 0;
+	
+	for (student of allStudentListTab) {
+		if (student.type == "Soutenance") {
+			let isItMentoredStudent = 0;
+			for (studentNestedFor of allStudentListTab) {
+				if (studentNestedFor.name == student.name && studentNestedFor.type == "Mentorat") {
+					isItMentoredStudent++;
+					break;
+				}
+			}
+			if (isItMentoredStudent == 0)
+				counter++;
+		}
+	}
+	
+	console.log(counter);
+	return counter;
+}
+
 function displayStudentsList(studentsListTabsArea) {
 	// Init allStudentListTab form localstorage
 	let allStudentListTab = JSON.parse(localStorage.getItem('allStudentListTab'));
@@ -971,7 +1003,7 @@ function displayStudentsList(studentsListTabsArea) {
 	studentsListMentoringH2.textContent = "Etudiants suivis (mentorat)";
 	studentsListMentoring.appendChild(studentsListMentoringH2);
 	//////
-	let studentsMentoring = 1;
+	let studentsMentoring = howManyStudentsMentoratFollowed(allStudentListTab);
 	for (student of allStudentListTab) {
 		if (student.type == "Mentorat") {
 			let studentsListMentoringP = document.createElement("p");
@@ -983,7 +1015,7 @@ function displayStudentsList(studentsListTabsArea) {
 			studentsListMentoringA.setAttribute("target", "_blank");
 			studentsListMentoringP.appendChild(studentsListMentoringA);
 			studentsListMentoring.appendChild(studentsListMentoringP);
-			studentsMentoring++;
+			studentsMentoring--;
 		}
 	}
 	
@@ -995,7 +1027,7 @@ function displayStudentsList(studentsListTabsArea) {
 	studentsListDefenseH2.textContent = "Etudiants suivis (soutenance)";
 	studentsListDefense.appendChild(studentsListDefenseH2);
 	//////
-	let studentsDefense = 1;
+	let studentsDefense = howManyStudentsSoutenanceFollowed(allStudentListTab);
 	for (student of allStudentListTab) {
 		if (student.type == "Soutenance") {
 			let mentoredStudent = 0;
@@ -1016,7 +1048,7 @@ function displayStudentsList(studentsListTabsArea) {
 				studentsListDefenseA.setAttribute("target", "_blank");
 				studentsListDefenseP.appendChild(studentsListDefenseA);
 				studentsListDefense.appendChild(studentsListDefenseP);
-				studentsDefense++;
+				studentsDefense--;
 			}
 		}
 	}
