@@ -399,13 +399,16 @@ function VoirPlusAuto() {
 		document.getElementsByClassName("btnStopVoirPlusAuto")[0].style.display = "block";
 	
 	
-	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > section > ol");
+	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable);
 	let options = {childList: true, subtree: true};
 	observerVoirPlusAuto = new MutationObserver(mCallback);
 	
 	function mCallback(mutations) {
+		let SessionsHistoryTrLength = document.querySelectorAll("#mainContent > " + classOfDivContainingTable + " > section > ol > li").length;
+		console.log(SessionsHistoryTrLength);
 		let buttonVoirPLus = getVoirPlus();
-		if (buttonVoirPLus) {
+		// if (buttonVoirPLus) {
+		if (SessionsHistoryTrLength > 0) {
 			window.scrollTo(0,document.body.scrollHeight);
 			buttonVoirPLus.click();
 		}
