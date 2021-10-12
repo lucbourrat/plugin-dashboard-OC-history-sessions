@@ -139,6 +139,9 @@ function addToolBar() {
     	else if(toolBarSectionExtra.value == "ManualOverlayReloader") {
         	reloadingOverlay();
     	}
+    	else if(toolBarSectionExtra.value == "DisplayFollowedStudents") {
+        	displayFollowedStudents();
+    	}
 	});
 	///// Option
 	////////// Default
@@ -161,6 +164,11 @@ function addToolBar() {
 	toolBarSectionExtraOptionDefaulManualOverlayReloader.classList.add("extraDefaultOptionManualOverlayReloader");
 	toolBarSectionExtraOptionDefaulManualOverlayReloader.setAttribute("value", "ManualOverlayReloader");
 	toolBarSectionExtraOptionDefaulManualOverlayReloader.textContent = "Manual overlay reloader";
+	////////// DisplayFollowedStudents
+	let toolBarSectionExtraOptionDefaulDisplayFollowedStudents = document.createElement("option");
+	toolBarSectionExtraOptionDefaulDisplayFollowedStudents.classList.add("extraDefaultOptionDisplayFollowedStudents");
+	toolBarSectionExtraOptionDefaulDisplayFollowedStudents.setAttribute("value", "DisplayFollowedStudents");
+	toolBarSectionExtraOptionDefaulDisplayFollowedStudents.textContent = "Liste des étudiants suivis";
 	
 	// // Insert button 0
 	// toolBarSectionButtonSpan0.appendChild(toolBarSectionButtonSpanSpan0);
@@ -200,6 +208,7 @@ function addToolBar() {
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaultDeleteBDD);
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaultVoirPlusAuto);
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaulManualOverlayReloader);
+	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaulDisplayFollowedStudents);
 	toolBarSection.appendChild(toolBarSectionExtra);
 	// AddEventListener
 	// toolBarSectionButton0.addEventListener("click", setAF);
@@ -418,9 +427,6 @@ function stopObserverVoirPlusAuto() {
 function displayRecapTabs() {
 	// On récupère les éléments à cacher
 	let mainArea = document.getElementById("mainContent").getElementsByTagName("div")[1];
-	// let elementsToHide = [mainArea.querySelector("table").previousElementSibling, 
-	// 					  mainArea.querySelector("table"), 
-	// 					  mainArea.querySelector("table").nextElementSibling];
 	let elementsToHide = [mainArea.querySelector("section").previousElementSibling, 
 						  mainArea.querySelector("section"), 
 						  mainArea.querySelector("section").nextElementSibling];
@@ -872,6 +878,140 @@ function markIfSessionIsAForF() {
 	}
 }
 
+function updateStudentsList() {
+	// Get displayed sessions Elements
+	let sessionsHistory = getSessionsHistoryTr();
+	
+	// Init sessionsHistoryTab form localstorage
+	let sessionsHistoryTab = JSON.parse(localStorage.getItem('sessionsHistoryTab'));
+	if (sessionsHistoryTab == null)
+		sessionsHistoryTab = [];
+	
+	// Init allStudentListTab form localstorage
+	let allStudentListTab = JSON.parse(localStorage.getItem('allStudentListTab'));
+	if (allStudentListTab == null)
+		allStudentListTab = [];
+
+	// Parse sessions list and add new student inside allStudentListTab to localstorage
+	for (session of sessionsHistory) {
+		let currentStudent = {};
+		currentStudent.name = session.getElementsByTagName("a")[0].textContent;
+		currentStudent.link = session.getElementsByTagName("a")[0].href;
+		currentStudent.type = session.getElementsByTagName("p")[0].textContent;
+		
+		// On va vérifier si l'étudiant n'est pas déjà présent dans allStudentListTab
+		let alreadyExistingStudent = 0;
+		for (student of allStudentListTab) {
+			if(student.name == currentStudent.name) {
+				if (student.type == currentStudent.type) {
+					alreadyExistingStudent++;
+					break;
+				}
+			}
+		}
+		// Si l'étudiant n'est pas déjà présent dans allStudentListTab, on l'ajoute dans localStorage
+		if(alreadyExistingStudent == 0)
+			allStudentListTab.push(currentStudent);
+	}
+	
+	// Update sessionsHistoryTab in localStorage
+	localStorage.setItem('allStudentListTab', JSON.stringify(allStudentListTab));
+}
+
+function displayFollowedStudents() {
+	// On récupère les éléments à cacher
+	let mainArea = document.getElementById("mainContent").getElementsByTagName("div")[1];
+	let elementsToHide = [mainArea.querySelector("section").previousElementSibling, 
+						  mainArea.querySelector("section"), 
+						  mainArea.querySelector("section").nextElementSibling];
+	
+
+
+	// On cache les éléments de la page "mentorship-sessions-history" pour faire du vide (un menu, la liste des étudiants, la pagination)
+	if (elementsToHide[0].style.display != "none") {
+		for (elementToHide of elementsToHide)
+			elementToHide.style.display = "none";
+	}
+	// Si liste d'étudiants est déjà affichée, on supprime celui-ci
+	if (document.getElementById("studentsListTabsArea")) 
+		mainArea.removeChild(document.getElementById("studentsListTabsArea"));
+	
+	// Création de l'élément dans lequel je vais ajouter les éléments html
+	let studentsListTabsArea = document.createElement("div");
+	studentsListTabsArea.id = "studentsListTabsArea";
+	mainArea.appendChild(studentsListTabsArea);
+	
+	// Affichage de la croix (exit)
+	let exitCross = document.createElement("div");
+	exitCross.id = "studentsListTabsAreaExit";
+	exitCross.textContent = "X";
+	exitCross.addEventListener('click', function() {
+		hideRecapTabs(elementsToHide, studentsListTabsArea);
+	});
+	studentsListTabsArea.appendChild(exitCross);
+	
+	// Affichage des différents gros tableaux
+	displayStudentsList(studentsListTabsArea);
+}
+
+function displayStudentsList(studentsListTabsArea) {
+	// Init allStudentListTab form localstorage
+	let allStudentListTab = JSON.parse(localStorage.getItem('allStudentListTab'));
+	if (allStudentListTab == null)
+		alert("Aucun étudiant suivi");
+		
+	let studentsListMentoring = document.createElement("div");
+	studentsListMentoring.classList.add("studentsList", "studentsListMentoring");
+	//////
+	let studentsListMentoringH2 = document.createElement("h2");
+	studentsListMentoringH2.classList.add("studentsListH2");
+	studentsListMentoringH2.textContent = "Etudiants suivis (mentorat)";
+	studentsListMentoring.appendChild(studentsListMentoringH2);
+	//////
+	for (student of allStudentListTab) {
+		if (student.type == "Mentorat") {
+			let studentsListMentoringP = document.createElement("p");
+			studentsListMentoringP.classList.add("studentsListP");
+			let studentsListMentoringA = document.createElement("a");
+			studentsListMentoringA.classList.add("studentsListA");
+			studentsListMentoringA.textContent = student.name;
+			studentsListMentoringA.href = student.link;
+			studentsListMentoringA.setAttribute("target", "_blank");
+			studentsListMentoringP.appendChild(studentsListMentoringA);
+			studentsListMentoring.appendChild(studentsListMentoringP);
+		}
+	}
+	
+	let studentsListDefense = document.createElement("div");
+	studentsListDefense.classList.add("studentsList", "studentsListDefense");
+	//////
+	let studentsListDefenseH2 = document.createElement("h2");
+	studentsListDefenseH2.classList.add("studentsListH2");
+	studentsListDefenseH2.textContent = "Etudiants suivis (soutenance)";
+	studentsListDefense.appendChild(studentsListDefenseH2);
+	//////
+	for (student of allStudentListTab) {
+		if (student.type == "Soutenance") {
+			let studentsListDefenseP = document.createElement("p");
+			studentsListDefenseP.classList.add("studentsListP");
+			let studentsListDefenseA = document.createElement("a");
+			studentsListDefenseA.classList.add("studentsListA");
+			studentsListDefenseA.textContent = student.name;
+			studentsListDefenseA.href = student.link;
+			studentsListDefenseA.setAttribute("target", "_blank");
+			studentsListDefenseP.appendChild(studentsListDefenseA);
+			studentsListDefense.appendChild(studentsListDefenseP);
+		}
+	}
+	
+	let studentsListContainer = document.createElement("div");
+	studentsListContainer.classList.add("studentsListContainer");
+	studentsListContainer.appendChild(studentsListMentoring);
+	studentsListContainer.appendChild(studentsListDefense);
+	studentsListTabsArea.appendChild(studentsListContainer);
+	
+}
+
 function observerHistoryTableChanging() {
 	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable);
 	// console.log(elementToObserve);
@@ -886,6 +1026,7 @@ function observerHistoryTableChanging() {
 			console.log("HISTORY TABLE LOADED AFTER VOIR PLUS");
 			observer.disconnect();
 			reloadingOverlay();
+			updateStudentsList();
 		}
 	}
 	
@@ -906,6 +1047,7 @@ function observerHistoryTableLoading() {
 		    observer.disconnect();
 		    addToolBar();
 			reloadingOverlay();
+			updateStudentsList();
 		}
 	}
 	
@@ -918,7 +1060,5 @@ function reloadingOverlay() {
 	markIfSessionIsAForF();
 	observerHistoryTableChanging();
 }
-
-
 
 observerHistoryTableLoading();
