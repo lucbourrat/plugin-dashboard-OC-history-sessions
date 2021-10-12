@@ -215,7 +215,7 @@ function getSessionsHistoryTr() {
 	//let sessionsHistory = document.querySelector("#mainContent > " + classOfDivContainingTable + " > table > tbody").querySelectorAll("tr[tabindex='0']");
 	let sessionsHistory = document.querySelector("#mainContent > " + classOfDivContainingTable + " > section > ol").querySelectorAll("a[tabindex='0']");
 	
-	console.log(sessionsHistory);
+	// console.log(sessionsHistory);
 
 	return (sessionsHistory);
 }
@@ -873,21 +873,17 @@ function markIfSessionIsAForF() {
 }
 
 function observerHistoryTableChanging() {
-	// let elementToObserve = document.getElementById("mainContent").lastChild;
-	// let options = {childList: true, subtree: false};
-	// let observer = new MutationObserver(mCallback);
-	
-	// let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > table > tbody");
-	// let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > section > ol");
-	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > section");
-	console.log(elementToObserve);
-	console.log(elementToObserve.classList);
+	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable);
+	// console.log(elementToObserve);
+	// console.log(elementToObserve.classList);
 	let options = {childList: true, subtree: true};
 	let observer = new MutationObserver(mCallback);
 	
 	function mCallback(mutations) {
-		let buttonVoirPLus = getVoirPlus();
-		if (buttonVoirPLus) {
+		let SessionsHistoryTrLength = document.querySelectorAll("#mainContent > " + classOfDivContainingTable + " > section > ol > li").length;
+		console.log(SessionsHistoryTrLength);
+		
+		if (SessionsHistoryTrLength > 0) {
 			console.log("HISTORY TABLE LOADED AFTER VOIR PLUS");
 			observer.disconnect();
 			reloadingOverlay();
@@ -903,6 +899,9 @@ function observerHistoryTableLoading() {
 	let observer = new MutationObserver(mCallback);
 	
 	function mCallback(mutations) {
+		let SessionsHistoryTrLength = document.querySelectorAll("#mainContent > " + classOfDivContainingTable + " > section > ol > li").length;
+		console.log(SessionsHistoryTrLength);
+		
 		let buttonVoirPLus = getVoirPlus();
 		if (buttonVoirPLus) {
 			console.log("HISTORY TABLE 1ST LOADED");
