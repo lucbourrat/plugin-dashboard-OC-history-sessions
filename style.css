@@ -81,7 +81,8 @@ select.toolBarSectionButton {
 /*Display tab param*/
 
 #RecapTabsAreaExit,
-#studentsListTabsAreaExit {
+#studentsListTabsAreaExit,
+#statsAreaExit {
 	width: 38px;
 	height: 38px;
     background-color: #7451eb;
@@ -239,6 +240,17 @@ div#RecapTabsArea {
 }
 
 #studentsListTabsArea {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+}
+
+
+
+
+/* stats*/
+
+#statsArea {
     display: flex;
     flex-direction: column;
     margin-top: 50px;

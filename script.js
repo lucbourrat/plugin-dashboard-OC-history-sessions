@@ -142,6 +142,9 @@ function addToolBar() {
     	else if(toolBarSectionExtra.value == "DisplayFollowedStudents") {
         	displayFollowedStudents();
     	}
+    	else if(toolBarSectionExtra.value == "DisplayStats") {
+        	displayStatsScreen();
+    	}
 	});
 	///// Option
 	////////// Default
@@ -169,6 +172,11 @@ function addToolBar() {
 	toolBarSectionExtraOptionDefaulDisplayFollowedStudents.classList.add("extraDefaultOptionDisplayFollowedStudents");
 	toolBarSectionExtraOptionDefaulDisplayFollowedStudents.setAttribute("value", "DisplayFollowedStudents");
 	toolBarSectionExtraOptionDefaulDisplayFollowedStudents.textContent = "Liste des étudiants suivis";
+	////////// displayStats
+	let toolBarSectionExtraOptionDefaulDisplayStats = document.createElement("option");
+	toolBarSectionExtraOptionDefaulDisplayStats.classList.add("extraDefaultOptionDisplayStats");
+	toolBarSectionExtraOptionDefaulDisplayStats.setAttribute("value", "DisplayStats");
+	toolBarSectionExtraOptionDefaulDisplayStats.textContent = "Statistiques";
 	
 	// // Insert button 0
 	// toolBarSectionButtonSpan0.appendChild(toolBarSectionButtonSpanSpan0);
@@ -209,6 +217,7 @@ function addToolBar() {
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaultVoirPlusAuto);
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaulManualOverlayReloader);
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaulDisplayFollowedStudents);
+	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaulDisplayStats);
 	toolBarSection.appendChild(toolBarSectionExtra);
 	// AddEventListener
 	// toolBarSectionButton0.addEventListener("click", setAF);
@@ -1059,6 +1068,148 @@ function displayStudentsList(studentsListTabsArea) {
 	studentsListContainer.appendChild(studentsListDefense);
 	studentsListTabsArea.appendChild(studentsListContainer);
 	
+}
+
+function displayStatsScreen() {
+	// On récupère les éléments à cacher
+	let mainArea = document.getElementById("mainContent").getElementsByTagName("div")[1];
+	let elementsToHide = [mainArea.querySelector("section").previousElementSibling, 
+						  mainArea.querySelector("section"), 
+						  mainArea.querySelector("section").nextElementSibling];
+	
+
+
+	// On cache les éléments de la page "mentorship-sessions-history" pour faire du vide (un menu, la liste des étudiants, la pagination)
+	if (elementsToHide[0].style.display != "none") {
+		for (elementToHide of elementsToHide)
+			elementToHide.style.display = "none";
+	}
+	// Si les stats sont déjà affichées, on supprime celui-ci
+	if (document.getElementById("statsArea")) 
+		mainArea.removeChild(document.getElementById("statsArea"));
+	
+	// Création de l'élément dans lequel je vais ajouter les éléments html
+	let statsArea = document.createElement("div");
+	statsArea.id = "statsArea";
+	mainArea.appendChild(statsArea);
+	
+	// Affichage de la croix (exit)
+	let exitCross = document.createElement("div");
+	exitCross.id = "statsAreaExit";
+	exitCross.textContent = "X";
+	exitCross.addEventListener('click', function() {
+		hideRecapTabs(elementsToHide, statsArea);
+	});
+	statsArea.appendChild(exitCross);
+	
+	// Affichage des différents gros tableaux
+	displayStats(statsArea);
+}
+
+function howManySessionsExecuted () {
+	return 0;
+}
+
+function howManySessionsCanceled () {
+	return 0;
+}
+
+function howManySessionsLateCanceled () {
+	return 0;
+}
+
+function howManySessionsAbsentStudent () {
+	return 0;
+}
+
+function displayStats(statsArea) {
+
+	let allStudentListTab = JSON.parse(localStorage.getItem('allStudentListTab'));
+
+	let studentsMentoringFollowedNumberDiv = document.createElement("div");
+	studentsMentoringFollowedNumberDiv.classList.add("statsDiv", "studentsMentoringFollowedNumber");
+	//////
+	let studentsMentoringFollowedNumberH2 = document.createElement("h2");
+	studentsMentoringFollowedNumberH2.classList.add("studentsMentoringFollowedNumberH2");
+	studentsMentoringFollowedNumberH2.textContent = "Etudiants suivis (mentorat) : ";
+	studentsMentoringFollowedNumberDiv.appendChild(studentsMentoringFollowedNumberH2);
+	//////
+	let studentsMentoringFollowedNumberP = document.createElement("p");
+	studentsMentoringFollowedNumberP.classList.add("studentsMentoringFollowedNumberP");
+	studentsMentoringFollowedNumberP.textContent = howManyStudentsMentoratFollowed(allStudentListTab);
+	studentsMentoringFollowedNumberDiv.appendChild(studentsMentoringFollowedNumberP);
+	
+	let studentsSoutenanceFollowedNumberDiv = document.createElement("div");
+	studentsSoutenanceFollowedNumberDiv.classList.add("statsDiv", "studentsSoutenanceFollowedNumber");
+	//////
+	let studentsSoutenanceFollowedNumberH2 = document.createElement("h2");
+	studentsSoutenanceFollowedNumberH2.classList.add("studentsSoutenanceFollowedNumberH2");
+	studentsSoutenanceFollowedNumberH2.textContent = "Etudiants suivis (soutenance) : ";
+	studentsSoutenanceFollowedNumberDiv.appendChild(studentsSoutenanceFollowedNumberH2);
+	//////
+	let studentsSoutenanceFollowedNumberP = document.createElement("p");
+	studentsSoutenanceFollowedNumberP.classList.add("studentsSoutenanceFollowedNumberP");
+	studentsSoutenanceFollowedNumberP.textContent = howManyStudentsSoutenanceFollowed(allStudentListTab);
+	studentsSoutenanceFollowedNumberDiv.appendChild(studentsSoutenanceFollowedNumberP);
+
+	let sessionsExecutedNumberDiv = document.createElement("div");
+	sessionsExecutedNumberDiv.classList.add("statsDiv", "sessionsExecutedNumber");
+	//////
+	let sessionsExecutedNumberH2 = document.createElement("h2");
+	sessionsExecutedNumberH2.classList.add("sessionsExecutedNumberH2");
+	sessionsExecutedNumberH2.textContent = "Nombre de sessions réalisées (session + soutenance) : ";
+	sessionsExecutedNumberDiv.appendChild(sessionsExecutedNumberH2);
+	//////
+	let sessionsExecutedNumberP = document.createElement("p");
+	sessionsExecutedNumberP.classList.add("sessionsExecutedNumberP");
+	sessionsExecutedNumberP.textContent = howManySessionsExecuted();
+	sessionsExecutedNumberDiv.appendChild(sessionsExecutedNumberP);
+	
+	let sessionsCanceledNumberDiv = document.createElement("div");
+	sessionsCanceledNumberDiv.classList.add("statsDiv", "sessionsCanceledNumber");
+	//////
+	let sessionsCanceledNumberH2 = document.createElement("h2");
+	sessionsCanceledNumberH2.classList.add("sessionsCanceledNumberH2");
+	sessionsCanceledNumberH2.textContent = "Nombre de sessions annulées (session + soutenance) : ";
+	sessionsCanceledNumberDiv.appendChild(sessionsCanceledNumberH2);
+	//////
+	let sessionsCanceledNumberP = document.createElement("p");
+	sessionsCanceledNumberP.classList.add("sessionsCanceledNumberP");
+	sessionsCanceledNumberP.textContent = howManySessionsCanceled();
+	sessionsCanceledNumberDiv.appendChild(sessionsCanceledNumberP);
+	
+	let sessionsLateCanceledNumberDiv = document.createElement("div");
+	sessionsLateCanceledNumberDiv.classList.add("statsDiv", "sessionsLateCanceledNumber");
+	//////
+	let sessionsLateCanceledNumberH2 = document.createElement("h2");
+	sessionsLateCanceledNumberH2.classList.add("sessionsLateCanceledNumberH2");
+	sessionsLateCanceledNumberH2.textContent = "Nombre de sessions annulées tardivement (session + soutenance) : ";
+	sessionsLateCanceledNumberDiv.appendChild(sessionsLateCanceledNumberH2);
+	//////
+	let sessionsLateCanceledNumberP = document.createElement("p");
+	sessionsLateCanceledNumberP.classList.add("sessionsLateCanceledNumberP");
+	sessionsLateCanceledNumberP.textContent = howManySessionsLateCanceled();
+	sessionsLateCanceledNumberDiv.appendChild(sessionsLateCanceledNumberP);
+	
+	let sessionsAbsentStudentNumberDiv = document.createElement("div");
+	sessionsAbsentStudentNumberDiv.classList.add("statsDiv", "sessionsAbsentStudentNumber");
+	//////
+	let sessionsAbsentStudentNumberH2 = document.createElement("h2");
+	sessionsAbsentStudentNumberH2.classList.add("sessionsAbsentStudentNumberH2");
+	sessionsAbsentStudentNumberH2.textContent = "Nombre d'absences d'étudiants (session + soutenance) : ";
+	sessionsAbsentStudentNumberDiv.appendChild(sessionsAbsentStudentNumberH2);
+	//////
+	let sessionsAbsentStudentNumberP = document.createElement("p");
+	sessionsAbsentStudentNumberP.classList.add("sessionsAbsentStudentNumberP");
+	sessionsAbsentStudentNumberP.textContent = howManySessionsAbsentStudent();
+	sessionsAbsentStudentNumberDiv.appendChild(sessionsAbsentStudentNumberP);
+
+	statsArea.appendChild(studentsMentoringFollowedNumberDiv);
+	statsArea.appendChild(studentsSoutenanceFollowedNumberDiv);
+	statsArea.appendChild(sessionsExecutedNumberDiv);
+	statsArea.appendChild(sessionsCanceledNumberDiv);
+	statsArea.appendChild(sessionsLateCanceledNumberDiv);
+	statsArea.appendChild(sessionsAbsentStudentNumberDiv);
 }
 
 function observerHistoryTableChanging() {
