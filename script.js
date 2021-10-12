@@ -971,17 +971,19 @@ function displayStudentsList(studentsListTabsArea) {
 	studentsListMentoringH2.textContent = "Etudiants suivis (mentorat)";
 	studentsListMentoring.appendChild(studentsListMentoringH2);
 	//////
+	let studentsMentoring = 1;
 	for (student of allStudentListTab) {
 		if (student.type == "Mentorat") {
 			let studentsListMentoringP = document.createElement("p");
 			studentsListMentoringP.classList.add("studentsListP");
 			let studentsListMentoringA = document.createElement("a");
 			studentsListMentoringA.classList.add("studentsListA");
-			studentsListMentoringA.textContent = student.name;
+			studentsListMentoringA.textContent = studentsMentoring + " - " + student.name;
 			studentsListMentoringA.href = student.link;
 			studentsListMentoringA.setAttribute("target", "_blank");
 			studentsListMentoringP.appendChild(studentsListMentoringA);
 			studentsListMentoring.appendChild(studentsListMentoringP);
+			studentsMentoring++;
 		}
 	}
 	
@@ -993,17 +995,29 @@ function displayStudentsList(studentsListTabsArea) {
 	studentsListDefenseH2.textContent = "Etudiants suivis (soutenance)";
 	studentsListDefense.appendChild(studentsListDefenseH2);
 	//////
+	let studentsDefense = 1;
 	for (student of allStudentListTab) {
 		if (student.type == "Soutenance") {
-			let studentsListDefenseP = document.createElement("p");
-			studentsListDefenseP.classList.add("studentsListP");
-			let studentsListDefenseA = document.createElement("a");
-			studentsListDefenseA.classList.add("studentsListA");
-			studentsListDefenseA.textContent = student.name;
-			studentsListDefenseA.href = student.link;
-			studentsListDefenseA.setAttribute("target", "_blank");
-			studentsListDefenseP.appendChild(studentsListDefenseA);
-			studentsListDefense.appendChild(studentsListDefenseP);
+			let mentoredStudent = 0;
+			// L'idée ici est de retirer les soutenances pour les étudiants mentorés, pour ne garder que les étudiants vus en soutenances uniquement
+			for (studentNestedFor of allStudentListTab) {
+				if (studentNestedFor.name == student.name && studentNestedFor.type == "Mentorat"){
+					mentoredStudent++;
+					break;
+				}
+			}
+			if (mentoredStudent == 0) {
+				let studentsListDefenseP = document.createElement("p");
+				studentsListDefenseP.classList.add("studentsListP");
+				let studentsListDefenseA = document.createElement("a");
+				studentsListDefenseA.classList.add("studentsListA");
+				studentsListDefenseA.textContent = studentsDefense + " - " + student.name;
+				studentsListDefenseA.href = student.link;
+				studentsListDefenseA.setAttribute("target", "_blank");
+				studentsListDefenseP.appendChild(studentsListDefenseA);
+				studentsListDefense.appendChild(studentsListDefenseP);
+				studentsDefense++;
+			}
 		}
 	}
 	
