@@ -881,7 +881,6 @@ function observerHistoryTableChanging() {
 	
 	function mCallback(mutations) {
 		let SessionsHistoryTrLength = document.querySelectorAll("#mainContent > " + classOfDivContainingTable + " > section > ol > li").length;
-		console.log(SessionsHistoryTrLength);
 		
 		if (SessionsHistoryTrLength > 0) {
 			console.log("HISTORY TABLE LOADED AFTER VOIR PLUS");
@@ -900,7 +899,6 @@ function observerHistoryTableLoading() {
 	
 	function mCallback(mutations) {
 		let SessionsHistoryTrLength = document.querySelectorAll("#mainContent > " + classOfDivContainingTable + " > section > ol > li").length;
-		console.log(SessionsHistoryTrLength);
 		
 		let buttonVoirPLus = getVoirPlus();
 		if (buttonVoirPLus) {
