@@ -8,7 +8,8 @@
 
 /*Display select dropdown*/
 
-#monthSelect {
+#monthSelect,
+#yearSelect {
 	font-family: Montserrat;
 	font-weight: 700;
     line-height: 1.5rem;
@@ -19,7 +20,8 @@
     padding: 0 11px;
 }
 
-#monthSelect .monthSelectOption {
+#monthSelect .monthSelectOption,
+#yearSelect .yearSelectOption {
 	font-family: Montserrat;
 	font-weight: 500;
     line-height: 1.5rem;
@@ -254,6 +256,16 @@ div#RecapTabsArea {
     display: flex;
     flex-direction: column;
     margin-top: 50px;
+}
+
+.statsDiv {
+    display: flex;
+}
+
+.statsDiv p {
+	line-height: 48px;
+    padding-top: 2px;
+    padding-left: 10px;
 }
 
 

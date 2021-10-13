@@ -121,7 +121,29 @@ function addToolBar() {
 	toolBarSectionSelectMonthSelectOptionDecembre.classList.add("monthSelectOption");
 	toolBarSectionSelectMonthSelectOptionDecembre.setAttribute("value", "décembre");
 	toolBarSectionSelectMonthSelectOptionDecembre.textContent = "Décembre";
-	
+
+	// Create Select year
+	///// Select
+	let toolBarSectionSelectYearSelect = document.createElement("select");
+	toolBarSectionSelectYearSelect.id = "yearSelect";
+	toolBarSectionSelectYearSelect.classList.add("toolBarSectionButton");
+	toolBarSectionSelectYearSelect.setAttribute("name", "year");
+	///// Option
+	////////// Default
+	let toolBarSectionSelectYearSelectOptionDefault = document.createElement("option");
+	toolBarSectionSelectYearSelectOptionDefault.classList.add("yearSelectOption");
+	toolBarSectionSelectYearSelectOptionDefault.setAttribute("value", "default");
+	toolBarSectionSelectYearSelectOptionDefault.textContent = "Choisir une année";
+	toolBarSectionSelectYearSelect.appendChild(toolBarSectionSelectYearSelectOptionDefault);
+	////////// 2015 - Current year
+	for (let year = new Date().getFullYear(); year > 2014; year--) {
+		let toolBarSectionSelectYear = document.createElement("option");
+		toolBarSectionSelectYear.classList.add("yearSelectOption");
+		toolBarSectionSelectYear.setAttribute("value", year);
+		toolBarSectionSelectYear.textContent = year;
+		toolBarSectionSelectYearSelect.appendChild(toolBarSectionSelectYear);
+	}
+
 	// // Create Extra
 	///// Select
 	let toolBarSectionExtra = document.createElement("select");
@@ -209,6 +231,8 @@ function addToolBar() {
 	toolBarSectionSelectMonthSelect.appendChild(toolBarSectionSelectMonthSelectOptionNovembre);
 	toolBarSectionSelectMonthSelect.appendChild(toolBarSectionSelectMonthSelectOptionDecembre);
 	toolBarSection.appendChild(toolBarSectionSelectMonthSelect);
+	// Insert Select year
+	toolBarSection.appendChild(toolBarSectionSelectYearSelect);
 	// // Insert Extra
 	// toolBarSection.appendChild(toolBarSectionExtra);
 	// Insert Extra
@@ -312,6 +336,7 @@ function getDisplayedSessions() {
 		newItem.sessionStatus = session.getElementsByTagName("svg")[0].getAttribute("aria-label");
 		newItem.sessionDate = session.getElementsByTagName("time")[0].textContent;
 		newItem.sessionDateMonth = newItem.sessionDate.split(' ')[1];
+		newItem.sessionDateYear = newItem.sessionDate.split(' ')[2].match(/\d+/g)[0];
 		newItem.sessionId = newItem.sessionDate + " - " + newItem.studentName;
 		newItem.sessionType = session.getElementsByTagName("p")[0].textContent;
 		// Set newItem.sessionLvl
@@ -443,11 +468,13 @@ function displayRecapTabs() {
 						  mainArea.querySelector("section"), 
 						  mainArea.querySelector("section").nextElementSibling];
 	
-	// Get selected month
+	// Get selected month and year
 	let monthSelected =  document.getElementById("monthSelect").value;
-	console.log("monthSelected = " + monthSelected);
+	let yearSelected =  document.getElementById("yearSelect").value;
 	if (monthSelected == "default")
 		alert("Choisir un mois");
+	if (yearSelected == "default")
+		alert("Choisir une année");
 	else {
 		// On cache les éléments de la page "mentorship-sessions-history" pour faire du vide (un menu, la liste des étudiants, la pagination)
 		if (elementsToHide[0].style.display != "none") {
@@ -473,9 +500,9 @@ function displayRecapTabs() {
 		RecapTabsArea.appendChild(exitCross);
 		
 		// Affichage des différents gros tableaux
-		displayTab("AutoFinancé", ["af"], [monthSelected], RecapTabsArea, ["Mentorat"]);
-		displayTab("Financé", ["f"], [monthSelected], RecapTabsArea, ["Mentorat"]);
-		displayTab("Soutenance", ["af", "f"], [monthSelected], RecapTabsArea, ["Soutenance"]);
+		displayTab("AutoFinancé", ["af"], [monthSelected], [yearSelected], RecapTabsArea, ["Mentorat"]);
+		displayTab("Financé", ["f"], [monthSelected], [yearSelected], RecapTabsArea, ["Mentorat"]);
+		displayTab("Soutenance", ["af", "f"], [monthSelected], [yearSelected], RecapTabsArea, ["Soutenance"]);
 		displayBigToto(RecapTabsArea);
 	}
 }
@@ -487,7 +514,7 @@ function hideRecapTabs(elementsToDisplay, elementToHide) {
 	elementToHide.style.display = "none";
 }
 
-function displayTab(tabName, studentFaOrF, monthSelected, RecapTabsArea, sessionType) {
+function displayTab(tabName, studentFaOrF, monthSelected, yearSelected, RecapTabsArea, sessionType) {
 	// Create TABLE
 	let sessionsTable = document.createElement("table");
 	sessionsTable.classList.add("recaptTab", "recaptTab"+sessionType, "recaptTab"+studentFaOrF);
@@ -553,8 +580,8 @@ function displayTab(tabName, studentFaOrF, monthSelected, RecapTabsArea, session
 	//
 	let sessionsTr2Td2 = document.createElement("td");
 	sessionsTr2Td2.classList.add("data-td", "Réalisée", "lvl1");
-	sessionsTr2Td2.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, RecapTabsArea, sessionType, "1", "Réalisée");});
-	let sessionsTr2Td2Length = getSessionsWithParams(studentFaOrF, monthSelected, ["1"], ["Réalisée"], sessionType).length;
+	sessionsTr2Td2.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, yearSelected, RecapTabsArea, sessionType, "1", "Réalisée");});
+	let sessionsTr2Td2Length = getSessionsWithParams(studentFaOrF, monthSelected, yearSelected, ["1"], ["Réalisée"], sessionType).length;
 	sessionsTr2Td2.textContent = sessionsTr2Td2Length;
 	let sessionsTr2Td2Span = document.createElement("span");
 	sessionsTr2Td2Span.classList.add("price", "priceRéalisée", "priceLvl1");
@@ -563,8 +590,8 @@ function displayTab(tabName, studentFaOrF, monthSelected, RecapTabsArea, session
 	//
 	let sessionsTr2Td3 = document.createElement("td");
 	sessionsTr2Td3.classList.add("data-td", "Réalisée", "lvl2");
-	sessionsTr2Td3.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, RecapTabsArea, sessionType, "2", "Réalisée");});
-	let sessionsTr2Td3Length = getSessionsWithParams(studentFaOrF, monthSelected, ["2"], ["Réalisée"], sessionType).length;
+	sessionsTr2Td3.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, yearSelected, RecapTabsArea, sessionType, "2", "Réalisée");});
+	let sessionsTr2Td3Length = getSessionsWithParams(studentFaOrF, monthSelected, yearSelected, ["2"], ["Réalisée"], sessionType).length;
 	sessionsTr2Td3.textContent = sessionsTr2Td3Length;
 	let sessionsTr2Td3Span = document.createElement("span");
 	sessionsTr2Td3Span.classList.add("price", "priceRéalisée", "priceLvl2");
@@ -573,8 +600,8 @@ function displayTab(tabName, studentFaOrF, monthSelected, RecapTabsArea, session
 	//
 	let sessionsTr2Td4 = document.createElement("td");
 	sessionsTr2Td4.classList.add("data-td", "Réalisée", "lvl3");
-	sessionsTr2Td4.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, RecapTabsArea, sessionType, "3", "Réalisée");});
-	let sessionsTr2Td4Length = getSessionsWithParams(studentFaOrF, monthSelected, ["3"], ["Réalisée"], sessionType).length;
+	sessionsTr2Td4.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, yearSelected, RecapTabsArea, sessionType, "3", "Réalisée");});
+	let sessionsTr2Td4Length = getSessionsWithParams(studentFaOrF, monthSelected, yearSelected, ["3"], ["Réalisée"], sessionType).length;
 	sessionsTr2Td4.textContent = sessionsTr2Td4Length;
 	let sessionsTr2Td4Span = document.createElement("span");
 	sessionsTr2Td4Span.classList.add("price", "priceRéalisée", "priceLvl3");
@@ -603,8 +630,8 @@ function displayTab(tabName, studentFaOrF, monthSelected, RecapTabsArea, session
 	//
 	let sessionsTr3Td2 = document.createElement("td");
 	sessionsTr3Td2.classList.add("data-td", "Étudiantabsent", "lvl1");
-	sessionsTr3Td2.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, RecapTabsArea, sessionType, "1", "Étudiant absent");});
-	let sessionsTr3Td2Length = getSessionsWithParams(studentFaOrF, monthSelected, ["1"], ["Étudiant absent"], sessionType).length;
+	sessionsTr3Td2.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, yearSelected, RecapTabsArea, sessionType, "1", "Étudiant absent");});
+	let sessionsTr3Td2Length = getSessionsWithParams(studentFaOrF, monthSelected, yearSelected, ["1"], ["Étudiant absent"], sessionType).length;
 	sessionsTr3Td2.textContent = sessionsTr3Td2Length;
 	let sessionsTr3Td2Span = document.createElement("span");
 	sessionsTr3Td2Span.classList.add("price", "priceÉtudiantabsent", "priceLvl1");
@@ -616,8 +643,8 @@ function displayTab(tabName, studentFaOrF, monthSelected, RecapTabsArea, session
 	//
 	let sessionsTr3Td3 = document.createElement("td");
 	sessionsTr3Td3.classList.add("data-td", "Étudiantabsent", "lvl2");
-	sessionsTr3Td3.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, RecapTabsArea, sessionType, "2", "Étudiant absent");});
-	let sessionsTr3Td3Length = getSessionsWithParams(studentFaOrF, monthSelected, ["2"], ["Étudiant absent"], sessionType).length;
+	sessionsTr3Td3.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, yearSelected, RecapTabsArea, sessionType, "2", "Étudiant absent");});
+	let sessionsTr3Td3Length = getSessionsWithParams(studentFaOrF, monthSelected, yearSelected, ["2"], ["Étudiant absent"], sessionType).length;
 	sessionsTr3Td3.textContent = sessionsTr3Td3Length;
 	let sessionsTr3Td3Span = document.createElement("span");
 	sessionsTr3Td3Span.classList.add("price", "priceÉtudiantabsent", "priceLvl2");
@@ -629,8 +656,8 @@ function displayTab(tabName, studentFaOrF, monthSelected, RecapTabsArea, session
 	//
 	let sessionsTr3Td4 = document.createElement("td");
 	sessionsTr3Td4.classList.add("data-td", "Étudiantabsent", "lvl3");
-	sessionsTr3Td4.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, RecapTabsArea, sessionType, "3", "Étudiant absent");});
-	let sessionsTr3Td4Length = getSessionsWithParams(studentFaOrF, monthSelected, ["3"], ["Étudiant absent"], sessionType).length;
+	sessionsTr3Td4.addEventListener("click", function(){displayDetails(studentFaOrF, monthSelected, yearSelected, RecapTabsArea, sessionType, "3", "Étudiant absent");});
+	let sessionsTr3Td4Length = getSessionsWithParams(studentFaOrF, monthSelected, yearSelected, ["3"], ["Étudiant absent"], sessionType).length;
 	sessionsTr3Td4.textContent = sessionsTr3Td4Length;
 	let sessionsTr3Td4Span = document.createElement("span");
 	sessionsTr3Td4Span.classList.add("price", "priceÉtudiantabsent", "priceLvl3");
@@ -663,10 +690,10 @@ function displayTab(tabName, studentFaOrF, monthSelected, RecapTabsArea, session
 	let sessionsTr4Td2 = document.createElement("td");
 	sessionsTr4Td2.classList.add("data-td", "EtudiantsSuivis");
 	///// Get sessions
-	let sessions = getSessionsWithParams(studentFaOrF, monthSelected, ["1", "2", "3"], ["Réalisée", "Étudiant absent"], sessionType);
+	let sessions = getSessionsWithParams(studentFaOrF, monthSelected, yearSelected, ["1", "2", "3"], ["Réalisée", "Étudiant absent"], sessionType);
 	///// Set TD
 	sessionsTr4Td2.textContent = uniqueStudentsAmongSessions(sessions).length;
-	sessionsTr4Td2.addEventListener("click", function(){displayUniqueStudentsAmongSessions(studentFaOrF, monthSelected, RecapTabsArea, sessionType, "3", "Étudiant absent", sessions);});
+	sessionsTr4Td2.addEventListener("click", function(){displayUniqueStudentsAmongSessions(studentFaOrF, monthSelected, yearSelected, RecapTabsArea, sessionType, "3", "Étudiant absent", sessions);});
 	// Create TD 
 	let sessionsTr4Td3 = document.createElement("td");
 	let sessionsTr4Td4 = document.createElement("td");
@@ -749,7 +776,7 @@ function displayBigToto(RecapTabsArea) {
 	RecapTabsArea.appendChild(bigTotoDivNet);
 }
 
-function displayDetails(studentFaOrF, monthSelected, RecapTabsArea, sessionType, sessionLvl, sessionStatus) {
+function displayDetails(studentFaOrF, monthSelected, yearSelected, RecapTabsArea, sessionType, sessionLvl, sessionStatus) {
 	// Clean old sessionsDetailsDiv
 	let oldSessionsDetailsDiv = document.getElementsByClassName("sessionsDetailsDiv");
 	if(oldSessionsDetailsDiv.length > 0)
@@ -768,7 +795,7 @@ function displayDetails(studentFaOrF, monthSelected, RecapTabsArea, sessionType,
 	sessionsDetailsDiv.appendChild(sessionsDetailsH3);
 	
 	// Get sessions
-	let sessions = getSessionsWithParams(studentFaOrF, monthSelected, sessionLvl, sessionStatus, sessionType)
+	let sessions = getSessionsWithParams(studentFaOrF, monthSelected, yearSelected, sessionLvl, sessionStatus, sessionType)
 	let c = 1;
 	for (session of sessions) {
 		let sessionsDetailsP = document.createElement("p");
@@ -782,7 +809,7 @@ function displayDetails(studentFaOrF, monthSelected, RecapTabsArea, sessionType,
 	RecapTabsArea.appendChild(sessionsDetailsDiv);	
 }
 
-function displayUniqueStudentsAmongSessions(studentFaOrF, monthSelected, RecapTabsArea, sessionType, sessionLvl, sessionStatus, studentsList) {
+function displayUniqueStudentsAmongSessions(studentFaOrF, monthSelected, yearSelected, RecapTabsArea, sessionType, sessionLvl, sessionStatus, studentsList) {
 	// Clean old sessionsDetailsDiv
 	let oldSessionsDetailsDiv = document.getElementsByClassName("sessionsDetailsDiv");
 	if(oldSessionsDetailsDiv.length > 0)
@@ -815,7 +842,7 @@ function displayUniqueStudentsAmongSessions(studentFaOrF, monthSelected, RecapTa
 	RecapTabsArea.appendChild(sessionsDetailsDiv);	
 }
 
-function getSessionsWithParams(studentFaOrFArray, sessionDateMonthArray, sessionLvlArray, sessionStatusArray, sessionTypeArray) {
+function getSessionsWithParams(studentFaOrFArray, sessionDateMonthArray, sessionDateYearArray, sessionLvlArray, sessionStatusArray, sessionTypeArray) {
 	// Get l'historique des sessions
 	let sessionsHistoryTab = JSON.parse(localStorage.getItem('sessionsHistoryTab'));
 	
@@ -825,6 +852,7 @@ function getSessionsWithParams(studentFaOrFArray, sessionDateMonthArray, session
 	for (session of sessionsHistoryTab) {
 		if (studentFaOrFArray.includes(session.studentFaOrF) && 
 		sessionDateMonthArray.includes(session.sessionDateMonth) && 
+		sessionDateYearArray.includes(session.sessionDateYear) && 
 		sessionLvlArray.includes(session.sessionLvl) && 
 		sessionStatusArray.includes(session.sessionStatus) && 
 		sessionTypeArray.includes(session.sessionType)) {
