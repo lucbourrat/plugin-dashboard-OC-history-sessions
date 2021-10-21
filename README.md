@@ -9,6 +9,7 @@ INSTALLATION :
       - https://openclassrooms.com/fr/mentorship/dashboard/mentorship-sessions-history pour ajouter le contenu du dossier "mentorship-sessions-history"
       - https://openclassrooms.com/fr/mentorship/dashboard/students pour ajouter le contenu du dossier "dashboard---students"
       - https://openclassrooms.com/fr/mentorship/students/*/dashboard pour ajouter le contenu du dossier "students---studentID---dashboard"
+      - https://openclassrooms.com/fr/mentorship/dashboard/calendar/edit pour ajouter le contenu du dossier "dashboard---calendar---edit"
 - Pour chaque dossier, à chaque url (données ci-dessus) :
       
       - Copier le contenu de script.js dans la colonne de gauche (JS)
