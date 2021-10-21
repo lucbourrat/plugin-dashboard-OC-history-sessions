@@ -167,6 +167,9 @@ function addToolBar() {
     	else if(toolBarSectionExtra.value == "DisplayStats") {
         	displayStatsScreen();
     	}
+    	else if(toolBarSectionExtra.value == "DisplayFormationDate") {
+        	displayFormationDateScreen();
+    	}
 	});
 	///// Option
 	////////// Default
@@ -193,12 +196,17 @@ function addToolBar() {
 	let toolBarSectionExtraOptionDefaulDisplayFollowedStudents = document.createElement("option");
 	toolBarSectionExtraOptionDefaulDisplayFollowedStudents.classList.add("extraDefaultOptionDisplayFollowedStudents");
 	toolBarSectionExtraOptionDefaulDisplayFollowedStudents.setAttribute("value", "DisplayFollowedStudents");
-	toolBarSectionExtraOptionDefaulDisplayFollowedStudents.textContent = "Liste des étudiants suivis";
+	toolBarSectionExtraOptionDefaulDisplayFollowedStudents.textContent = "Liste des étudiants suivis (all)";
 	////////// displayStats
 	let toolBarSectionExtraOptionDefaulDisplayStats = document.createElement("option");
 	toolBarSectionExtraOptionDefaulDisplayStats.classList.add("extraDefaultOptionDisplayStats");
 	toolBarSectionExtraOptionDefaulDisplayStats.setAttribute("value", "DisplayStats");
 	toolBarSectionExtraOptionDefaulDisplayStats.textContent = "Statistiques";
+	////////// displayStats
+	let toolBarSectionExtraOptionDefaulDisplayFormationDate = document.createElement("option");
+	toolBarSectionExtraOptionDefaulDisplayFormationDate.classList.add("extraDefaultOptionDisplayFormationDate");
+	toolBarSectionExtraOptionDefaulDisplayFormationDate.setAttribute("value", "DisplayFormationDate");
+	toolBarSectionExtraOptionDefaulDisplayFormationDate.textContent = "Dates fin formation";
 	
 	// // Insert button 0
 	// toolBarSectionButtonSpan0.appendChild(toolBarSectionButtonSpanSpan0);
@@ -242,6 +250,7 @@ function addToolBar() {
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaulManualOverlayReloader);
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaulDisplayFollowedStudents);
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaulDisplayStats);
+	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaulDisplayFormationDate);
 	toolBarSection.appendChild(toolBarSectionExtra);
 	// AddEventListener
 	// toolBarSectionButton0.addEventListener("click", setAF);
@@ -1134,6 +1143,42 @@ function displayStatsScreen() {
 	displayStats(statsArea);
 }
 
+function displayFormationDateScreen() {
+	// On récupère les éléments à cacher
+	let mainArea = document.getElementById("mainContent").getElementsByTagName("div")[1];
+	let elementsToHide = [mainArea.querySelector("section").previousElementSibling, 
+						  mainArea.querySelector("section"), 
+						  mainArea.querySelector("section").nextElementSibling];
+	
+
+
+	// On cache les éléments de la page "mentorship-sessions-history" pour faire du vide (un menu, la liste des étudiants, la pagination)
+	if (elementsToHide[0].style.display != "none") {
+		for (elementToHide of elementsToHide)
+			elementToHide.style.display = "none";
+	}
+	// Si les stats sont déjà affichées, on supprime celui-ci
+	if (document.getElementById("formationDateArea")) 
+		mainArea.removeChild(document.getElementById("formationDateArea"));
+	
+	// Création de l'élément dans lequel je vais ajouter les éléments html
+	let formationDateArea = document.createElement("div");
+	formationDateArea.id = "formationDateArea";
+	mainArea.appendChild(formationDateArea);
+	
+	// Affichage de la croix (exit)
+	let exitCross = document.createElement("div");
+	exitCross.id = "formationDateAreaExit";
+	exitCross.textContent = "X";
+	exitCross.addEventListener('click', function() {
+		hideRecapTabs(elementsToHide, formationDateArea);
+	});
+	formationDateArea.appendChild(exitCross);
+	
+	// Affichage des différents gros tableaux
+	displayFormationDate(formationDateArea);
+}
+
 function howManySessions() {
 	let sessionsHistoryTab = JSON.parse(localStorage.getItem('sessionsHistoryTab'));
 	let howManySessions = {
@@ -1249,6 +1294,99 @@ function displayStats(statsArea) {
 	statsArea.appendChild(sessionsCanceledNumberDiv);
 	statsArea.appendChild(sessionsLateCanceledNumberDiv);
 	statsArea.appendChild(sessionsAbsentStudentNumberDiv);
+}
+
+function displayFormationDate(formationDateArea) {
+
+	let studentsListTab = JSON.parse(localStorage.getItem('studentsListTab'));
+
+	let months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+	
+	let studentsContainer = document.createElement("div");
+	studentsContainer.classList.add("studentsContainer");
+	
+	
+	let studentsNameColumn = document.createElement("div");
+	studentsNameColumn.classList.add("studentsContainerColumn", "studentsNameColumn");
+	
+	let studentsNameColumnH2 = document.createElement("h2");
+	studentsNameColumnH2.classList.add("studentsContainerColumnH2", "studentsNameColumnH2");
+	studentsNameColumnH2.textContent = "Etudiants :";
+
+	studentsNameColumn.appendChild(studentsNameColumnH2);	
+
+	
+	let studentsDateColumn = document.createElement("div");
+	studentsDateColumn.classList.add("studentsContainerColumn", "studentsDateColumn");
+	
+	let studentsDateColumnH2 = document.createElement("h2");
+	studentsDateColumnH2.classList.add("studentsContainerColumnH2", "studentsDateColumnH2");
+	studentsDateColumnH2.textContent = "Dates de fin de formation :";
+
+	studentsDateColumn.appendChild(studentsDateColumnH2);
+	
+	
+	
+	let monthSection = document.createElement("p");
+	monthSection.classList.add("monthSection");
+	month = months[parseInt(studentsListTab[0].formationDate.split("-")[1], 10)-1];
+	monthSection.textContent = month;
+	
+	studentsNameColumn.appendChild(monthSection);
+	
+	
+	let monthSectionEmpty = document.createElement("p");
+	monthSectionEmpty.classList.add("monthSection", "monthSectionEmpty");
+	
+	studentsDateColumn.appendChild(monthSectionEmpty);
+	
+	
+	let preMonth = monthSection.textContent;
+	
+	for (student of studentsListTab) {
+		let currentMonth = months[parseInt(student.formationDate.split("-")[1], 10)-1];
+		
+		if (currentMonth != preMonth) {
+			let monthSection = document.createElement("p");
+			monthSection.classList.add("monthSection");
+			month = months[parseInt(student.formationDate.split("-")[1], 10)-1];
+			if (student.formationDate == "AF")
+				monthSection.textContent = "auto financé";
+			else
+				monthSection.textContent = month;
+			
+			studentsNameColumn.appendChild(monthSection);
+			
+			
+			let monthSectionEmpty = document.createElement("p");
+			monthSectionEmpty.classList.add("monthSection", "monthSectionEmpty");
+			
+			studentsDateColumn.appendChild(monthSectionEmpty);
+			
+			preMonth = currentMonth;
+		}
+	
+		let studentName = document.createElement("a");
+		studentName.classList.add("studentNameA");	
+		studentName.textContent = student.name;
+		studentName.href = student.dashboard;
+		
+		studentsNameColumn.appendChild(studentName);
+		
+		
+		
+		let studentDate = document.createElement("a");
+		studentDate.classList.add("studentDateA");	
+		studentDate.textContent = student.formationDate;
+		studentDate.href = student.dashboard;
+		
+		studentsDateColumn.appendChild(studentDate);
+	}
+	
+
+	studentsContainer.appendChild(studentsNameColumn);
+	studentsContainer.appendChild(studentsDateColumn);
+	formationDateArea.appendChild(studentsContainer);
 }
 
 function observerHistoryTableChanging() {

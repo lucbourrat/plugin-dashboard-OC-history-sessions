@@ -84,7 +84,8 @@ select.toolBarSectionButton {
 
 #RecapTabsAreaExit,
 #studentsListTabsAreaExit,
-#statsAreaExit {
+#statsAreaExit,
+#formationDateAreaExit  {
 	width: 38px;
 	height: 38px;
     background-color: #7451eb;
@@ -266,6 +267,39 @@ div#RecapTabsArea {
 	line-height: 48px;
     padding-top: 2px;
     padding-left: 10px;
+}
+
+
+
+
+/* FormationDate*/
+
+#formationDateArea {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+}
+
+#formationDateArea .studentsContainer {
+	display: flex;
+}
+
+#formationDateArea .studentsContainerColumn {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 45px;
+}
+
+#formationDateArea .studentsDateColumn {
+    margin-left: 60px;
+}
+
+.monthSection {
+    text-align: right;
+	font-weight: 600;
+	height: 26px;
+	margin-bottom: 17px;
+    margin-top: 12px;
 }
 
 
