@@ -55,7 +55,7 @@ function observerStudentsTableLoading() {
 	
 	function mCallback(mutations) {
 		let studentsTabTrNb = document.getElementById("students_1").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;
-		if (studentsTabTrNb > 0) {
+		if (studentsTabTrNb > 1) {
 		    observer.disconnect();
 		    getStudentsList(studentsTabTrNb);
 		}
