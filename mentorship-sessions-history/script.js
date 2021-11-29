@@ -1,5 +1,5 @@
 let observerVoirPlusAuto;
-let classOfDivContainingTable = ".dom-services-1-dom-services2";
+let classOfDivContainingTable = ".dom-services-1-MentorshipDashboard-wrapper-2";
 
 function miseEnAttente() {
 	setTimeout(addToolBar, 5000); //On attend 5 secondes avant d'exécuter la fonction
