@@ -960,7 +960,7 @@ function updateStudentsList() {
 		}
 		// Si l'étudiant n'est pas déjà présent dans allStudentListTab, on l'ajoute dans localStorage
 		if(alreadyExistingStudent == 0)
-			allStudentListTab.push(currentStudent);
+			allStudentListTab.unshift(currentStudent);
 	}
 	
 	// Update sessionsHistoryTab in localStorage
