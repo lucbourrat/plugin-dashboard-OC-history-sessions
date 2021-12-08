@@ -1330,7 +1330,8 @@ function displayFormationDate(formationDateArea) {
 	let monthSection = document.createElement("p");
 	monthSection.classList.add("monthSection");
 	month = months[parseInt(studentsListTab[0].formationDate.split("-")[1], 10)-1];
-	monthSection.textContent = month;
+	let year = studentsListTab[0].formationDate.split("-")[0];
+	monthSection.textContent = month + " " + year;
 	
 	studentsNameColumn.appendChild(monthSection);
 	
@@ -1341,7 +1342,7 @@ function displayFormationDate(formationDateArea) {
 	studentsDateColumn.appendChild(monthSectionEmpty);
 	
 	
-	let preMonth = monthSection.textContent;
+	let preMonth = month;
 	
 	for (student of studentsListTab) {
 		let currentMonth = months[parseInt(student.formationDate.split("-")[1], 10)-1];
@@ -1350,10 +1351,11 @@ function displayFormationDate(formationDateArea) {
 			let monthSection = document.createElement("p");
 			monthSection.classList.add("monthSection");
 			month = months[parseInt(student.formationDate.split("-")[1], 10)-1];
+			let year = student.formationDate.split("-")[0];
 			if (student.formationDate == "AF")
 				monthSection.textContent = "auto financé";
 			else
-				monthSection.textContent = month;
+				monthSection.textContent = month + " " + year;
 			
 			studentsNameColumn.appendChild(monthSection);
 			
