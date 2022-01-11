@@ -1,7 +1,7 @@
 function addToolBar() {
 	// Get Elements 
-	let container = document.getElementById("mainContent").children[1];
-	let studentsTabDiv = container.getElementsByTagName("div")[0];
+	let container = document.querySelector('#mainContent[class*="webapp"] > .webapp-0-webapp5');
+	let studentsTabDiv = container.children[3];
 	
 	// Create toolBar
 	let toolBarSection = document.createElement("div");
@@ -61,8 +61,8 @@ function foundUnscheduledStudents(studentsListTab, scheduledEventsTab) {
 	
 function displayUnscheduledStudents(unscheduledStudents) {
 	// Get Elements 
-	let container = document.getElementById("mainContent").children[1];;
-	let containerLastElement = container.lastChild;
+	let container = document.querySelector('#mainContent[class*="webapp"] > .webapp-0-webapp5');
+	let containerLastElement = container.children[4];
 	
 	// Create Unscheduled Students Section
 	let unscheduledStudentsSection = document.createElement("div");
