@@ -1,5 +1,6 @@
 let observerVoirPlusAuto;
 let classOfDivContainingTable = ".dom-services-1-dom-services2";
+classOfDivContainingTable = "div[data-search-hide-element='true'] > .webapp-0-webapp8 > .webapp-0-webapp9 > #mainContent > .webapp-0-webapp5";
 
 function miseEnAttente() {
 	setTimeout(addToolBar, 5000); //On attend 5 secondes avant d'exécuter la fonction
@@ -7,7 +8,7 @@ function miseEnAttente() {
 
 function addToolBar() {	
 	// Get container 
-	let container = document.getElementById("mainContent").getElementsByTagName("div")[1];
+	let container = document.getElementById("mainContent").getElementsByClassName("webapp-0-webapp5")[0];
 	
 	// Get navSection 
 	let navSection = container.children[2];
@@ -472,7 +473,7 @@ function stopObserverVoirPlusAuto() {
 
 function displayRecapTabs() {
 	// On récupère les éléments à cacher
-	let mainArea = document.getElementById("mainContent").getElementsByTagName("div")[1];
+	let mainArea = document.getElementById("mainContent").getElementsByClassName("webapp-0-webapp5")[0];
 	let elementsToHide = [mainArea.querySelector("section").previousElementSibling, 
 						  mainArea.querySelector("section"), 
 						  mainArea.querySelector("section").nextElementSibling];
@@ -969,7 +970,7 @@ function updateStudentsList() {
 
 function displayFollowedStudents() {
 	// On récupère les éléments à cacher
-	let mainArea = document.getElementById("mainContent").getElementsByTagName("div")[1];
+	let mainArea = document.getElementById("mainContent").getElementsByClassName("webapp-0-webapp5")[0];
 	let elementsToHide = [mainArea.querySelector("section").previousElementSibling, 
 						  mainArea.querySelector("section"), 
 						  mainArea.querySelector("section").nextElementSibling];
@@ -1109,7 +1110,7 @@ function displayStudentsList(studentsListTabsArea) {
 
 function displayStatsScreen() {
 	// On récupère les éléments à cacher
-	let mainArea = document.getElementById("mainContent").getElementsByTagName("div")[1];
+	let mainArea = document.getElementById("mainContent").getElementsByClassName("webapp-0-webapp5")[0];
 	let elementsToHide = [mainArea.querySelector("section").previousElementSibling, 
 						  mainArea.querySelector("section"), 
 						  mainArea.querySelector("section").nextElementSibling];
@@ -1145,7 +1146,7 @@ function displayStatsScreen() {
 
 function displayFormationDateScreen() {
 	// On récupère les éléments à cacher
-	let mainArea = document.getElementById("mainContent").getElementsByTagName("div")[1];
+	let mainArea = document.getElementById("mainContent").getElementsByClassName("webapp-0-webapp5")[0];
 	let elementsToHide = [mainArea.querySelector("section").previousElementSibling, 
 						  mainArea.querySelector("section"), 
 						  mainArea.querySelector("section").nextElementSibling];
@@ -1419,6 +1420,8 @@ function observerHistoryTableLoading() {
 	
 	function mCallback(mutations) {
 		let SessionsHistoryTrLength = document.querySelectorAll("#mainContent > " + classOfDivContainingTable + " > section > ol > li").length;
+		
+		console.log(SessionsHistoryTrLength);
 		
 		let buttonVoirPLus = getVoirPlus();
 		if (buttonVoirPLus) {
