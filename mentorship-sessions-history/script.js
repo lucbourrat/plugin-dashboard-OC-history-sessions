@@ -1,6 +1,6 @@
 let observerVoirPlusAuto;
 let classOfDivContainingTable = ".dom-services-1-dom-services2";
-classOfDivContainingTable = "div[data-search-hide-element='true'] > .webapp-0-webapp8 > .webapp-0-webapp9 > #mainContent > .webapp-0-webapp5";
+classOfDivContainingTable = "div[data-search-hide-element='true'] > .webapp-0-webapp8 > .webapp-0-webapp9 > #mainContent > .webapp-0-webapp5> #history";
 
 function miseEnAttente() {
 	setTimeout(addToolBar, 5000); //On attend 5 secondes avant d'exécuter la fonction
@@ -26,6 +26,7 @@ function addToolBar() {
 	
 	let toolBarSectionButtonSpanSpan1 = document.createElement("span");
 	toolBarSectionButtonSpanSpan1.textContent = "Ajouter les sessions ci-dessous à la BDD";
+	//toolBarSectionButtonSpanSpan1.setAttribute("onclick", "getDisplayedSessions()");
 	toolBarSectionButtonSpanSpan1.style.textTransform = "none";
 	
 	// Create button 2
@@ -350,7 +351,7 @@ function getDisplayedSessions() {
 		newItem.sessionId = newItem.sessionDate + " - " + newItem.studentName;
 		newItem.sessionType = session.getElementsByTagName("p")[0].textContent;
 		// Set newItem.sessionLvl
-		if (newItem.sessionStatus == "Annulée" || newItem.sessionStatus == "Annulée tardivement")
+		if (newItem.sessionStatus == "Annulée" || newItem.sessionStatus == "Annulée tardivement" || newItem.sessionStatus == "Étudiant absent")
 			newItem.sessionLvl = "0";
 		else
 			newItem.sessionLvl = session.children[3].getElementsByTagName("span")[0].textContent;
@@ -475,8 +476,7 @@ function displayRecapTabs() {
 	// On récupère les éléments à cacher
 	let mainArea = document.getElementById("mainContent").getElementsByClassName("webapp-0-webapp5")[0];
 	let elementsToHide = [mainArea.querySelector("section").previousElementSibling, 
-						  mainArea.querySelector("section"), 
-						  mainArea.querySelector("section").nextElementSibling];
+						  mainArea.querySelector("section")];
 	
 	// Get selected month and year
 	let monthSelected =  document.getElementById("monthSelect").value;
@@ -486,7 +486,7 @@ function displayRecapTabs() {
 	if (yearSelected == "default")
 		alert("Choisir une année");
 	else {
-		// On cache les éléments de la page "mentorship-sessions-history" pour faire du vide (un menu, la liste des étudiants, la pagination)
+		// On cache les éléments de la page "mentorship-sessions-history" pour faire du vide (un menu, la liste des étudiants)
 		if (elementsToHide[0].style.display != "none") {
 			for (elementToHide of elementsToHide)
 				elementToHide.style.display = "none";
@@ -520,7 +520,6 @@ function displayRecapTabs() {
 function hideRecapTabs(elementsToDisplay, elementToHide) {
 	elementsToDisplay[0].style.display = "block";
 	elementsToDisplay[1].style.display = "block";
-	elementsToDisplay[2].style.display = "flex";
 	elementToHide.style.display = "none";
 }
 
@@ -972,8 +971,7 @@ function displayFollowedStudents() {
 	// On récupère les éléments à cacher
 	let mainArea = document.getElementById("mainContent").getElementsByClassName("webapp-0-webapp5")[0];
 	let elementsToHide = [mainArea.querySelector("section").previousElementSibling, 
-						  mainArea.querySelector("section"), 
-						  mainArea.querySelector("section").nextElementSibling];
+						  mainArea.querySelector("section")];
 	
 
 
@@ -1112,8 +1110,7 @@ function displayStatsScreen() {
 	// On récupère les éléments à cacher
 	let mainArea = document.getElementById("mainContent").getElementsByClassName("webapp-0-webapp5")[0];
 	let elementsToHide = [mainArea.querySelector("section").previousElementSibling, 
-						  mainArea.querySelector("section"), 
-						  mainArea.querySelector("section").nextElementSibling];
+						  mainArea.querySelector("section")];
 	
 
 
@@ -1148,8 +1145,7 @@ function displayFormationDateScreen() {
 	// On récupère les éléments à cacher
 	let mainArea = document.getElementById("mainContent").getElementsByClassName("webapp-0-webapp5")[0];
 	let elementsToHide = [mainArea.querySelector("section").previousElementSibling, 
-						  mainArea.querySelector("section"), 
-						  mainArea.querySelector("section").nextElementSibling];
+						  mainArea.querySelector("section")];
 	
 
 

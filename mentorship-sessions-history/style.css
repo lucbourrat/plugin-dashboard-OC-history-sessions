@@ -42,6 +42,7 @@
     color: white !important;
     border-radius: 10px !important;
 	padding: 9px 16px !important;
+	cursor: pointer;
 }
 .toolBarSectionButton:hover {
 	box-shadow: 0 6px 6px 0 rgb(0 0 0 / 26%), 0 10px 20px 0 rgb(0 0 0 / 19%);
@@ -73,6 +74,7 @@ select.toolBarSectionButton {
 
 .studentListed {
 	border-right: 1px solid red;
+	order: 5;
 }
 
 .studentListedAlreadyInBDD {
