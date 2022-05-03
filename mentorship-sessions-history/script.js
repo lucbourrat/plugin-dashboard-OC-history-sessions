@@ -1296,7 +1296,10 @@ function displayStats(statsArea) {
 function displayFormationDate(formationDateArea) {
 
 	let studentsListTab = JSON.parse(localStorage.getItem('studentsListTab'));
-
+	
+	// Sort studentsListTab by date
+	studentsListTab.sort((a,b) => (a.formationDate > b.formationDate) ? 1 : ((b.formationDate > a.formationDate) ? -1 : 0))
+	
 	let months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
 	
 	let studentsContainer = document.createElement("div");
