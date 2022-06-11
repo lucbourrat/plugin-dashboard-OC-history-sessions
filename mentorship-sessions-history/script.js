@@ -475,8 +475,8 @@ function stopObserverVoirPlusAuto() {
 function displayRecapTabs() {
 	// On récupère les éléments à cacher
 	let mainArea = document.getElementById("mainContent").getElementsByClassName("webapp-0-webapp5")[0];
-	let elementsToHide = [mainArea.querySelector("section").previousElementSibling, 
-						  mainArea.querySelector("section")];
+	let elementsToHide = [mainArea.querySelector("#history"), 
+						  mainArea.querySelector("#history").previousElementSibling];
 	
 	// Get selected month and year
 	let monthSelected =  document.getElementById("monthSelect").value;
@@ -970,8 +970,8 @@ function updateStudentsList() {
 function displayFollowedStudents() {
 	// On récupère les éléments à cacher
 	let mainArea = document.getElementById("mainContent").getElementsByClassName("webapp-0-webapp5")[0];
-	let elementsToHide = [mainArea.querySelector("section").previousElementSibling, 
-						  mainArea.querySelector("section")];
+	let elementsToHide = [mainArea.querySelector("#history"), 
+						  mainArea.querySelector("#history").previousElementSibling];
 	
 
 
@@ -1109,8 +1109,8 @@ function displayStudentsList(studentsListTabsArea) {
 function displayStatsScreen() {
 	// On récupère les éléments à cacher
 	let mainArea = document.getElementById("mainContent").getElementsByClassName("webapp-0-webapp5")[0];
-	let elementsToHide = [mainArea.querySelector("section").previousElementSibling, 
-						  mainArea.querySelector("section")];
+	let elementsToHide = [mainArea.querySelector("#history"), 
+						  mainArea.querySelector("#history").previousElementSibling];
 	
 
 
@@ -1144,8 +1144,8 @@ function displayStatsScreen() {
 function displayFormationDateScreen() {
 	// On récupère les éléments à cacher
 	let mainArea = document.getElementById("mainContent").getElementsByClassName("webapp-0-webapp5")[0];
-	let elementsToHide = [mainArea.querySelector("section").previousElementSibling, 
-						  mainArea.querySelector("section")];
+	let elementsToHide = [mainArea.querySelector("#history"), 
+						  mainArea.querySelector("#history").previousElementSibling];
 	
 
 
