@@ -1327,25 +1327,58 @@ function displayFormationDate(formationDateArea) {
 	
 	
 	
+	
+	let yearSection = document.createElement("p");
+	yearSection.classList.add("yearSection");
+	let year = studentsListTab[0].formationDate.split("-")[0];
+	yearSection.textContent = year;
+	
+	studentsNameColumn.appendChild(yearSection);
+	
+	
 	let monthSection = document.createElement("p");
 	monthSection.classList.add("monthSection");
 	month = months[parseInt(studentsListTab[0].formationDate.split("-")[1], 10)-1];
-	let year = studentsListTab[0].formationDate.split("-")[0];
 	monthSection.textContent = month + " " + year;
 	
 	studentsNameColumn.appendChild(monthSection);
 	
 	
+	let yearSectionEmpty = document.createElement("p");
+	yearSectionEmpty.classList.add("yearSection", "yearSectionEmpty");
 	let monthSectionEmpty = document.createElement("p");
 	monthSectionEmpty.classList.add("monthSection", "monthSectionEmpty");
 	
+	studentsDateColumn.appendChild(yearSectionEmpty);
 	studentsDateColumn.appendChild(monthSectionEmpty);
 	
 	
 	let preMonth = month;
+	let preYear = year;
 	
 	for (student of studentsListTab) {
 		let currentMonth = months[parseInt(student.formationDate.split("-")[1], 10)-1];
+		let currentYear = student.formationDate.split("-")[0];
+		
+		if (currentYear != preYear) {
+			let yearSection = document.createElement("p");
+			yearSection.classList.add("yearSection");
+			let year = student.formationDate.split("-")[0];
+			if (student.formationDate == "AF")
+				yearSection.textContent = "auto financé";
+			else
+				yearSection.textContent = year;
+			
+			studentsNameColumn.appendChild(yearSection);
+			
+			
+			let yearSectionEmpty = document.createElement("p");
+			yearSectionEmpty.classList.add("yearSection", "yearSectionEmpty");
+			
+			studentsDateColumn.appendChild(yearSectionEmpty);
+			
+			preYear = currentYear;
+		}
 		
 		if (currentMonth != preMonth) {
 			let monthSection = document.createElement("p");
