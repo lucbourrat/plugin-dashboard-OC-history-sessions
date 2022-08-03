@@ -1203,13 +1203,13 @@ function howManySessions() {
 
 	let counter = 0;
 	for (session of sessionsHistoryTab) {
-		if (session.sessionStatus == "Réalisée")
+		if (session.sessionStatus == "Complétée")
 			howManySessions.executed++;
 		else if (session.sessionStatus == "Annulée")
 			howManySessions.canceled++;
 		else if (session.sessionStatus == "Annulée tardivement")
 			howManySessions.lateCanceled++;
-		else if (session.sessionStatus == "Étudiant absent")
+		else if (session.sessionStatus == "Absence")
 			howManySessions.absentStudent++;
 		else
 			alert("Problème avec le status d'une session, sessionId = " + session.sessionId);
@@ -1491,10 +1491,12 @@ function reloadingOverlay() {
 function cleanSessionsHistoryTabInLocalStorage() {
 	let sessionsHistoryTab = JSON.parse(localStorage.getItem('sessionsHistoryTab'));
 	
-	//Convert the old format (with ",") to the new format  (with " à")
+	//Convert the old format to the new format
 	for (session of sessionsHistoryTab) {
 		session.sessionDate = session.sessionDate.replace(',', ' à');
 		session.sessionId = session.sessionId.replace(',', ' à');
+		session.sessionStatus = session.sessionStatus.replace('Réalisée', 'Complétée');
+		session.sessionStatus = session.sessionStatus.replace('Étudiant absent', 'Absence');
 	}
 	localStorage.setItem('sessionsHistoryTab', JSON.stringify(sessionsHistoryTab));
 	
