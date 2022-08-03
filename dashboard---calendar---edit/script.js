@@ -37,7 +37,7 @@ function getScheduledStudentsList() {
 	
 	// Set studentsListTab
 	for (scheduledEvent of scheduledEvents) {
-		scheduledEventsTab.push(scheduledEvent.getElementsByTagName("p")[0].textContent);
+		scheduledEventsTab.push(scheduledEvent.getElementsByTagName("span")[0].textContent);
 	}
 	
 	// Get Students List to localStorage
