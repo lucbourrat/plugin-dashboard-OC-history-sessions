@@ -73,6 +73,7 @@ function observerStudentsTableLoadingOfStudentsPage() {
 // PAGE OF STUDENT DETAILS
 
 function observerStudentsElementLoadingOfStudentDatailsPage() {
+	console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 	let containerToObserve = document.getElementById("mainContentWithHeader");
 	let options = {childList: true, subtree: true};
 	let observer = new MutationObserver(mCallback);
@@ -82,7 +83,7 @@ function observerStudentsElementLoadingOfStudentDatailsPage() {
 		let currentStudentName = document.querySelector('[data-testid=studentHeader]').querySelector("h1").textContent;
 		console.log("Student name =>" + currentStudentName);
 		if (currentStudentName) {
-			console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+			console.log("Student name has been set");
 		    observer.disconnect();
 		    setStudentFormationDate(currentStudentName);
 		}
@@ -96,16 +97,16 @@ function setStudentFormationDate(currentStudentName) {
 	
 	for (student of studentsListTab) {
 		if (student.name == currentStudentName) {
-			let financementType = document.getElementById("details").childNodes[0].childNodes[0].childNodes[0].childNodes[3].textContent.substr(11);
-			console.log(financementType);
+			let financementType = document.getElementById("details").childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[3].textContent.substr(11);
+			console.log("financementType = " + financementType);
 			// Financé par un tiers
 			// Auto-financé
 			if (financementType == "Financé par un tiers") {
 			// if (document.getElementsByClassName("mentorshipStudent")[0].getElementsByTagName("h3")[0]) {
 				// let studentFormationDateSentence = document.getElementsByClassName("mentorshipStudent")[0].getElementsByTagName("h3")[0].textContent;
 				
-				let studentFormationDateSentence = document.getElementById("details").childNodes[0].childNodes[0].childNodes[0].childNodes[5].textContent.substr(26);
-				console.log(studentFormationDateSentence);
+				let studentFormationDateSentence = document.getElementById("details").childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[5].textContent.substr(26);
+				console.log("studentFormationDateSentence = " + studentFormationDateSentence);
 				let studentFormationDateDay = leftFillNum(parseInt(studentFormationDateSentence.split(/(\d+)/)[1], 10),2);
 				let studentFormationDateMonth = studentFormationDateSentence.split(/(\d+)/)[2].replace(/ /g, '').toLowerCase();
 				let studentFormationDateYear = parseInt(studentFormationDateSentence.split(/(\d+)/)[3], 10);
