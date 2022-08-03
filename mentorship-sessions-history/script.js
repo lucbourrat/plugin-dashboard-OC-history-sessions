@@ -1429,7 +1429,8 @@ function displayFormationDate(formationDateArea) {
 		let studentDate = document.createElement("a");
 		studentDate.classList.add("studentDateA");	
 		studentDate.textContent = student.formationDate;
-		studentDate.href = student.dashboard;
+		let studentID = student.dashboard.match(/(\d+)/)[0];
+		studentDate.href = "https://openclassrooms.com/fr/mentorship/dashboard/students/" + studentID + "#details"
 		
 		studentsDateColumn.appendChild(studentDate);
 	}
