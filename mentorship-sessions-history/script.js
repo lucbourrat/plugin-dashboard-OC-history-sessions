@@ -1491,20 +1491,20 @@ function reloadingOverlay() {
 }
 
 function cleanSessionsHistoryTabInLocalStorage() {
-	let sessionsHistoryTab = JSON.parse(localStorage.getItem('sessionsHistoryTabTest'));
+	let sessionsHistoryTab = JSON.parse(localStorage.getItem('sessionsHistoryTab'));
 	
 	//Convert the old format (with ",") to the new format  (with " à")
 	for (session of sessionsHistoryTab) {
 		session.sessionDate = session.sessionDate.replace(',', ' à');
 		session.sessionId = session.sessionId.replace(',', ' à');
 	}
-	localStorage.setItem('sessionsHistoryTabTest', JSON.stringify(sessionsHistoryTab));
+	localStorage.setItem('sessionsHistoryTab', JSON.stringify(sessionsHistoryTab));
 	
 	//Remove duplicates
 	jsonObject = sessionsHistoryTab.map(JSON.stringify);
 	uniqueSet = new Set(jsonObject);
 	sessionsHistoryTab = Array.from(uniqueSet).map(JSON.parse);
-	localStorage.setItem('sessionsHistoryTabTest', JSON.stringify(sessionsHistoryTab));
+	localStorage.setItem('sessionsHistoryTab', JSON.stringify(sessionsHistoryTab));
 }
 
 cleanSessionsHistoryTabInLocalStorage();
