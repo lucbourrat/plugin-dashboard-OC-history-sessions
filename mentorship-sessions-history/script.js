@@ -958,10 +958,10 @@ function updateStudentsList() {
 	for (session of sessionsHistory) {
 		let currentStudent = {};
 		currentStudent.name = session.querySelectorAll('span > div')[2].querySelector('div').lastChild.textContent;
-		if (session.getElementsByTagName("a")[0].href)
-			currentStudent.link = session.getElementsByTagName("a")[0].href;
+		if (session.querySelectorAll('span > div')[2].querySelector('div').lastChild.href)
+			currentStudent.link = session.querySelectorAll('span > div')[2].querySelector('div').lastChild.href;
 		else
-			currentStudent.link = "undefined";
+			currentStudent.link = "href undefined by OC";
 		currentStudent.type = session.getElementsByTagName("p")[0].textContent;
 		
 		// On va vérifier si l'étudiant n'est pas déjà présent dans allStudentListTab
