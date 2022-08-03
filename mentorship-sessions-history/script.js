@@ -1442,9 +1442,7 @@ function displayFormationDate(formationDateArea) {
 
 function observerHistoryTableChanging() {
 	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable);
-	elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > ul.webapp-0-webapp168");
-	// console.log(elementToObserve);
-	// console.log(elementToObserve.classList);
+
 	let options = {childList: true, subtree: true};
 	let observer = new MutationObserver(mCallback);
 	
