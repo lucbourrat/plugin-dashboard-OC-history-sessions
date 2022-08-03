@@ -911,8 +911,7 @@ function markIfSessionIsAlreadyInBDD() {
 	let sessionsHistoryDisplayed = getSessionsHistoryTr();
 	// Check if sessionsDisplayed are already in the BDD
 	for (sessionDisplayed of sessionsHistoryDisplayed) {
-		// let sessionDisplayedId = sessionDisplayed.getElementsByTagName("td")[1].getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("td")[2].getElementsByTagName("a")[0].textContent;
-		let sessionDisplayedId = sessionDisplayed.getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("a")[0].textContent;
+		let sessionDisplayedId = sessionDisplayed.getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.querySelectorAll('span > div')[2].querySelector('div').lastChild.textContent;
 		sessionDisplayed.getElementsByClassName("isItAnAF")[0].classList.remove("studentListed");
 		sessionDisplayed.getElementsByClassName("isItAnAF")[0].classList.remove("studentListedAlreadyInBDD");
 		sessionDisplayed.getElementsByClassName("isItAnAF")[0].classList.add("studentListed");
@@ -931,7 +930,7 @@ function markIfSessionIsAForF() {
 	let sessionsHistoryDisplayed = getSessionsHistoryTr();
 	// Check if sessionsDisplayed are AF or F sessions
 	for (sessionDisplayed of sessionsHistoryDisplayed) {
-		let sessionDisplayedId = sessionDisplayed.getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("a")[0].textContent;
+		let sessionDisplayedId = sessionDisplayed.getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.querySelectorAll('span > div')[2].querySelector('div').lastChild.textContent;
 		if (sessionsHistoryBDD)
 		for (sessionBDD of sessionsHistoryBDD) {
 			if (sessionDisplayedId == sessionBDD.sessionId)
@@ -958,8 +957,11 @@ function updateStudentsList() {
 	// Parse sessions list and add new student inside allStudentListTab to localstorage
 	for (session of sessionsHistory) {
 		let currentStudent = {};
-		currentStudent.name = session.getElementsByTagName("a")[0].textContent;
-		currentStudent.link = session.getElementsByTagName("a")[0].href;
+		currentStudent.name = session.querySelectorAll('span > div')[2].querySelector('div').lastChild.textContent;
+		if (session.getElementsByTagName("a")[0].href)
+			currentStudent.link = session.getElementsByTagName("a")[0].href;
+		else
+			currentStudent.link = "undefined";
 		currentStudent.type = session.getElementsByTagName("p")[0].textContent;
 		
 		// On va vérifier si l'étudiant n'est pas déjà présent dans allStudentListTab
@@ -1440,6 +1442,7 @@ function displayFormationDate(formationDateArea) {
 
 function observerHistoryTableChanging() {
 	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable);
+	elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable + " > ul.webapp-0-webapp168");
 	// console.log(elementToObserve);
 	// console.log(elementToObserve.classList);
 	let options = {childList: true, subtree: true};
@@ -1449,7 +1452,7 @@ function observerHistoryTableChanging() {
 		let SessionsHistoryTrLength = document.querySelectorAll("#mainContent > " + classOfDivContainingTable + " > section > ol > li").length;
 		
 		if (SessionsHistoryTrLength > 0) {
-			console.log("HISTORY TABLE LOADED AFTER VOIR PLUS");
+			console.log("HISTORY TABLE LOADED AFTER PAGINATION CHANGE");
 			observer.disconnect();
 			reloadingOverlay();
 			updateStudentsList();
@@ -1466,8 +1469,6 @@ function observerHistoryTableLoading() {
 	
 	function mCallback(mutations) {
 		let SessionsHistoryTrLength = document.querySelectorAll("#mainContent > " + classOfDivContainingTable + " > section > ol > li").length;
-		
-		console.log(SessionsHistoryTrLength);
 		
 		let buttonPaging = getPaging();
 		if (buttonPaging) {
