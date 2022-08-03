@@ -1,3 +1,5 @@
+
+
 let observerVoirPlusAuto;
 let classOfDivContainingTable = ".dom-services-1-dom-services2";
 classOfDivContainingTable = "div[data-search-hide-element='true'] > .webapp-0-webapp8 > .webapp-0-webapp9 > #mainContent > .webapp-0-webapp5> #history";
@@ -281,6 +283,13 @@ function getVoirPlus() {
 	return(buttonVoirPlus);
 }
 
+function getPaging() {
+	let buttonPaging = document.querySelector("#mainContent > " + classOfDivContainingTable + " > ul.webapp-0-webapp168");
+	console.log(buttonPaging);
+
+	return(buttonPaging);
+}
+
 function setAF() {
 	// Get displayed sessions Elements TR
 	let sessionsHistory = getSessionsHistoryTr();
@@ -353,8 +362,13 @@ function getDisplayedSessions() {
 		// Set newItem.sessionLvl
 		if (newItem.sessionStatus == "Annulée" || newItem.sessionStatus == "Annulée tardivement" || newItem.sessionStatus == "Étudiant absent")
 			newItem.sessionLvl = "0";
-		else
-			newItem.sessionLvl = session.children[3].getElementsByTagName("span")[0].textContent;
+		else {
+			if (session.children[3].getElementsByTagName("span")[0])
+				newItem.sessionLvl = session.children[3].getElementsByTagName("span")[0].textContent;
+			else {
+				newItem.sessionLvl = "TO SET";
+			}
+		}
 		// Set newItem.studentFaOrF
 		if (session.children[4] == undefined)
 			alert("AF/F non set");
@@ -429,43 +443,44 @@ function deleteRecapTab() {
 	bodyContainer.appendChild(databaseResetConfirmationDiv);
 }
 
-function VoirPlusAuto() {
-	// create / set / add button StopVoirPlusAuto
-	if (document.getElementsByClassName("btnStopVoirPlusAuto").length == 0) {
-		let btnStopVoirPlusAuto = document.createElement("div");
-		btnStopVoirPlusAuto.textContent = "Stop Voir Plus Auto";
-		btnStopVoirPlusAuto.classList.add("btnStopVoirPlusAuto");
-		btnStopVoirPlusAuto.addEventListener("click", stopObserverVoirPlusAuto);
+// the button "voir plus" no longer exists
+// function VoirPlusAuto() {
+// 	// create / set / add button StopVoirPlusAuto
+// 	if (document.getElementsByClassName("btnStopVoirPlusAuto").length == 0) {
+// 		let btnStopVoirPlusAuto = document.createElement("div");
+// 		btnStopVoirPlusAuto.textContent = "Stop Voir Plus Auto";
+// 		btnStopVoirPlusAuto.classList.add("btnStopVoirPlusAuto");
+// 		btnStopVoirPlusAuto.addEventListener("click", stopObserverVoirPlusAuto);
 		
-		let bodyContainer = document.getElementsByTagName("body")[0];
-		bodyContainer.appendChild(btnStopVoirPlusAuto);
-	}
-	else
-		document.getElementsByClassName("btnStopVoirPlusAuto")[0].style.display = "block";
+// 		let bodyContainer = document.getElementsByTagName("body")[0];
+// 		bodyContainer.appendChild(btnStopVoirPlusAuto);
+// 	}
+// 	else
+// 		document.getElementsByClassName("btnStopVoirPlusAuto")[0].style.display = "block";
 	
 	
-	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable);
-	let options = {childList: true, subtree: true};
-	observerVoirPlusAuto = new MutationObserver(mCallback);
+// 	let elementToObserve = document.querySelector("#mainContent > " + classOfDivContainingTable);
+// 	let options = {childList: true, subtree: true};
+// 	observerVoirPlusAuto = new MutationObserver(mCallback);
 	
-	function mCallback(mutations) {
-		let SessionsHistoryTrLength = document.querySelectorAll("#mainContent > " + classOfDivContainingTable + " > section > ol > li").length;
-		console.log(SessionsHistoryTrLength);
-		let buttonVoirPLus = getVoirPlus();
-		// if (buttonVoirPLus) {
-		if (SessionsHistoryTrLength > 0) {
-			window.scrollTo(0,document.body.scrollHeight);
-			buttonVoirPLus.click();
-		}
-		// observerVoirPlusAuto.disconnect();
-	}
+// 	function mCallback(mutations) {
+// 		let SessionsHistoryTrLength = document.querySelectorAll("#mainContent > " + classOfDivContainingTable + " > section > ol > li").length;
+// 		console.log(SessionsHistoryTrLength);
+// 		let buttonVoirPLus = getVoirPlus();
+// 		// if (buttonVoirPLus) {
+// 		if (SessionsHistoryTrLength > 0) {
+// 			window.scrollTo(0,document.body.scrollHeight);
+// 			buttonVoirPLus.click();
+// 		}
+// 		// observerVoirPlusAuto.disconnect();
+// 	}
 	
-	observerVoirPlusAuto.observe(elementToObserve, options);
+// 	observerVoirPlusAuto.observe(elementToObserve, options);
 	
 	
-	let buttonVoirPLus = getVoirPlus();
-	buttonVoirPLus.click();
-}
+// 	let buttonVoirPLus = getVoirPlus();
+// 	buttonVoirPLus.click();
+// }
 
 function stopObserverVoirPlusAuto() {
 	observerVoirPlusAuto.disconnect();
@@ -1455,8 +1470,8 @@ function observerHistoryTableLoading() {
 		
 		console.log(SessionsHistoryTrLength);
 		
-		let buttonVoirPLus = getVoirPlus();
-		if (buttonVoirPLus) {
+		let buttonPaging = getPaging();
+		if (buttonPaging) {
 			console.log("HISTORY TABLE 1ST LOADED");
 		    observer.disconnect();
 		    addToolBar();
