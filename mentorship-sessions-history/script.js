@@ -1490,4 +1490,22 @@ function reloadingOverlay() {
 	observerHistoryTableChanging();
 }
 
+function cleanSessionsHistoryTabInLocalStorage() {
+	let sessionsHistoryTab = JSON.parse(localStorage.getItem('sessionsHistoryTabTest'));
+	
+	//Convert the old format (with ",") to the new format  (with " à")
+	for (session of sessionsHistoryTab) {
+		session.sessionDate = session.sessionDate.replace(',', ' à');
+		session.sessionId = session.sessionId.replace(',', ' à');
+	}
+	localStorage.setItem('sessionsHistoryTabTest', JSON.stringify(sessionsHistoryTab));
+	
+	//Remove duplicates
+	jsonObject = sessionsHistoryTab.map(JSON.stringify);
+	uniqueSet = new Set(jsonObject);
+	sessionsHistoryTab = Array.from(uniqueSet).map(JSON.parse);
+	localStorage.setItem('sessionsHistoryTabTest', JSON.stringify(sessionsHistoryTab));
+}
+
+cleanSessionsHistoryTabInLocalStorage();
 observerHistoryTableLoading();
