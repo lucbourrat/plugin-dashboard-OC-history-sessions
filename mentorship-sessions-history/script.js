@@ -1,5 +1,3 @@
-
-
 let observerVoirPlusAuto;
 let classOfDivContainingTable = ".dom-services-1-dom-services2";
 classOfDivContainingTable = "div[data-search-hide-element='true'] > .webapp-0-webapp8 > .webapp-0-webapp9 > #mainContent > .webapp-0-webapp5> #history";
@@ -912,9 +910,7 @@ function markIfSessionIsAlreadyInBDD() {
 	// Get displayed sessions Elements TR
 	let sessionsHistoryDisplayed = getSessionsHistoryTr();
 	// Check if sessionsDisplayed are already in the BDD
-	console.log(sessionsHistoryDisplayed);
 	for (sessionDisplayed of sessionsHistoryDisplayed) {
-		console.log(sessionDisplayed);
 		// let sessionDisplayedId = sessionDisplayed.getElementsByTagName("td")[1].getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("td")[2].getElementsByTagName("a")[0].textContent;
 		let sessionDisplayedId = sessionDisplayed.getElementsByTagName("time")[0].textContent + " - " + sessionDisplayed.getElementsByTagName("a")[0].textContent;
 		sessionDisplayed.getElementsByClassName("isItAnAF")[0].classList.remove("studentListed");

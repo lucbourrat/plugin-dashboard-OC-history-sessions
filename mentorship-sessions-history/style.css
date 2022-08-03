@@ -73,12 +73,17 @@ select.toolBarSectionButton {
 /*Display students list */
 
 .studentListed {
-	border-right: 1px solid red;
 	order: 5;
 }
 
-.studentListedAlreadyInBDD {
-	border-color: green;
+.studentListed .switch-handle:before {
+	background: linear-gradient(to bottom, red, #FFFFFF 25px);
+	background-image: -webkit-linear-gradient(top, red, #FFFFFF 25px);
+}
+
+.studentListedAlreadyInBDD .switch-handle:before {
+	background: linear-gradient(to bottom, green, #FFFFFF 25px);
+	background-image: -webkit-linear-gradient(top, green, #FFFFFF 25px);
 }
 
 
@@ -315,6 +320,9 @@ div#RecapTabsArea {
 
 
 /*Switch Button*/
+.webapp-0-webapp149 {
+    grid-template-columns: 11rem 0.7fr 1fr 5.5rem 10rem 7rem !important;
+}
 /* Common Switch
 ==========================*/
 .isItAnAF {
