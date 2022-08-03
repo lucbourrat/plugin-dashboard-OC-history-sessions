@@ -72,7 +72,7 @@ select.toolBarSectionButton {
 
 /*Display students list */
 
-.studentListed {
+.isItAnAF {
 	order: 5;
 }
 
@@ -272,8 +272,9 @@ div#RecapTabsArea {
 
 .statsDiv p {
 	line-height: 48px;
-    padding-top: 2px;
+    padding-top: 12px;
     padding-left: 10px;
+    font-weight: 600;
 }
 
 
