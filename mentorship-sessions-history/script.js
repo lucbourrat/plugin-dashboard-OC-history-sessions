@@ -351,7 +351,7 @@ function getDisplayedSessions() {
 	// Create new object and push it in sessionsHistoryTab
 	for (session of sessionsHistory) {
 		let newItem = {};
-		newItem.studentName = session.getElementsByTagName("a")[0].textContent;
+		newItem.studentName = session.querySelectorAll('span > div')[2].querySelector('div').lastChild.textContent;
 		newItem.sessionStatus = session.getElementsByTagName("svg")[0].getAttribute("aria-label");
 		newItem.sessionDate = session.getElementsByTagName("time")[0].textContent;
 		newItem.sessionDateMonth = newItem.sessionDate.split(' ')[1];
@@ -369,9 +369,9 @@ function getDisplayedSessions() {
 			}
 		}
 		// Set newItem.studentFaOrF
-		if (session.children[4] == undefined)
+		if (session.children[5] == undefined)
 			alert("AF/F non set");
-		if (session.children[4].getElementsByClassName("switch-input")[0].checked)
+		if (session.children[5].getElementsByClassName("switch-input")[0].checked)
 			newItem.studentFaOrF = "af";
 		else
 		 	newItem.studentFaOrF = "f";
