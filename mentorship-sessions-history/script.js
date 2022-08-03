@@ -1,4 +1,4 @@
-let observerVoirPlusAuto;
+// let observerVoirPlusAuto;
 let classOfDivContainingTable = ".dom-services-1-dom-services2";
 classOfDivContainingTable = "div[data-search-hide-element='true'] > .webapp-0-webapp8 > .webapp-0-webapp9 > #mainContent > .webapp-0-webapp5> #history";
 
@@ -157,9 +157,9 @@ function addToolBar() {
         	deleteRecapTab();
         	toolBarSectionExtra.value = "default";
     	}
-    	else if(toolBarSectionExtra.value == "VoirPlusAuto") {
-        	VoirPlusAuto();
-    	}
+    	// else if(toolBarSectionExtra.value == "VoirPlusAuto") {
+     //   	VoirPlusAuto();
+    	// }
     	else if(toolBarSectionExtra.value == "ManualOverlayReloader") {
         	reloadingOverlay();
     	}
@@ -185,10 +185,10 @@ function addToolBar() {
 	toolBarSectionExtraOptionDefaultDeleteBDD.setAttribute("value", "DeleteBDD");
 	toolBarSectionExtraOptionDefaultDeleteBDD.textContent = "Effacer BDD";
 	////////// VoirPlusAuto
-	let toolBarSectionExtraOptionDefaultVoirPlusAuto = document.createElement("option");
-	toolBarSectionExtraOptionDefaultVoirPlusAuto.classList.add("extraDefaultOptionVoirPlusAuto");
-	toolBarSectionExtraOptionDefaultVoirPlusAuto.setAttribute("value", "VoirPlusAuto");
-	toolBarSectionExtraOptionDefaultVoirPlusAuto.textContent = "Voir plus Auto";
+	// let toolBarSectionExtraOptionDefaultVoirPlusAuto = document.createElement("option");
+	// toolBarSectionExtraOptionDefaultVoirPlusAuto.classList.add("extraDefaultOptionVoirPlusAuto");
+	// toolBarSectionExtraOptionDefaultVoirPlusAuto.setAttribute("value", "VoirPlusAuto");
+	// toolBarSectionExtraOptionDefaultVoirPlusAuto.textContent = "Voir plus Auto";
 	////////// ManualOverlayReloader
 	let toolBarSectionExtraOptionDefaulManualOverlayReloader = document.createElement("option");
 	toolBarSectionExtraOptionDefaulManualOverlayReloader.classList.add("extraDefaultOptionManualOverlayReloader");
@@ -248,7 +248,7 @@ function addToolBar() {
 	// Insert Extra
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefault);
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaultDeleteBDD);
-	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaultVoirPlusAuto);
+	// toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaultVoirPlusAuto);
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaulManualOverlayReloader);
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaulDisplayFollowedStudents);
 	toolBarSectionExtra.appendChild(toolBarSectionExtraOptionDefaulDisplayStats);
@@ -481,10 +481,10 @@ function deleteRecapTab() {
 // 	buttonVoirPLus.click();
 // }
 
-function stopObserverVoirPlusAuto() {
-	observerVoirPlusAuto.disconnect();
-	document.getElementsByClassName("btnStopVoirPlusAuto")[0].style.display = "none";
-}
+// function stopObserverVoirPlusAuto() {
+// 	observerVoirPlusAuto.disconnect();
+// 	document.getElementsByClassName("btnStopVoirPlusAuto")[0].style.display = "none";
+// }
 
 function displayRecapTabs() {
 	// On récupère les éléments à cacher
