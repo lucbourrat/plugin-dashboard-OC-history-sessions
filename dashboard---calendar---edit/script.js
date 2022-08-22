@@ -96,6 +96,11 @@ function displayUnscheduledStudents(unscheduledStudents) {
 	
 }
 
+function scrollCalendarTo8am() {
+	let calendarContainer = document.querySelector('.rbc-time-content');
+	calendarContainer.scrollTop = 447;
+}
+
 function observerScheduledStudentsTableLoading() {
 	let containerToObserve = document.getElementById("mainContentWithHeader");
 	let options = {childList: true, subtree: true};
@@ -107,6 +112,7 @@ function observerScheduledStudentsTableLoading() {
 			console.log("CALENDAR LOADED");
 		    observer.disconnect();
 		    addToolBar();
+		    scrollCalendarTo8am();
 		}
 	}
 	
