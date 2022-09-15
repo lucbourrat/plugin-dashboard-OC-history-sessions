@@ -2,7 +2,7 @@
 
 function getStudentsList(studentsTabTrNb) {
 	// Get Students List Element
-	let studentsTabTr = document.getElementById("students_1").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+	let studentsTabTr = document.getElementsByClassName("webapp-0-webapp5")[0].getElementsByTagName("div")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 	
 	// Init studentsListTab
 	let studentsListTabOld = JSON.parse(localStorage.getItem('studentsListTab'));
@@ -56,8 +56,9 @@ function observerStudentsTableLoadingOfStudentsPage() {
 	let observer = new MutationObserver(mCallback);
 	
 	function mCallback(mutations) {
-		let studentsTabTrNb = document.getElementById("students_1").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;
+		let studentsTabTrNb = document.getElementsByClassName("webapp-0-webapp5")[0].getElementsByTagName("div")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;
 		if (studentsTabTrNb > 1) {
+			console.log(studentsTabTrNb > 1);
 		    observer.disconnect();
 		    getStudentsList(studentsTabTrNb);
 		}
@@ -73,7 +74,6 @@ function observerStudentsTableLoadingOfStudentsPage() {
 // PAGE OF STUDENT DETAILS
 
 function observerStudentsElementLoadingOfStudentDatailsPage() {
-	console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 	let containerToObserve = document.getElementById("mainContentWithHeader");
 	let options = {childList: true, subtree: true};
 	let observer = new MutationObserver(mCallback);
