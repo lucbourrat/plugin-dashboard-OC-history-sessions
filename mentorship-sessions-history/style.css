@@ -322,7 +322,8 @@ div#RecapTabsArea {
 
 
 /*Switch Button*/
-.webapp-0-webapp149 {
+.webapp-0-webapp149,
+.webapp-0-webapp155 {
     grid-template-columns: 11rem 0.7fr 1fr 5.5rem 10rem 7rem !important;
 }
 /* Common Switch

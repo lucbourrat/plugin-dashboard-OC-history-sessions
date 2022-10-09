@@ -267,7 +267,8 @@ function getSessionsHistoryTr() {
 	// Get displayed sessions Elements TR
 	// let sessionsHistory = document.querySelector("#mainContent > " + classOfDivContainingTable + " > table > tbody").querySelectorAll("tr[tabindex='0']");
 	// let sessionsHistory = document.querySelector("#mainContent > " + classOfDivContainingTable + " > section > ol").querySelectorAll("a[tabindex='0']");
-	let sessionsHistory = document.querySelector("#mainContent > " + classOfDivContainingTable + " > section > ol").querySelectorAll("span.webapp-0-webapp149");
+	// let sessionsHistory = document.querySelector("#mainContent > " + classOfDivContainingTable + " > section > ol").querySelectorAll("span.webapp-0-webapp149");
+	let sessionsHistory = document.querySelector("#mainContent > " + classOfDivContainingTable + " > section > ol").querySelectorAll("span.webapp-0-webapp155");
 	
 	// console.log(sessionsHistory);
 
@@ -283,8 +284,7 @@ function getVoirPlus() {
 }
 
 function getPaging() {
-	let buttonPaging = document.querySelector("#mainContent > " + classOfDivContainingTable + " > ul.webapp-0-webapp168");
-	console.log(buttonPaging);
+	let buttonPaging = document.querySelector("#history > ul");
 
 	return(buttonPaging);
 }
@@ -1046,7 +1046,6 @@ function howManyStudentsSoutenanceFollowed(allStudentListTab) {
 		}
 	}
 	
-	console.log(counter);
 	return counter;
 }
 
